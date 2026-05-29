@@ -13,7 +13,7 @@ export function CocktailCard({ cocktail, isFavorite, onToggleFavorite, onClick }
   const spirit = primarySpirit(cocktail)
 
   return (
-    <div className="flex w-full items-center gap-3 rounded-2xl border border-white/8 bg-bar-900/80 p-3 transition active:scale-[0.98]">
+    <div className="flex w-full items-center gap-3 rounded-2xl border border-app bg-bar-900/80 p-3 transition active:scale-[0.98]">
       <button type="button" onClick={onClick} className="flex min-w-0 flex-1 items-center gap-3 text-left">
         <div
           className={`relative h-16 w-16 shrink-0 overflow-hidden rounded-xl bg-linear-to-br ${gradient}`}
@@ -21,7 +21,7 @@ export function CocktailCard({ cocktail, isFavorite, onToggleFavorite, onClick }
           {cocktail.imageUrl ? (
             <img src={cocktail.imageUrl} alt="" className="h-full w-full object-cover" />
           ) : (
-            <div className="flex h-full w-full items-center justify-center font-display text-lg font-semibold text-white/90">
+            <div className="flex h-full w-full items-center justify-center font-display text-lg font-semibold text-foreground/90">
               {cocktailInitials(cocktail.name)}
             </div>
           )}
@@ -31,8 +31,8 @@ export function CocktailCard({ cocktail, isFavorite, onToggleFavorite, onClick }
         </div>
 
         <div className="min-w-0 flex-1">
-          <h3 className="truncate text-base font-semibold text-white">{cocktail.name}</h3>
-          <p className="truncate text-xs text-white/55">
+          <h3 className="truncate text-base font-semibold text-foreground">{cocktail.name}</h3>
+          <p className="truncate text-xs text-muted">
             {cocktail.method} · {cocktail.glass}
           </p>
         </div>
@@ -42,7 +42,7 @@ export function CocktailCard({ cocktail, isFavorite, onToggleFavorite, onClick }
         type="button"
         aria-label={isFavorite ? 'Remove from favorites' : 'Add to favorites'}
         onClick={onToggleFavorite}
-        className="shrink-0 rounded-full p-2 text-xl leading-none transition hover:bg-white/10"
+        className="shrink-0 rounded-full p-2 text-xl leading-none transition hover:bg-surface-muted"
       >
         {isFavorite ? '❤️' : '🤍'}
       </button>

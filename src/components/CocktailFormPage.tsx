@@ -125,28 +125,28 @@ export function CocktailFormPage({ cocktails, onSave, mode }: Props) {
   }
 
   const fieldClass =
-    'w-full rounded-xl border border-white/10 bg-bar-800 px-3 py-2.5 text-white outline-none focus:border-amber-accent/60'
+    'w-full rounded-xl border border-app bg-bar-800 px-3 py-2.5 text-foreground outline-none focus:border-amber-accent/60'
 
   return (
     <div className="safe-bottom pb-8">
-      <div className="sticky top-0 z-10 flex items-center gap-3 border-b border-white/8 bg-bar-950/95 px-4 py-3 backdrop-blur">
+      <div className="sticky top-0 z-10 flex items-center gap-3 border-b border-app bg-app px-4 py-3 backdrop-blur">
         <button type="button" onClick={() => navigate(-1)} className="text-amber-accent">
           ← Cancel
         </button>
-        <h1 className="font-display text-lg font-bold text-white">
+        <h1 className="font-display text-lg font-bold text-foreground">
           {mode === 'edit' ? 'Edit Cocktail' : 'Add Cocktail'}
         </h1>
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-5 px-4 pt-4">
         <label className="block space-y-1.5">
-          <span className="text-sm text-white/70">Name *</span>
+          <span className="text-sm text-muted">Name *</span>
           <input className={fieldClass} value={name} onChange={(e) => setName(e.target.value)} required />
         </label>
 
         <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
           <label className="block space-y-1.5">
-            <span className="text-sm text-white/70">Method</span>
+            <span className="text-sm text-muted">Method</span>
             <select className={fieldClass} value={method} onChange={(e) => setMethod(e.target.value)}>
               {METHOD_OPTIONS.map((m) => (
                 <option key={m} value={m}>
@@ -156,7 +156,7 @@ export function CocktailFormPage({ cocktails, onSave, mode }: Props) {
             </select>
           </label>
           <label className="block space-y-1.5">
-            <span className="text-sm text-white/70">Glass</span>
+            <span className="text-sm text-muted">Glass</span>
             <select className={fieldClass} value={glass} onChange={(e) => setGlass(e.target.value)}>
               {GLASS_OPTIONS.map((g) => (
                 <option key={g} value={g}>
@@ -166,7 +166,7 @@ export function CocktailFormPage({ cocktails, onSave, mode }: Props) {
             </select>
           </label>
           <label className="block space-y-1.5">
-            <span className="text-sm text-white/70">Ice</span>
+            <span className="text-sm text-muted">Ice</span>
             <select className={fieldClass} value={ice} onChange={(e) => setIce(e.target.value)}>
               {ICE_OPTIONS.map((i) => (
                 <option key={i} value={i}>
@@ -178,7 +178,7 @@ export function CocktailFormPage({ cocktails, onSave, mode }: Props) {
         </div>
 
         <div>
-          <span className="mb-2 block text-sm text-white/70">Main spirits</span>
+          <span className="mb-2 block text-sm text-muted">Main spirits</span>
           <div className="flex flex-wrap gap-2">
             {SPIRIT_OPTIONS.map((spirit) => (
               <button
@@ -188,7 +188,7 @@ export function CocktailFormPage({ cocktails, onSave, mode }: Props) {
                 className={`rounded-full border px-3 py-1.5 text-xs font-medium ${
                   spirits.includes(spirit)
                     ? 'border-amber-accent bg-amber-accent/20 text-amber-light'
-                    : 'border-white/15 text-white/55'
+                    : 'border-app-strong text-muted'
                 }`}
               >
                 {spirit}
@@ -198,7 +198,7 @@ export function CocktailFormPage({ cocktails, onSave, mode }: Props) {
         </div>
 
         <label className="block space-y-1.5">
-          <span className="text-sm text-white/70">Image URL (optional)</span>
+          <span className="text-sm text-muted">Image URL (optional)</span>
           <input
             className={fieldClass}
             value={imageUrl}
@@ -209,7 +209,7 @@ export function CocktailFormPage({ cocktails, onSave, mode }: Props) {
         </label>
 
         <label className="block space-y-1.5">
-          <span className="text-sm text-white/70">Ingredients (one per line, amounts in oz)</span>
+          <span className="text-sm text-muted">Ingredients (one per line, amounts in oz)</span>
           <textarea
             className={`${fieldClass} min-h-32 font-mono text-sm`}
             value={ingredientsText}
@@ -219,7 +219,7 @@ export function CocktailFormPage({ cocktails, onSave, mode }: Props) {
         </label>
 
         <label className="block space-y-1.5">
-          <span className="text-sm text-white/70">Garnish</span>
+          <span className="text-sm text-muted">Garnish</span>
           <input
             className={fieldClass}
             value={garnish}
@@ -229,7 +229,7 @@ export function CocktailFormPage({ cocktails, onSave, mode }: Props) {
         </label>
 
         <label className="block space-y-1.5">
-          <span className="text-sm text-white/70">Instructions (2–4 steps, one per line)</span>
+          <span className="text-sm text-muted">Instructions (2–4 steps, one per line)</span>
           <textarea
             className={`${fieldClass} min-h-28`}
             value={instructionsText}

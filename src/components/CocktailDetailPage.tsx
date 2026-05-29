@@ -15,6 +15,7 @@ interface Props {
   onUnitChange: (unit: UnitSystem) => void
   onMultiplierChange: (multiplier: number) => void
   onFavoriteChange: () => void
+  onViewed: () => void
 }
 
 export function CocktailDetailPage({
@@ -25,6 +26,7 @@ export function CocktailDetailPage({
   onUnitChange,
   onMultiplierChange,
   onFavoriteChange,
+  onViewed,
 }: Props) {
   const { id } = useParams()
   const navigate = useNavigate()
@@ -32,13 +34,16 @@ export function CocktailDetailPage({
   const isFavorite = id ? favorites.includes(id) : false
 
   useEffect(() => {
-    if (id) markRecentlyViewed(id)
-  }, [id])
+    if (id) {
+      markRecentlyViewed(id)
+      onViewed()
+    }
+  }, [id, onViewed])
 
   if (!cocktail) {
     return (
       <div className="px-4 py-8 text-center">
-        <p className="text-white/70">Cocktail not found.</p>
+        <p className="text-muted">Cocktail not found.</p>
         <Link to="/" className="mt-4 inline-block text-amber-accent">
           Back to list
         </Link>
@@ -50,14 +55,14 @@ export function CocktailDetailPage({
 
   return (
     <div className="safe-bottom pb-24">
-      <div className="sticky top-0 z-10 flex items-center justify-between border-b border-white/8 bg-bar-950/95 px-4 py-3 backdrop-blur">
+      <div className="sticky top-0 z-10 flex items-center justify-between border-b border-app bg-app px-4 py-3 backdrop-blur">
         <button type="button" onClick={() => navigate(-1)} className="text-amber-accent">
           ← Back
         </button>
         <div className="flex items-center gap-2">
           <Link
             to={`/cocktail/${cocktail.id}/edit`}
-            className="rounded-lg border border-white/15 px-3 py-1.5 text-xs font-medium text-white/80"
+            className="rounded-lg border border-app-strong px-3 py-1.5 text-xs font-medium text-muted"
           >
             Edit
           </Link>
@@ -80,23 +85,23 @@ export function CocktailDetailPage({
           <img src={cocktail.imageUrl} alt={cocktail.name} className="h-full w-full object-cover" />
         ) : (
           <div className="flex h-full flex-col items-center justify-center gap-2">
-            <span className="font-display text-5xl font-bold text-white/90">{cocktailInitials(cocktail.name)}</span>
-            <span className="text-sm uppercase tracking-[0.2em] text-white/50">{cocktail.spirits.join(' · ')}</span>
+            <span className="font-display text-5xl font-bold text-foreground/90">{cocktailInitials(cocktail.name)}</span>
+            <span className="text-sm uppercase tracking-[0.2em] text-subtle">{cocktail.spirits.join(' · ')}</span>
           </div>
         )}
       </div>
 
       <div className="space-y-6 px-4 pt-5">
         <header>
-          <h1 className="font-display text-3xl font-bold leading-tight text-white">{cocktail.name}</h1>
+          <h1 className="font-display text-3xl font-bold leading-tight text-foreground">{cocktail.name}</h1>
           <p className="mt-2 text-sm text-amber-light/80">{subtitle(cocktail)}</p>
         </header>
 
         <section>
           <div className="mb-3 flex flex-wrap items-center justify-between gap-3">
             <div>
-              <h2 className="text-lg font-semibold text-white">Ingredients</h2>
-              <p className="text-xs text-white/45">Amounts in {unit === 'oz' ? 'ounces' : 'milliliters'}</p>
+              <h2 className="text-lg font-semibold text-foreground">Ingredients</h2>
+              <p className="text-xs text-subtle">Amounts in {unit === 'oz' ? 'ounces' : 'milliliters'}</p>
             </div>
             <UnitControls
               unit={unit}
@@ -110,15 +115,15 @@ export function CocktailDetailPage({
 
         {cocktail.garnish && (
           <section>
-            <h2 className="mb-3 text-lg font-semibold text-white">Garnish</h2>
-            <p className="rounded-2xl border border-white/8 bg-bar-900/60 px-4 py-3 text-sm text-white/90">
+            <h2 className="mb-3 text-lg font-semibold text-foreground">Garnish</h2>
+            <p className="rounded-2xl border border-app bg-bar-900/60 px-4 py-3 text-sm text-foreground/90">
               {cocktail.garnish}
             </p>
           </section>
         )}
 
         <section>
-          <h2 className="mb-3 text-lg font-semibold text-white">Instructions</h2>
+          <h2 className="mb-3 text-lg font-semibold text-foreground">Instructions</h2>
           <InstructionList steps={cocktail.instructions} />
         </section>
       </div>

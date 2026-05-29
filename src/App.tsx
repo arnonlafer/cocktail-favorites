@@ -1,12 +1,20 @@
+import { useEffect } from 'react'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import { useCocktails } from './hooks/useCocktails'
+import { applyAppearance } from './lib/theme'
+import { loadPrefs } from './lib/storage'
 import { HomePage } from './components/HomePage'
 import { CocktailDetailPage } from './components/CocktailDetailPage'
 import { CocktailFormPage } from './components/CocktailFormPage'
+import { SettingsPage } from './components/SettingsPage'
 
 export default function App() {
   const { cocktails, prefs, fuse, addCocktail, saveCocktail, updatePrefs, sortByRecent, refreshPrefs } =
     useCocktails()
+
+  useEffect(() => {
+    applyAppearance(prefs.theme, prefs.fontSize)
+  }, [prefs.theme, prefs.fontSize])
 
   return (
     <BrowserRouter>
@@ -18,9 +26,22 @@ export default function App() {
               <HomePage
                 cocktails={cocktails}
                 favorites={prefs.favorites}
+                prefs={prefs}
                 fuse={fuse}
                 sortByRecent={sortByRecent}
                 onFavoriteChange={refreshPrefs}
+                onUpdateCollapsedGroups={(collapsedGroups) => updatePrefs({ collapsedGroups })}
+              />
+            }
+          />
+          <Route
+            path="/settings"
+            element={
+              <SettingsPage
+                theme={prefs.theme}
+                fontSize={prefs.fontSize}
+                onThemeChange={(theme) => updatePrefs({ theme })}
+                onFontSizeChange={(fontSize) => updatePrefs({ fontSize })}
               />
             }
           />
@@ -35,6 +56,7 @@ export default function App() {
                 onUnitChange={(unit) => updatePrefs({ unit })}
                 onMultiplierChange={(multiplier) => updatePrefs({ multiplier })}
                 onFavoriteChange={refreshPrefs}
+                onViewed={refreshPrefs}
               />
             }
           />
@@ -48,3 +70,6 @@ export default function App() {
     </BrowserRouter>
   )
 }
+
+// Apply saved appearance before first paint
+applyAppearance(loadPrefs().theme, loadPrefs().fontSize)

@@ -19,12 +19,18 @@ export interface Cocktail {
 }
 
 export type UnitSystem = 'oz' | 'ml'
+export type Theme = 'dark' | 'light'
+export type FontSize = 'sm' | 'md' | 'lg' | 'xl'
 
 export interface AppPreferences {
   favorites: string[]
   recentlyViewed: Record<string, number>
   unit: UnitSystem
   multiplier: number
+  theme: Theme
+  fontSize: FontSize
+  /** null = auto-collapse all except last-viewed cocktail's group(s) */
+  collapsedGroups: string[] | null
 }
 
 export const SPIRIT_ORDER = [

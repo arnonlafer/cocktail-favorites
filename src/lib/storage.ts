@@ -3,20 +3,40 @@ import type { AppPreferences, Cocktail } from '../types'
 const PREFS_KEY = 'cocktail-favorites:prefs'
 const CUSTOM_KEY = 'cocktail-favorites:custom'
 const EDITS_KEY = 'cocktail-favorites:edits'
-const COLLAPSED_GROUPS_KEY = 'cocktail-favorites:collapsed-groups'
+const LEGACY_COLLAPSED_GROUPS_KEY = 'cocktail-favorites:collapsed-groups'
 
 const defaultPrefs: AppPreferences = {
   favorites: [],
   recentlyViewed: {},
   unit: 'oz',
   multiplier: 1,
+  theme: 'dark',
+  fontSize: 'md',
+  collapsedGroups: null,
+}
+
+function migrateLegacyCollapsedGroups(): string[] | null {
+  try {
+    const raw = localStorage.getItem(LEGACY_COLLAPSED_GROUPS_KEY)
+    if (!raw) return null
+    localStorage.removeItem(LEGACY_COLLAPSED_GROUPS_KEY)
+    return JSON.parse(raw) as string[]
+  } catch {
+    return null
+  }
 }
 
 export function loadPrefs(): AppPreferences {
   try {
     const raw = localStorage.getItem(PREFS_KEY)
     if (!raw) return { ...defaultPrefs }
-    return { ...defaultPrefs, ...JSON.parse(raw) }
+    const parsed = JSON.parse(raw) as Partial<AppPreferences>
+    const legacyCollapsed = parsed.collapsedGroups === undefined ? migrateLegacyCollapsedGroups() : null
+    return {
+      ...defaultPrefs,
+      ...parsed,
+      collapsedGroups: parsed.collapsedGroups ?? legacyCollapsed,
+    }
   } catch {
     return { ...defaultPrefs }
   }
@@ -72,6 +92,7 @@ export function saveCocktailEdit(cocktail: Cocktail) {
 export function markRecentlyViewed(id: string) {
   const prefs = loadPrefs()
   prefs.recentlyViewed[id] = Date.now()
+  prefs.collapsedGroups = null
   savePrefs(prefs)
 }
 
@@ -83,18 +104,4 @@ export function toggleFavorite(id: string): boolean {
   prefs.favorites = [...set]
   savePrefs(prefs)
   return set.has(id)
-}
-
-export function loadCollapsedGroups(): Set<string> {
-  try {
-    const raw = localStorage.getItem(COLLAPSED_GROUPS_KEY)
-    if (!raw) return new Set()
-    return new Set(JSON.parse(raw) as string[])
-  } catch {
-    return new Set()
-  }
-}
-
-export function saveCollapsedGroups(collapsed: Set<string>) {
-  localStorage.setItem(COLLAPSED_GROUPS_KEY, JSON.stringify([...collapsed]))
 }
