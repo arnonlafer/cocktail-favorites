@@ -25,17 +25,22 @@ Re-parse recipes after editing `scripts/raw-cocktails.txt`:
 node scripts/parse-cocktails.mjs
 ```
 
-## Deploy (free)
+## Deploy (Cloudflare Workers)
 
-### Cloudflare Pages (recommended)
+Live at: https://cocktail-favorites.arnonlafer.workers.dev/
 
-1. Push this repo to GitHub
-2. Go to [Cloudflare Pages](https://pages.cloudflare.com/) → Create project → Connect Git
-3. Build command: `npm run build`
-4. Output directory: `dist`
-5. Your app gets a free `*.pages.dev` URL with HTTPS
+Build settings:
 
-### Vercel
+| Setting | Value |
+|---|---|
+| Build command | `npm run build` |
+| Deploy command | `npx wrangler versions upload` |
+| Output directory | `dist` |
+| `NODE_VERSION` | **`22`** (required — Wrangler needs Node 22+) |
+
+The repo includes `.node-version` set to `22`. If you previously set `NODE_VERSION=20` in the dashboard, **change it to `22`** or remove it so `.node-version` is used.
+
+## Deploy (alternatives)
 
 1. Push to GitHub
 2. Import at [vercel.com](https://vercel.com) — it auto-detects Vite
