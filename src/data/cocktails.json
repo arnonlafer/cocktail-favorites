@@ -1,0 +1,4222 @@
+[
+  {
+    "id": "cynarita",
+    "name": "Cynarita",
+    "method": "Stirred",
+    "glass": "Rocks",
+    "ice": "1 large cube",
+    "spirits": [
+      "Tequila"
+    ],
+    "ingredients": [
+      {
+        "amount": 1.5,
+        "unit": "oz",
+        "name": "Blanco or Reposado Tequila"
+      },
+      {
+        "amount": 0.5,
+        "unit": "oz",
+        "name": "Campari"
+      },
+      {
+        "amount": 0.5,
+        "unit": "oz",
+        "name": "Cynar"
+      }
+    ],
+    "garnish": "Lemon or Orange Twist",
+    "instructions": [
+      "Combine all ingredients in a mixing glass with ice.",
+      "Stir until well chilled and properly diluted.",
+      "Strain into a rocks glass over a large ice cube."
+    ],
+    "imageUrl": "https://images.unsplash.com/photo-1551538827-9c037cb4f32a?w=600&q=80"
+  },
+  {
+    "id": "last-flight",
+    "name": "Last Flight",
+    "method": "Shaken",
+    "glass": "Martini",
+    "ice": "Cubed",
+    "spirits": [
+      "Whiskey"
+    ],
+    "ingredients": [
+      {
+        "amount": 0.75,
+        "unit": "oz",
+        "name": "Bourbon Whiskey"
+      },
+      {
+        "amount": 0.75,
+        "unit": "oz",
+        "name": "Green Chartreuse"
+      },
+      {
+        "amount": 0.75,
+        "unit": "oz",
+        "name": "Aperol"
+      },
+      {
+        "amount": 0.75,
+        "unit": "oz",
+        "name": "Lemon Juice"
+      }
+    ],
+    "garnish": null,
+    "instructions": [
+      "Combine all ingredients in a shaker with ice.",
+      "Shake until well chilled.",
+      "Strain into a chilled martini glass."
+    ],
+    "imageUrl": "https://www.thecocktaildb.com/images/media/drink/91oule1513702624.jpg"
+  },
+  {
+    "id": "monter-cassino",
+    "name": "Monter Cassino",
+    "method": "Shaken",
+    "glass": "Coupe",
+    "ice": "None",
+    "spirits": [
+      "Whiskey"
+    ],
+    "ingredients": [
+      {
+        "amount": 0.75,
+        "unit": "oz",
+        "name": "American Rye Whiskey"
+      },
+      {
+        "amount": 0.75,
+        "unit": "oz",
+        "name": "Benedictine"
+      },
+      {
+        "amount": 0.75,
+        "unit": "oz",
+        "name": "Yellow Chartreuse"
+      },
+      {
+        "amount": 0.75,
+        "unit": "oz",
+        "name": "Lemon Juice"
+      }
+    ],
+    "garnish": "Lemon Twist, A Lemon Twist",
+    "instructions": [
+      "Combine all ingredients in a shaker with ice.",
+      "Shake until well chilled.",
+      "Strain into a chilled coupe glass."
+    ],
+    "imageUrl": "https://www.thecocktaildb.com/images/media/drink/91oule1513702624.jpg"
+  },
+  {
+    "id": "9th-wonder",
+    "name": "9th Wonder",
+    "method": "Shaken",
+    "glass": "Coupe",
+    "ice": "None",
+    "spirits": [
+      "Tequila"
+    ],
+    "ingredients": [
+      {
+        "amount": 0.75,
+        "unit": "oz",
+        "name": "Tequila Blanco"
+      },
+      {
+        "amount": 0.75,
+        "unit": "oz",
+        "name": "Ancho Reyes Chile Liqueur"
+      },
+      {
+        "amount": 0.75,
+        "unit": "oz",
+        "name": "CrèMe De Cacao White"
+      },
+      {
+        "amount": 0.75,
+        "unit": "oz",
+        "name": "Lime Juice"
+      }
+    ],
+    "garnish": null,
+    "instructions": [
+      "Combine all ingredients in a shaker with ice.",
+      "Shake until well chilled.",
+      "Strain into a chilled coupe glass."
+    ],
+    "imageUrl": "https://www.thecocktaildb.com/images/media/drink/5noda61589575158.jpg"
+  },
+  {
+    "id": "midnight-flight-new-year-s-eve",
+    "name": "Midnight Flight (New Year'S Eve)",
+    "method": "Shaken",
+    "glass": "Coupe",
+    "ice": "Cubed",
+    "spirits": [
+      "Wine & Beer"
+    ],
+    "ingredients": [
+      {
+        "amount": null,
+        "unit": null,
+        "name": "¾ Oz Aperol"
+      },
+      {
+        "amount": null,
+        "unit": null,
+        "name": "½ Oz Amaro Nonino"
+      },
+      {
+        "amount": null,
+        "unit": null,
+        "name": "¾ Oz St-Germain"
+      },
+      {
+        "amount": null,
+        "unit": null,
+        "name": "½ Oz Fresh Pink Grapefruit Juice"
+      },
+      {
+        "amount": 2,
+        "unit": "dashes",
+        "name": "Orange Bitters"
+      },
+      {
+        "amount": 3,
+        "unit": "oz",
+        "name": "Dry Sparkling Wine"
+      }
+    ],
+    "garnish": "Grapefruit Twist or Pomegranate Seeds, And Serve Immediately",
+    "instructions": [
+      "Combine all ingredients in a shaker with ice.",
+      "Shake until well chilled.",
+      "Strain into a chilled coupe glass."
+    ],
+    "imageUrl": "https://www.thecocktaildb.com/images/media/drink/iloasq1587661955.jpg"
+  },
+  {
+    "id": "banana-carajillo",
+    "name": "Banana Carajillo",
+    "method": "Shaken",
+    "glass": "Coupe",
+    "ice": "None",
+    "spirits": [
+      "Whiskey",
+      "Tequila"
+    ],
+    "ingredients": [
+      {
+        "amount": 1.5,
+        "unit": "oz",
+        "name": "Espresso Coffee"
+      },
+      {
+        "amount": 0.5,
+        "unit": null,
+        "name": "Banana Liqueur"
+      },
+      {
+        "amount": 2,
+        "unit": "dashes",
+        "name": "Of Cardamon Bitters"
+      },
+      {
+        "amount": 2,
+        "unit": "dashes",
+        "name": "Of Black Walnut Bitters"
+      },
+      {
+        "amount": 1,
+        "unit": "oz",
+        "name": "Blanco Tequila"
+      },
+      {
+        "amount": 1,
+        "unit": "oz",
+        "name": "Mezcal"
+      },
+      {
+        "amount": 0.5,
+        "unit": "oz",
+        "name": "Coffee Liqueur (Cantera Negra Cafe)"
+      },
+      {
+        "amount": null,
+        "unit": null,
+        "name": "Bourbon Option"
+      },
+      {
+        "amount": 2,
+        "unit": "oz",
+        "name": "Bourbon"
+      },
+      {
+        "amount": 0.5,
+        "unit": "oz",
+        "name": "Coffee Liqueur (Mr. Black)"
+      }
+    ],
+    "garnish": null,
+    "instructions": [
+      "Combine all ingredients in a shaker with ice.",
+      "Shake until well chilled.",
+      "Strain into a chilled coupe glass."
+    ],
+    "imageUrl": "https://www.thecocktaildb.com/images/media/drink/n0sx531504372951.jpg"
+  },
+  {
+    "id": "royal-sovereign",
+    "name": "Royal Sovereign",
+    "method": "Shaken",
+    "glass": "Coupe",
+    "ice": "1 large cube",
+    "spirits": [
+      "Whiskey"
+    ],
+    "ingredients": [
+      {
+        "amount": 0.75,
+        "unit": "oz",
+        "name": "Lemon Juice"
+      },
+      {
+        "amount": 0.25,
+        "unit": "oz",
+        "name": "Simple Syrup"
+      },
+      {
+        "amount": 0.5,
+        "unit": "oz",
+        "name": "Px Sherry"
+      },
+      {
+        "amount": 0.75,
+        "unit": "oz",
+        "name": "Aperol"
+      },
+      {
+        "amount": 1.5,
+        "unit": "oz",
+        "name": "Bourbon"
+      }
+    ],
+    "garnish": null,
+    "instructions": [
+      "Combine all ingredients in a shaker with ice.",
+      "Shake until well chilled.",
+      "Strain into a chilled coupe glass."
+    ],
+    "imageUrl": "https://www.thecocktaildb.com/images/media/drink/hbkfsh1589574990.jpg"
+  },
+  {
+    "id": "baby-turtle",
+    "name": "Baby Turtle",
+    "method": "Shaken",
+    "glass": "Rocks",
+    "ice": "Cubed",
+    "spirits": [
+      "Tequila"
+    ],
+    "ingredients": [
+      {
+        "amount": 2,
+        "unit": "oz",
+        "name": "Reposado Tequila"
+      },
+      {
+        "amount": 0.75,
+        "unit": "oz",
+        "name": "Lime Juice"
+      },
+      {
+        "amount": 1,
+        "unit": "oz",
+        "name": "Egg White"
+      },
+      {
+        "amount": 0.5,
+        "unit": "oz",
+        "name": "Grapefruit Juice"
+      },
+      {
+        "amount": 0.5,
+        "unit": "oz",
+        "name": "Cinnamon Syrup"
+      },
+      {
+        "amount": 0.25,
+        "unit": "oz",
+        "name": "Campari"
+      },
+      {
+        "amount": 2,
+        "unit": "dashes",
+        "name": "Saline Solution (1/5 Salt/Water)"
+      }
+    ],
+    "garnish": null,
+    "instructions": [
+      "Combine all ingredients and dry shake without ice.",
+      "Add ice and shake until well chilled.",
+      "Strain into a rocks glass over cubed ice."
+    ],
+    "imageUrl": "https://www.thecocktaildb.com/images/media/drink/5noda61589575158.jpg"
+  },
+  {
+    "id": "ruby-cocktail",
+    "name": "Ruby Cocktail",
+    "method": "Shaken",
+    "glass": "Coupe",
+    "ice": "None",
+    "spirits": [
+      "Vodka"
+    ],
+    "ingredients": [
+      {
+        "amount": 1.5,
+        "unit": "oz",
+        "name": "Vodka"
+      },
+      {
+        "amount": 0.75,
+        "unit": "oz",
+        "name": "St. Germain"
+      },
+      {
+        "amount": 0.5,
+        "unit": "oz",
+        "name": "Aperol"
+      },
+      {
+        "amount": 0.75,
+        "unit": "oz",
+        "name": "Lemon Juice"
+      },
+      {
+        "amount": 0.75,
+        "unit": "oz",
+        "name": "Ruby Red Grapefruit Juice"
+      },
+      {
+        "amount": 1,
+        "unit": "tablespoon",
+        "name": "Egg White"
+      }
+    ],
+    "garnish": "Expressed Grapefruit Twist",
+    "instructions": [
+      "Combine all ingredients and dry shake without ice.",
+      "Add ice and shake until well chilled.",
+      "Strain into a chilled coupe glass."
+    ],
+    "imageUrl": "https://www.thecocktaildb.com/images/media/drink/kpsajh1504368362.jpg"
+  },
+  {
+    "id": "juliet-romeo",
+    "name": "Juliet & Romeo",
+    "method": "Shaken",
+    "glass": "Coupe",
+    "ice": "None",
+    "spirits": [
+      "Gin"
+    ],
+    "ingredients": [
+      {
+        "amount": 3,
+        "unit": null,
+        "name": "Slices Fresh Cucumber"
+      },
+      {
+        "amount": 3,
+        "unit": null,
+        "name": "Sprigs Fresh Mint"
+      },
+      {
+        "amount": null,
+        "unit": null,
+        "name": "Pinch of Salt"
+      },
+      {
+        "amount": 2,
+        "unit": "oz",
+        "name": "Gin"
+      },
+      {
+        "amount": 0.75,
+        "unit": "oz",
+        "name": "Simple Syrup"
+      },
+      {
+        "amount": 1,
+        "unit": "oz",
+        "name": "Fresh Lime Juice"
+      },
+      {
+        "amount": 3,
+        "unit": null,
+        "name": "Drops of Rose Water"
+      },
+      {
+        "amount": 3,
+        "unit": null,
+        "name": "Drops Angustora Bitters"
+      },
+      {
+        "amount": null,
+        "unit": null,
+        "name": "Mint Leaf, Additional Rose Water, and Bitters, For Garnish If Desired"
+      }
+    ],
+    "garnish": "A Mint Leaf - Place One Drop of Rosewater On the Mint Leaf and Three Drops of Bitters On the Surface of the Drink If Desired",
+    "instructions": [
+      "Muddle fresh ingredients in the shaker.",
+      "Combine all ingredients in a shaker with ice.",
+      "Shake until well chilled.",
+      "Strain into a chilled coupe glass."
+    ],
+    "imageUrl": "https://www.thecocktaildb.com/images/media/drink/drtihp1606768397.jpg"
+  },
+  {
+    "id": "french-blonde",
+    "name": "French Blonde",
+    "method": "Shaken",
+    "glass": "Martini",
+    "ice": "Cubed",
+    "spirits": [
+      "Gin"
+    ],
+    "ingredients": [
+      {
+        "amount": 2,
+        "unit": "oz",
+        "name": "Grapefruit Juice"
+      },
+      {
+        "amount": 2,
+        "unit": "oz",
+        "name": "Lillet Blanc"
+      },
+      {
+        "amount": 1,
+        "unit": "oz",
+        "name": "London Dry Gin"
+      },
+      {
+        "amount": 0.5,
+        "unit": "oz",
+        "name": "St. Germain"
+      },
+      {
+        "amount": 3,
+        "unit": "dashes",
+        "name": "Of Lemon Bitters"
+      }
+    ],
+    "garnish": null,
+    "instructions": [
+      "Combine all ingredients in a shaker with ice.",
+      "Shake until well chilled.",
+      "Strain into a chilled martini glass."
+    ],
+    "imageUrl": "https://www.thecocktaildb.com/images/media/drink/hrxfbl1606773109.jpg"
+  },
+  {
+    "id": "lion-s-tail",
+    "name": "Lion'S Tail",
+    "method": "Shaken",
+    "glass": "Coupe",
+    "ice": "None",
+    "spirits": [
+      "Whiskey"
+    ],
+    "ingredients": [
+      {
+        "amount": 1.5,
+        "unit": "oz",
+        "name": "(45 Ml) Bourbon"
+      },
+      {
+        "amount": 0.5,
+        "unit": "oz",
+        "name": "(15 Ml) Allspice Dram"
+      },
+      {
+        "amount": 0.75,
+        "unit": "oz",
+        "name": "(22.5 Ml) Fresh Lime Juice"
+      },
+      {
+        "amount": 0.25,
+        "unit": "oz",
+        "name": "(7.5 Ml) Rich Demerara Syrup"
+      },
+      {
+        "amount": 2,
+        "unit": "dashes",
+        "name": "Angostura Bitters"
+      },
+      {
+        "amount": null,
+        "unit": null,
+        "name": "Lime Twist For Garnish"
+      }
+    ],
+    "garnish": null,
+    "instructions": [
+      "Combine all ingredients in a shaker with ice.",
+      "Shake until well chilled.",
+      "Strain into a chilled coupe glass."
+    ],
+    "imageUrl": "https://images.unsplash.com/photo-1470337458703-46ad1756a187?w=600&q=80"
+  },
+  {
+    "id": "paper-plane",
+    "name": "Paper Plane",
+    "method": "Shaken",
+    "glass": "Coupe",
+    "ice": "None",
+    "spirits": [
+      "Whiskey"
+    ],
+    "ingredients": [
+      {
+        "amount": 0.75,
+        "unit": "oz",
+        "name": "Bourbon"
+      },
+      {
+        "amount": 0.75,
+        "unit": "oz",
+        "name": "Aperol"
+      },
+      {
+        "amount": 0.75,
+        "unit": "oz",
+        "name": "Amaro Nonino Quintessentia"
+      },
+      {
+        "amount": 0.75,
+        "unit": "oz",
+        "name": "Lemon Juice"
+      }
+    ],
+    "garnish": null,
+    "instructions": [
+      "Combine all ingredients in a shaker with ice.",
+      "Shake until well chilled.",
+      "Strain into a chilled coupe glass."
+    ],
+    "imageUrl": "https://images.unsplash.com/photo-1514362545857-3bc16c4c7d86?w=600&q=80"
+  },
+  {
+    "id": "arnon-s-ultima-palabra",
+    "name": "Arnon'S Ultima Palabra",
+    "method": "Shaken",
+    "glass": "Coupe",
+    "ice": "None",
+    "spirits": [
+      "Tequila"
+    ],
+    "ingredients": [
+      {
+        "amount": 0.75,
+        "unit": "oz",
+        "name": "Mezcal"
+      },
+      {
+        "amount": 0.75,
+        "unit": "oz",
+        "name": "Green Chartreuse"
+      },
+      {
+        "amount": 0.5,
+        "unit": "oz",
+        "name": "Maraschino Liqueur"
+      },
+      {
+        "amount": 0.5,
+        "unit": "oz",
+        "name": "Aperol"
+      },
+      {
+        "amount": 0.5,
+        "unit": "oz",
+        "name": "Lemon Juice"
+      },
+      {
+        "amount": 0.5,
+        "unit": "oz",
+        "name": "Grapefruit Juice"
+      },
+      {
+        "amount": 0.25,
+        "unit": "oz",
+        "name": "Simple Syrup"
+      },
+      {
+        "amount": 1,
+        "unit": null,
+        "name": "Thyme Sprig As Garnish"
+      }
+    ],
+    "garnish": "Thyme Sprig",
+    "instructions": [
+      "Combine all ingredients in a shaker with ice.",
+      "Shake until well chilled.",
+      "Strain into a chilled coupe glass."
+    ],
+    "imageUrl": "https://www.thecocktaildb.com/images/media/drink/91oule1513702624.jpg"
+  },
+  {
+    "id": "old-fashioned",
+    "name": "Old Fashioned",
+    "method": "Stirred",
+    "glass": "Coupe",
+    "ice": "1 large cube",
+    "spirits": [
+      "Whiskey"
+    ],
+    "ingredients": [
+      {
+        "amount": 2,
+        "unit": "oz",
+        "name": "(60 Ml) Bourbon"
+      },
+      {
+        "amount": 0.25,
+        "unit": "oz",
+        "name": "(7.5 Ml) Rich Demerara Syrup"
+      },
+      {
+        "amount": 4,
+        "unit": "dashes",
+        "name": "Of Angostura Bitters"
+      },
+      {
+        "amount": 1,
+        "unit": null,
+        "name": "Small Piece of Orange Orange"
+      },
+      {
+        "amount": null,
+        "unit": null,
+        "name": "Cocktail Cherry For Garnish"
+      }
+    ],
+    "garnish": "A Zest of Orange and a Cocktail Cherry",
+    "instructions": [
+      "Combine all ingredients in a mixing glass with ice.",
+      "Stir until well chilled and properly diluted.",
+      "Strain into a chilled coupe glass."
+    ],
+    "imageUrl": "https://www.thecocktaildb.com/images/media/drink/vrwquq1478252802.jpg"
+  },
+  {
+    "id": "my-boy-blue",
+    "name": "My Boy Blue",
+    "method": "Shaken",
+    "glass": "Rocks",
+    "ice": "Cubed",
+    "spirits": [
+      "Tequila"
+    ],
+    "ingredients": [
+      {
+        "amount": 1.5,
+        "unit": "oz",
+        "name": "Tequila"
+      },
+      {
+        "amount": 0.5,
+        "unit": "oz",
+        "name": "CrèMe De Cassis"
+      },
+      {
+        "amount": 0.25,
+        "unit": "oz",
+        "name": "CrèMe De Cacao (White)"
+      },
+      {
+        "amount": 0.75,
+        "unit": "oz",
+        "name": "Fresh Lime Juice"
+      },
+      {
+        "amount": null,
+        "unit": null,
+        "name": "Egg White"
+      }
+    ],
+    "garnish": "Of Dehydrated Lime Wheel Slice, Lime Wheel",
+    "instructions": [
+      "Combine all ingredients and dry shake without ice.",
+      "Add ice and shake until well chilled.",
+      "Strain into a rocks glass over cubed ice."
+    ],
+    "imageUrl": "https://www.thecocktaildb.com/images/media/drink/5noda61589575158.jpg"
+  },
+  {
+    "id": "blackberry-mint-julep",
+    "name": "Blackberry-Mint Julep",
+    "method": "Shaken",
+    "glass": "Rocks",
+    "ice": "None",
+    "spirits": [
+      "Whiskey"
+    ],
+    "ingredients": [
+      {
+        "amount": 0.25,
+        "unit": "cup",
+        "name": "Blackberries, Plus 1 Blackberry For Garnish"
+      },
+      {
+        "amount": 2,
+        "unit": "tablespoon",
+        "name": "S Mint Leaves, Plus 1 Mint Sprig For Garnish"
+      },
+      {
+        "amount": 1,
+        "unit": "tablespoon",
+        "name": "Sugar"
+      },
+      {
+        "amount": 1.5,
+        "unit": "oz",
+        "name": "Bourbon"
+      }
+    ],
+    "garnish": "The Blackberry and Mint Sprig",
+    "instructions": [
+      "Combine all ingredients in a shaker with ice.",
+      "Shake until well chilled.",
+      "Strain into a chilled rocks glass."
+    ],
+    "imageUrl": "https://www.thecocktaildb.com/images/media/drink/squyyq1439907312.jpg"
+  },
+  {
+    "id": "enzoni",
+    "name": "Enzoni",
+    "method": "Shaken",
+    "glass": "Coupe",
+    "ice": "1 large cube",
+    "spirits": [
+      "Gin"
+    ],
+    "ingredients": [
+      {
+        "amount": 5,
+        "unit": null,
+        "name": "Fresh Green Grapes (Seedless)"
+      },
+      {
+        "amount": 1,
+        "unit": "oz",
+        "name": "Hayman'S London Dry Gin"
+      },
+      {
+        "amount": 1,
+        "unit": "oz",
+        "name": "Aperol"
+      },
+      {
+        "amount": 0.6666666666666666,
+        "unit": "oz",
+        "name": "Lemon Juice (Freshly Squeezed)"
+      },
+      {
+        "amount": 0.5,
+        "unit": "oz",
+        "name": "Sugar Syrup 'Rich'"
+      },
+      {
+        "amount": null,
+        "unit": null,
+        "name": "Grapes and Lemon Peel For Garnish"
+      }
+    ],
+    "garnish": null,
+    "instructions": [
+      "Muddle fresh ingredients in the shaker.",
+      "Combine all ingredients in a shaker with ice.",
+      "Shake until well chilled.",
+      "Strain into a chilled coupe glass."
+    ],
+    "imageUrl": "https://www.thecocktaildb.com/images/media/drink/qgdu971561574065.jpg"
+  },
+  {
+    "id": "whiskey-sour",
+    "name": "Whiskey Sour",
+    "method": "Shaken",
+    "glass": "Rocks",
+    "ice": "Cubed",
+    "spirits": [
+      "Whiskey"
+    ],
+    "ingredients": [
+      {
+        "amount": 2,
+        "unit": "oz",
+        "name": "Bourbon"
+      },
+      {
+        "amount": 0.75,
+        "unit": "oz",
+        "name": "Lemon Juice"
+      },
+      {
+        "amount": 0.5,
+        "unit": "oz",
+        "name": "Simple Syrup"
+      },
+      {
+        "amount": 0.5,
+        "unit": "oz",
+        "name": "Egg White (Optional)"
+      }
+    ],
+    "garnish": "Angostura Bitters, 3–4 Drops of Angostura Bitters",
+    "instructions": [
+      "Combine all ingredients and dry shake without ice.",
+      "Add ice and shake until well chilled.",
+      "Strain into a rocks glass over cubed ice."
+    ],
+    "imageUrl": "https://www.thecocktaildb.com/images/media/drink/hbkfsh1589574990.jpg"
+  },
+  {
+    "id": "espresso-martini",
+    "name": "Espresso Martini",
+    "method": "Shaken",
+    "glass": "Martini",
+    "ice": "None",
+    "spirits": [
+      "Vodka"
+    ],
+    "ingredients": [
+      {
+        "amount": 2,
+        "unit": "oz",
+        "name": "Vodka"
+      },
+      {
+        "amount": 0.5,
+        "unit": "oz",
+        "name": "Coffee Liqueur Usually Kahlúa"
+      },
+      {
+        "amount": 1,
+        "unit": "oz",
+        "name": "Espresso Freshly Brewed (or Cold Brew Concentrate)"
+      },
+      {
+        "amount": 0.5,
+        "unit": "oz",
+        "name": "Simple Syrup"
+      }
+    ],
+    "garnish": "Coffee Beans",
+    "instructions": [
+      "Combine all ingredients in a shaker with ice.",
+      "Shake until well chilled.",
+      "Strain into a chilled martini glass."
+    ],
+    "imageUrl": "https://www.thecocktaildb.com/images/media/drink/n0sx531504372951.jpg"
+  },
+  {
+    "id": "penicillin",
+    "name": "Penicillin",
+    "method": "Shaken",
+    "glass": "Rocks",
+    "ice": "Cubed",
+    "spirits": [
+      "Whiskey"
+    ],
+    "ingredients": [
+      {
+        "amount": 2,
+        "unit": "oz",
+        "name": "Blended Scotch"
+      },
+      {
+        "amount": 0.75,
+        "unit": "oz",
+        "name": "Lemon Juice"
+      },
+      {
+        "amount": 0.75,
+        "unit": "oz",
+        "name": "Honey-Ginger Syrup"
+      },
+      {
+        "amount": 0.25,
+        "unit": "oz",
+        "name": "Islay Single Malt Scotch (Smoky)"
+      }
+    ],
+    "garnish": "Candied Ginger, A Piece of Candied Ginger",
+    "instructions": [
+      "Combine all ingredients in a shaker with ice.",
+      "Shake until well chilled.",
+      "Strain into a rocks glass over cubed ice."
+    ],
+    "imageUrl": "https://www.thecocktaildb.com/images/media/drink/hc9b1a1521853096.jpg"
+  },
+  {
+    "id": "oaxaca-old-fashioned",
+    "name": "Oaxaca Old Fashioned",
+    "method": "Stirred",
+    "glass": "Rocks",
+    "ice": "1 large cube",
+    "spirits": [
+      "Tequila"
+    ],
+    "ingredients": [
+      {
+        "amount": 1.5,
+        "unit": "oz",
+        "name": "Reposado Tequila (Preferably El Tesoro)"
+      },
+      {
+        "amount": 0.5,
+        "unit": "oz",
+        "name": "Mezcal (Preferably Del Maguey San Luis Del Rio)"
+      },
+      {
+        "amount": 0.25,
+        "unit": "oz",
+        "name": "Agave Nectar"
+      },
+      {
+        "amount": 2,
+        "unit": "dashes",
+        "name": "Angostura Bitters (or Chocolate Bitters)"
+      }
+    ],
+    "garnish": "Flamed Orange Peel, The Peel",
+    "instructions": [
+      "Combine all ingredients in a mixing glass with ice.",
+      "Stir until well chilled and properly diluted.",
+      "Strain into a rocks glass over a large ice cube."
+    ],
+    "imageUrl": "https://www.thecocktaildb.com/images/media/drink/vrwquq1478252802.jpg"
+  },
+  {
+    "id": "beericano",
+    "name": "Beericano",
+    "method": "Stirred",
+    "glass": "Coupe",
+    "ice": "Cubed",
+    "spirits": [
+      "Wine & Beer"
+    ],
+    "ingredients": [
+      {
+        "amount": 1,
+        "unit": "oz",
+        "name": "Campari"
+      },
+      {
+        "amount": 1,
+        "unit": null,
+        "name": "Os Sweet Vermouth"
+      },
+      {
+        "amount": 2,
+        "unit": "oz",
+        "name": "Lager Beer"
+      },
+      {
+        "amount": 1,
+        "unit": "oz",
+        "name": "Of Beer"
+      },
+      {
+        "amount": null,
+        "unit": null,
+        "name": "Pinch of Salt"
+      }
+    ],
+    "garnish": null,
+    "instructions": [
+      "Combine all ingredients in a mixing glass with ice.",
+      "Stir until well chilled and properly diluted.",
+      "Strain into a chilled coupe glass."
+    ],
+    "imageUrl": "https://www.thecocktaildb.com/images/media/drink/709s6m1613655124.jpg"
+  },
+  {
+    "id": "upgraded-bourbon-carajillo",
+    "name": "Upgraded Bourbon Carajillo",
+    "method": "Shaken",
+    "glass": "Coupe",
+    "ice": "Cubed",
+    "spirits": [
+      "Whiskey"
+    ],
+    "ingredients": [
+      {
+        "amount": 2,
+        "unit": "oz",
+        "name": "Bourbon"
+      },
+      {
+        "amount": 1,
+        "unit": "oz",
+        "name": "Coffee Liqueur"
+      },
+      {
+        "amount": 2,
+        "unit": "oz",
+        "name": "Espresso"
+      },
+      {
+        "amount": 1,
+        "unit": "oz",
+        "name": "Liqueur 43"
+      },
+      {
+        "amount": null,
+        "unit": "oz",
+        "name": "Averna Amaro"
+      },
+      {
+        "amount": 1,
+        "unit": "dash",
+        "name": "Of Chocolate Bitters"
+      },
+      {
+        "amount": 1,
+        "unit": "dash",
+        "name": "Of Cardamon Bitters"
+      }
+    ],
+    "garnish": "An Orange Slice and Espresso Beans, and Enjoy",
+    "instructions": [
+      "Combine all ingredients in a shaker with ice.",
+      "Shake until well chilled.",
+      "Strain into a chilled coupe glass."
+    ],
+    "imageUrl": "https://www.thecocktaildb.com/images/media/drink/n0sx531504372951.jpg"
+  },
+  {
+    "id": "mexican-carajillo",
+    "name": "Mexican Carajillo",
+    "method": "Shaken",
+    "glass": "Coupe",
+    "ice": "Cubed",
+    "spirits": [
+      "Tequila"
+    ],
+    "ingredients": [
+      {
+        "amount": 1,
+        "unit": "oz",
+        "name": "Mezcal"
+      },
+      {
+        "amount": 1,
+        "unit": "oz",
+        "name": "Tequila Blanco."
+      },
+      {
+        "amount": 1,
+        "unit": "oz",
+        "name": "Coffee Liqueur"
+      },
+      {
+        "amount": 2,
+        "unit": "oz",
+        "name": "Espresso"
+      },
+      {
+        "amount": 1,
+        "unit": "oz",
+        "name": "Liqueur 43"
+      },
+      {
+        "amount": 2,
+        "unit": "dash",
+        "name": "As of Chocolate Bitters"
+      },
+      {
+        "amount": 2,
+        "unit": "dash",
+        "name": "As of Cardamon Bitters"
+      }
+    ],
+    "garnish": "An Orange Slice and Espresso Beans, and Enjoy",
+    "instructions": [
+      "Combine all ingredients in a shaker with ice.",
+      "Shake until well chilled.",
+      "Strain into a chilled coupe glass."
+    ],
+    "imageUrl": "https://www.thecocktaildb.com/images/media/drink/n0sx531504372951.jpg"
+  },
+  {
+    "id": "paloma-v2",
+    "name": "Paloma V2",
+    "method": "Stirred",
+    "glass": "Highball",
+    "ice": "Cubed",
+    "spirits": [
+      "Tequila"
+    ],
+    "ingredients": [
+      {
+        "amount": 1.5,
+        "unit": "oz",
+        "name": "Blanco Tequila"
+      },
+      {
+        "amount": 1,
+        "unit": "oz",
+        "name": "Fresh Grapefruit Juice"
+      },
+      {
+        "amount": 1,
+        "unit": "oz",
+        "name": "Pamplemousseliqueur"
+      },
+      {
+        "amount": 0.5,
+        "unit": "oz",
+        "name": "Fresh Lemon Juice"
+      },
+      {
+        "amount": null,
+        "unit": null,
+        "name": "Pinch of Fine Sea Salt"
+      },
+      {
+        "amount": 1,
+        "unit": "oz",
+        "name": "Club Soda"
+      },
+      {
+        "amount": null,
+        "unit": null,
+        "name": "Lime Wedge"
+      }
+    ],
+    "garnish": null,
+    "instructions": [
+      "Combine all ingredients in a mixing glass with ice.",
+      "Stir until well chilled and properly diluted.",
+      "Strain into a highball glass."
+    ],
+    "imageUrl": "https://www.thecocktaildb.com/images/media/drink/samm5j1513706393.jpg"
+  },
+  {
+    "id": "arnon-s-sunset-passion",
+    "name": "Arnon'S Sunset Passion",
+    "method": "Shaken",
+    "glass": "Coupe",
+    "ice": "Cubed",
+    "spirits": [
+      "Tequila"
+    ],
+    "ingredients": [
+      {
+        "amount": 1,
+        "unit": "oz",
+        "name": "Mezcal"
+      },
+      {
+        "amount": 0.5,
+        "unit": "oz",
+        "name": "Reposado Tequila"
+      },
+      {
+        "amount": 0.5,
+        "unit": "oz",
+        "name": "Passion Fruit Puree"
+      },
+      {
+        "amount": 0.5,
+        "unit": "oz",
+        "name": "Lime"
+      },
+      {
+        "amount": 0.5,
+        "unit": "oz",
+        "name": "Passion Fruit Syrup"
+      }
+    ],
+    "garnish": "-(",
+    "instructions": [
+      "Combine all ingredients in a shaker with ice.",
+      "Shake until well chilled.",
+      "Strain into a chilled coupe glass."
+    ],
+    "imageUrl": "https://www.thecocktaildb.com/images/media/drink/6trfve1582473527.jpg"
+  },
+  {
+    "id": "the-pisco-sour",
+    "name": "The Pisco Sour",
+    "method": "Shaken",
+    "glass": "Rocks",
+    "ice": "Cubed",
+    "spirits": [
+      "Pisco"
+    ],
+    "ingredients": [
+      {
+        "amount": 2,
+        "unit": "oz",
+        "name": "Pisco"
+      },
+      {
+        "amount": 1,
+        "unit": "oz",
+        "name": "Lime Juice"
+      },
+      {
+        "amount": 0.5,
+        "unit": "oz",
+        "name": "Simple Syrup"
+      },
+      {
+        "amount": 1,
+        "unit": null,
+        "name": "Egg White"
+      }
+    ],
+    "garnish": "Angostura Bitters, 3 To 5 Drops of Angostura Bitters",
+    "instructions": [
+      "Combine all ingredients and dry shake without ice.",
+      "Add ice and shake until well chilled.",
+      "Strain into a rocks glass over cubed ice."
+    ],
+    "imageUrl": "https://www.thecocktaildb.com/images/media/drink/tsssur1439907622.jpg"
+  },
+  {
+    "id": "maximillian-affair",
+    "name": "Maximillian Affair",
+    "method": "Shaken",
+    "glass": "Coupe",
+    "ice": "None",
+    "spirits": [
+      "Tequila"
+    ],
+    "ingredients": [
+      {
+        "amount": 1,
+        "unit": "oz",
+        "name": "Mezcal"
+      },
+      {
+        "amount": 1,
+        "unit": "oz",
+        "name": "St. Germain"
+      },
+      {
+        "amount": 0.5,
+        "unit": "oz",
+        "name": "Punt E Mes"
+      },
+      {
+        "amount": 0.25,
+        "unit": "oz",
+        "name": "Fresh Lemon Juice"
+      }
+    ],
+    "garnish": null,
+    "instructions": [
+      "Combine all ingredients in a shaker with ice.",
+      "Shake until well chilled.",
+      "Strain into a chilled coupe glass."
+    ],
+    "imageUrl": "https://www.thecocktaildb.com/images/media/drink/5noda61589575158.jpg"
+  },
+  {
+    "id": "elske-shaken",
+    "name": "Elske - Shaken",
+    "method": "Shaken",
+    "glass": "Rocks",
+    "ice": "Cubed",
+    "spirits": [
+      "Other"
+    ],
+    "ingredients": [
+      {
+        "amount": 1,
+        "unit": "oz",
+        "name": "Aquavit"
+      },
+      {
+        "amount": 1,
+        "unit": "oz",
+        "name": "Cynar"
+      },
+      {
+        "amount": 0.5,
+        "unit": "oz",
+        "name": "Peach Liqueur"
+      },
+      {
+        "amount": 0.75,
+        "unit": "oz",
+        "name": "Fresh Lemon Juice"
+      },
+      {
+        "amount": 0.5,
+        "unit": "oz",
+        "name": "Salted Simple Syrup"
+      },
+      {
+        "amount": 2,
+        "unit": "dash",
+        "name": "Saline"
+      }
+    ],
+    "garnish": "Lemon Twist or Peach Slice, A Lemon Twist or a Slice of Peach",
+    "instructions": [
+      "Combine all ingredients in a shaker with ice.",
+      "Shake until well chilled.",
+      "Strain into a rocks glass over cubed ice."
+    ],
+    "imageUrl": "https://www.thecocktaildb.com/images/media/drink/5noda61589575158.jpg"
+  },
+  {
+    "id": "firecracker",
+    "name": "Firecracker",
+    "method": "Shaken",
+    "glass": "Coupe",
+    "ice": "Cubed",
+    "spirits": [
+      "Tequila",
+      "Pisco"
+    ],
+    "ingredients": [
+      {
+        "amount": 1.5,
+        "unit": "oz",
+        "name": "Pisco"
+      },
+      {
+        "amount": 0.5,
+        "unit": "oz",
+        "name": "Mezcal"
+      },
+      {
+        "amount": 0.5,
+        "unit": "oz",
+        "name": "Lime Juice"
+      },
+      {
+        "amount": 1,
+        "unit": "oz",
+        "name": "Pineapple Juice"
+      },
+      {
+        "amount": 0.3333333333333333,
+        "unit": "oz",
+        "name": "St. Elizabeth Allspice Dram Liqueur"
+      },
+      {
+        "amount": 0.3333333333333333,
+        "unit": "oz",
+        "name": "Agave Syrup"
+      }
+    ],
+    "garnish": "Of Cinnamon Sugar Rim",
+    "instructions": [
+      "Combine all ingredients in a shaker with ice.",
+      "Shake until well chilled.",
+      "Strain into a chilled coupe glass."
+    ],
+    "imageUrl": "https://www.thecocktaildb.com/images/media/drink/5noda61589575158.jpg"
+  },
+  {
+    "id": "tomatini",
+    "name": "Tomatini",
+    "method": "Shaken",
+    "glass": "Coupe",
+    "ice": "Cubed",
+    "spirits": [
+      "Vodka"
+    ],
+    "ingredients": [
+      {
+        "amount": 3,
+        "unit": null,
+        "name": "Fresh Cherry Tomatoes (Fresh)"
+      },
+      {
+        "amount": 2,
+        "unit": "oz",
+        "name": "Ketel One Vodka"
+      },
+      {
+        "amount": 0.08,
+        "unit": "oz",
+        "name": "White Balsamic Vinegar"
+      },
+      {
+        "amount": 0.5,
+        "unit": "oz",
+        "name": "Lemon Juice (Freshly Squeezed)"
+      },
+      {
+        "amount": 0.5,
+        "unit": "oz",
+        "name": "Simple Rich Syrup"
+      },
+      {
+        "amount": 2,
+        "unit": "dashes",
+        "name": "Of Saline Solution"
+      }
+    ],
+    "garnish": "A Cherry Tomato Cut To Sit On the Glass Rim",
+    "instructions": [
+      "Muddle fresh ingredients in the shaker.",
+      "Combine all ingredients in a shaker with ice.",
+      "Shake until well chilled.",
+      "Strain into a chilled coupe glass."
+    ],
+    "imageUrl": "https://www.thecocktaildb.com/images/media/drink/71t8581504353095.jpg"
+  },
+  {
+    "id": "left-hand",
+    "name": "Left Hand",
+    "method": "Stirred",
+    "glass": "Coupe",
+    "ice": "None",
+    "spirits": [
+      "Whiskey"
+    ],
+    "ingredients": [
+      {
+        "amount": 1.5,
+        "unit": "oz",
+        "name": "Bourbon"
+      },
+      {
+        "amount": 0.75,
+        "unit": "oz",
+        "name": "Campari"
+      },
+      {
+        "amount": 0.75,
+        "unit": "oz",
+        "name": "Sweet Vermouth (Preferably Carpano Antica)"
+      },
+      {
+        "amount": 3,
+        "unit": "dashes",
+        "name": "Of Chocolate Bitters"
+      }
+    ],
+    "garnish": "Brandied Cherry, A Brandied Cherry",
+    "instructions": [
+      "Combine all ingredients in a mixing glass with ice.",
+      "Stir until well chilled and properly diluted.",
+      "Strain into a chilled coupe glass."
+    ],
+    "imageUrl": "https://www.thecocktaildb.com/images/media/drink/km84qi1513705868.jpg"
+  },
+  {
+    "id": "gin-basil-smash",
+    "name": "Gin Basil Smash",
+    "method": "Shaken",
+    "glass": "Rocks",
+    "ice": "Cubed",
+    "spirits": [
+      "Gin"
+    ],
+    "ingredients": [
+      {
+        "amount": 2,
+        "unit": "dashes",
+        "name": "Celery Bitters"
+      },
+      {
+        "amount": 5,
+        "unit": null,
+        "name": "-6 Basil Leaves or To Taste"
+      },
+      {
+        "amount": 1,
+        "unit": "oz",
+        "name": "Lemon Juice"
+      },
+      {
+        "amount": 0.75,
+        "unit": "oz",
+        "name": "(Simple Syrup"
+      },
+      {
+        "amount": 2,
+        "unit": "oz",
+        "name": "Gin"
+      },
+      {
+        "amount": null,
+        "unit": null,
+        "name": "Basil Sprig Garnish"
+      }
+    ],
+    "garnish": "Of Three Basil Sprigs, Basil Sprig Bouquet",
+    "instructions": [
+      "Muddle fresh ingredients in the shaker.",
+      "Combine all ingredients in a shaker with ice.",
+      "Shake until well chilled.",
+      "Strain into a rocks glass over cubed ice."
+    ],
+    "imageUrl": "https://www.thecocktaildb.com/images/media/drink/jqh2141572807327.jpg"
+  },
+  {
+    "id": "the-ninth-ward",
+    "name": "The Ninth Ward",
+    "method": "Shaken",
+    "glass": "Coupe",
+    "ice": "Cubed",
+    "spirits": [
+      "Whiskey"
+    ],
+    "ingredients": [
+      {
+        "amount": 2,
+        "unit": "oz",
+        "name": "Bourbon"
+      },
+      {
+        "amount": 0.5,
+        "unit": "oz",
+        "name": "Falernum"
+      },
+      {
+        "amount": 0.75,
+        "unit": "oz",
+        "name": "Lime Juice"
+      },
+      {
+        "amount": 0.75,
+        "unit": "oz",
+        "name": "St. Germain (Elderflower Liqueur)"
+      },
+      {
+        "amount": 2,
+        "unit": "dashes",
+        "name": "Peychaud'S Bitters"
+      }
+    ],
+    "garnish": "Of Lime Zest Twist",
+    "instructions": [
+      "Combine all ingredients in a shaker with ice.",
+      "Shake until well chilled.",
+      "Strain into a chilled coupe glass."
+    ],
+    "imageUrl": "https://www.thecocktaildb.com/images/media/drink/hbkfsh1589574990.jpg"
+  },
+  {
+    "id": "international-incident",
+    "name": "International Incident",
+    "method": "Shaken",
+    "glass": "Coupe",
+    "ice": "Cubed",
+    "spirits": [
+      "Other"
+    ],
+    "ingredients": [
+      {
+        "amount": 1,
+        "unit": "oz",
+        "name": "Irish Cream Liqueur"
+      },
+      {
+        "amount": 0.5,
+        "unit": "oz",
+        "name": "Odka"
+      },
+      {
+        "amount": 0.5,
+        "unit": "oz",
+        "name": "Amaretto"
+      },
+      {
+        "amount": 0.5,
+        "unit": "oz",
+        "name": "Coffee Liqueur"
+      },
+      {
+        "amount": 0.5,
+        "unit": "oz",
+        "name": "Hazelnut Liqueur"
+      }
+    ],
+    "garnish": "Of Grated Nutmeg, A Dusting of Nutmeg Grated Over a Cocktail",
+    "instructions": [
+      "Combine all ingredients in a shaker with ice.",
+      "Shake until well chilled.",
+      "Strain into a chilled coupe glass."
+    ],
+    "imageUrl": "https://www.thecocktaildb.com/images/media/drink/vsrupw1472405732.jpg"
+  },
+  {
+    "id": "brown-derby",
+    "name": "Brown Derby",
+    "method": "Shaken",
+    "glass": "Coupe",
+    "ice": "None",
+    "spirits": [
+      "Whiskey"
+    ],
+    "ingredients": [
+      {
+        "amount": 1.5,
+        "unit": "oz",
+        "name": "Bourbon"
+      },
+      {
+        "amount": 1,
+        "unit": "oz",
+        "name": "Grapefruit Juice"
+      },
+      {
+        "amount": 0.5,
+        "unit": "oz",
+        "name": "Honey Syrup"
+      }
+    ],
+    "garnish": "Grapefruit Twist",
+    "instructions": [
+      "Combine all ingredients in a shaker with ice.",
+      "Shake until well chilled.",
+      "Strain into a chilled coupe glass."
+    ],
+    "imageUrl": "https://images.unsplash.com/photo-1567222379150-75dd856ac297?w=600&q=80"
+  },
+  {
+    "id": "palo-santo-old-fashioned",
+    "name": "Palo Santo Old Fashioned",
+    "method": "Stirred",
+    "glass": "Rocks",
+    "ice": "Cubed",
+    "spirits": [
+      "Whiskey"
+    ],
+    "ingredients": [
+      {
+        "amount": 2,
+        "unit": "oz",
+        "name": "Buffalo Trace Bourbon"
+      },
+      {
+        "amount": 0.25,
+        "unit": "oz",
+        "name": "Palo Santo-Smoked Cinnamon Syrup"
+      },
+      {
+        "amount": 0.125,
+        "unit": "oz",
+        "name": "St. Elizabeth Allspice Liqueur"
+      },
+      {
+        "amount": 2,
+        "unit": null,
+        "name": "-3 Dashes Chocolate Bitters"
+      }
+    ],
+    "garnish": "An Orange Peel",
+    "instructions": [
+      "Combine all ingredients in a mixing glass with ice.",
+      "Stir until well chilled and properly diluted.",
+      "Strain into a rocks glass over cubed ice."
+    ],
+    "imageUrl": "https://www.thecocktaildb.com/images/media/drink/vrwquq1478252802.jpg"
+  },
+  {
+    "id": "yesterday-today-and-amaro",
+    "name": "Yesterday, Today and Amaro",
+    "method": "Stirred",
+    "glass": "Martini",
+    "ice": "Cubed",
+    "spirits": [
+      "Whiskey"
+    ],
+    "ingredients": [
+      {
+        "amount": 2,
+        "unit": "oz",
+        "name": "Rye, Preferably Wild Turkey 101"
+      },
+      {
+        "amount": 0.5,
+        "unit": "oz",
+        "name": "Cynar"
+      },
+      {
+        "amount": 0.25,
+        "unit": "oz",
+        "name": "Amaro Averna"
+      },
+      {
+        "amount": 0.25,
+        "unit": "oz",
+        "name": "BéNéDictine"
+      }
+    ],
+    "garnish": null,
+    "instructions": [
+      "Combine all ingredients in a mixing glass with ice.",
+      "Stir until well chilled and properly diluted.",
+      "Strain into a chilled martini glass."
+    ],
+    "imageUrl": "https://www.thecocktaildb.com/images/media/drink/yk70e31606771240.jpg"
+  },
+  {
+    "id": "giny-germain",
+    "name": "Giny Germain",
+    "method": "Shaken",
+    "glass": "Coupe",
+    "ice": "None",
+    "spirits": [
+      "Gin"
+    ],
+    "ingredients": [
+      {
+        "amount": 3,
+        "unit": null,
+        "name": "Inches Cucumber Diced"
+      },
+      {
+        "amount": 0.25,
+        "unit": "oz",
+        "name": "Simple Syrup"
+      },
+      {
+        "amount": 0.75,
+        "unit": "oz",
+        "name": "Lemon or Lime Juice"
+      },
+      {
+        "amount": 0.75,
+        "unit": "oz",
+        "name": "Elderflower Liqueur"
+      },
+      {
+        "amount": 1.5,
+        "unit": "oz",
+        "name": "Gin"
+      },
+      {
+        "amount": 1,
+        "unit": "pc",
+        "name": "Egg White"
+      },
+      {
+        "amount": 1,
+        "unit": null,
+        "name": "Thin Sliced Cucumber"
+      }
+    ],
+    "garnish": "Thin Sliced Cucumber",
+    "instructions": [
+      "Combine all ingredients in a shaker with ice.",
+      "Shake until well chilled.",
+      "Strain into a chilled coupe glass."
+    ],
+    "imageUrl": "https://www.thecocktaildb.com/images/media/drink/drtihp1606768397.jpg"
+  },
+  {
+    "id": "the-bamboozled-angel",
+    "name": "The Bamboozled Angel",
+    "method": "Shaken",
+    "glass": "Rocks",
+    "ice": "Cubed",
+    "spirits": [
+      "Whiskey"
+    ],
+    "ingredients": [
+      {
+        "amount": 2,
+        "unit": "oz",
+        "name": "Bourbon, Preferably Heaven Hill"
+      },
+      {
+        "amount": 0.75,
+        "unit": "oz",
+        "name": "Lemon Juice"
+      },
+      {
+        "amount": 0.75,
+        "unit": "oz",
+        "name": "Cinnamon Syrup"
+      },
+      {
+        "amount": 1,
+        "unit": "oz",
+        "name": "Grapefruit Juice"
+      }
+    ],
+    "garnish": null,
+    "instructions": [
+      "Combine all ingredients in a shaker with ice.",
+      "Shake until well chilled.",
+      "Strain into a rocks glass over cubed ice."
+    ],
+    "imageUrl": "https://www.thecocktaildb.com/images/media/drink/hbkfsh1589574990.jpg"
+  },
+  {
+    "id": "daily-rituals",
+    "name": "Daily Rituals",
+    "method": "Shaken",
+    "glass": "Coupe",
+    "ice": "None",
+    "spirits": [
+      "Rum"
+    ],
+    "ingredients": [
+      {
+        "amount": 2,
+        "unit": "dashes",
+        "name": "Of Chocolate Bitters"
+      },
+      {
+        "amount": 0.75,
+        "unit": "oz",
+        "name": "Cold Brew Concentrate"
+      },
+      {
+        "amount": 0.75,
+        "unit": "oz",
+        "name": "Meletti Amaro (or Nonino Quintessentia Amaro)"
+      },
+      {
+        "amount": 0.75,
+        "unit": "oz",
+        "name": "Aged Rum"
+      },
+      {
+        "amount": 0.5,
+        "unit": "oz",
+        "name": "Coffee Liqueur"
+      },
+      {
+        "amount": 0.25,
+        "unit": "oz",
+        "name": "Licor 43"
+      },
+      {
+        "amount": 1,
+        "unit": null,
+        "name": "Egg White"
+      }
+    ],
+    "garnish": null,
+    "instructions": [
+      "Combine all ingredients and dry shake without ice.",
+      "Add ice and shake until well chilled.",
+      "Strain into a chilled coupe glass."
+    ],
+    "imageUrl": "https://www.thecocktaildb.com/images/media/drink/n0sx531504372951.jpg"
+  },
+  {
+    "id": "debbie-don-t",
+    "name": "Debbie, Don'T",
+    "method": "Shaken",
+    "glass": "Coupe",
+    "ice": "None",
+    "spirits": [
+      "Tequila"
+    ],
+    "ingredients": [
+      {
+        "amount": 1.25,
+        "unit": "oz",
+        "name": "Reposado Tequila"
+      },
+      {
+        "amount": 1,
+        "unit": "oz",
+        "name": "Averna"
+      },
+      {
+        "amount": 0.75,
+        "unit": "oz",
+        "name": "Lemon Juice"
+      },
+      {
+        "amount": 0.5,
+        "unit": "oz",
+        "name": "Maple Syrup"
+      }
+    ],
+    "garnish": null,
+    "instructions": [
+      "Combine all ingredients in a shaker with ice.",
+      "Shake until well chilled.",
+      "Strain into a chilled coupe glass."
+    ],
+    "imageUrl": "https://www.thecocktaildb.com/images/media/drink/5noda61589575158.jpg"
+  },
+  {
+    "id": "kentucky-maid",
+    "name": "Kentucky Maid",
+    "method": "Shaken",
+    "glass": "Rocks",
+    "ice": "1 large cube",
+    "spirits": [
+      "Whiskey"
+    ],
+    "ingredients": [
+      {
+        "amount": 8,
+        "unit": null,
+        "name": "Mint Leaves"
+      },
+      {
+        "amount": 2,
+        "unit": null,
+        "name": "Thin Cucumber Slices"
+      },
+      {
+        "amount": 0.75,
+        "unit": "oz",
+        "name": "Simple Syrup"
+      },
+      {
+        "amount": 2,
+        "unit": "oz",
+        "name": "Bourbon (Preferably Elijah Craig Small Batch)"
+      },
+      {
+        "amount": 1,
+        "unit": "oz",
+        "name": "Lime Juice"
+      }
+    ],
+    "garnish": "Mint Sprig Skewed Through a Cucumber Slice, The Mint Sprig Skewered Through a Cucumber Wheel",
+    "instructions": [
+      "Muddle fresh ingredients in the shaker.",
+      "Combine all ingredients in a shaker with ice.",
+      "Shake until well chilled.",
+      "Strain into a rocks glass over a large ice cube."
+    ],
+    "imageUrl": "https://www.thecocktaildb.com/images/media/drink/squyyq1439907312.jpg"
+  },
+  {
+    "id": "brandy-alexander",
+    "name": "Brandy Alexander",
+    "method": "Shaken",
+    "glass": "Coupe",
+    "ice": "None",
+    "spirits": [
+      "Brandy"
+    ],
+    "ingredients": [
+      {
+        "amount": 1.5,
+        "unit": "oz",
+        "name": "Brandy/Cognac"
+      },
+      {
+        "amount": 1,
+        "unit": "oz",
+        "name": "Dark Creme De Cacao (or 1/2 Dark 1/2 White)"
+      },
+      {
+        "amount": 1,
+        "unit": "oz",
+        "name": "Heavy Cream"
+      }
+    ],
+    "garnish": "Grated Nutmeg, Freshly Grated Nutmeg",
+    "instructions": [
+      "Combine all ingredients in a shaker with ice.",
+      "Shake until well chilled.",
+      "Strain into a chilled coupe glass."
+    ],
+    "imageUrl": "https://www.thecocktaildb.com/images/media/drink/mlyk1i1606772340.jpg"
+  },
+  {
+    "id": "white-negroni",
+    "name": "White Negroni",
+    "method": "Stirred",
+    "glass": "Rocks",
+    "ice": "Cubed",
+    "spirits": [
+      "Gin"
+    ],
+    "ingredients": [
+      {
+        "amount": 1.5,
+        "unit": "oz",
+        "name": "Gin"
+      },
+      {
+        "amount": 1,
+        "unit": "oz",
+        "name": "Lillet Blanc"
+      },
+      {
+        "amount": 0.5,
+        "unit": "oz",
+        "name": "Suze Gentian Liqueur"
+      }
+    ],
+    "garnish": "Lemon Twist, A Lemon Twist",
+    "instructions": [
+      "Combine all ingredients in a mixing glass with ice.",
+      "Stir until well chilled and properly diluted.",
+      "Strain into a rocks glass over cubed ice."
+    ],
+    "imageUrl": "https://www.thecocktaildb.com/images/media/drink/qgdu971561574065.jpg"
+  },
+  {
+    "id": "johann-goes-to-mexico",
+    "name": "Johann Goes To Mexico",
+    "method": "Shaken",
+    "glass": "Coupe",
+    "ice": "Cubed",
+    "spirits": [
+      "Tequila"
+    ],
+    "ingredients": [
+      {
+        "amount": 1.5,
+        "unit": "oz",
+        "name": "Mezcal"
+      },
+      {
+        "amount": 0.5,
+        "unit": "oz",
+        "name": "Lemon Juice"
+      },
+      {
+        "amount": 0.5,
+        "unit": "oz",
+        "name": "Angostura Bitters"
+      },
+      {
+        "amount": 0.5,
+        "unit": "oz",
+        "name": "Demerara Syrup"
+      }
+    ],
+    "garnish": null,
+    "instructions": [
+      "Combine all ingredients in a shaker with ice.",
+      "Shake until well chilled.",
+      "Strain into a chilled coupe glass."
+    ],
+    "imageUrl": "https://www.thecocktaildb.com/images/media/drink/5noda61589575158.jpg"
+  },
+  {
+    "id": "pink-squirrel",
+    "name": "Pink Squirrel",
+    "method": "Shaken",
+    "glass": "Coupe",
+    "ice": "Cubed",
+    "spirits": [
+      "Other"
+    ],
+    "ingredients": [
+      {
+        "amount": 0.75,
+        "unit": "oz",
+        "name": "Creme De Noyaux"
+      },
+      {
+        "amount": 0.75,
+        "unit": "oz",
+        "name": "White Creme De Cacao"
+      },
+      {
+        "amount": 1.5,
+        "unit": "oz",
+        "name": "Heavy Cream"
+      }
+    ],
+    "garnish": "Freshly Grated Nutmeg",
+    "instructions": [
+      "Combine all ingredients in a shaker with ice.",
+      "Shake until well chilled.",
+      "Strain into a chilled coupe glass."
+    ],
+    "imageUrl": "https://www.thecocktaildb.com/images/media/drink/5ia6j21504887829.jpg"
+  },
+  {
+    "id": "nutella-fitzgerald",
+    "name": "Nutella Fitzgerald",
+    "method": "Shaken",
+    "glass": "Rocks",
+    "ice": "Cubed",
+    "spirits": [
+      "Whiskey"
+    ],
+    "ingredients": [
+      {
+        "amount": 1.5,
+        "unit": "oz",
+        "name": "Bourbon Cream"
+      },
+      {
+        "amount": 0.75,
+        "unit": "oz",
+        "name": "Frangelico"
+      },
+      {
+        "amount": 0.75,
+        "unit": "oz",
+        "name": "Coffee Liquor"
+      },
+      {
+        "amount": 0.5,
+        "unit": "oz",
+        "name": "Bourbon"
+      }
+    ],
+    "garnish": null,
+    "instructions": [
+      "Combine all ingredients in a shaker with ice.",
+      "Shake until well chilled.",
+      "Strain into a rocks glass over cubed ice."
+    ],
+    "imageUrl": "https://www.thecocktaildb.com/images/media/drink/hbkfsh1589574990.jpg"
+  },
+  {
+    "id": "ultima-palabra",
+    "name": "Ultima Palabra",
+    "method": "Shaken",
+    "glass": "Coupe",
+    "ice": "None",
+    "spirits": [
+      "Tequila"
+    ],
+    "ingredients": [
+      {
+        "amount": 0.75,
+        "unit": "oz",
+        "name": "Mezcal"
+      },
+      {
+        "amount": 0.75,
+        "unit": "oz",
+        "name": "Green Chartreuse"
+      },
+      {
+        "amount": 0.75,
+        "unit": "oz",
+        "name": "Maraschino Liqueur"
+      },
+      {
+        "amount": 0.75,
+        "unit": "oz",
+        "name": "Lime Juice"
+      },
+      {
+        "amount": 0.75,
+        "unit": "oz",
+        "name": "Pineapple Juice"
+      },
+      {
+        "amount": 1,
+        "unit": null,
+        "name": "Thyme Sprig As Garnish"
+      }
+    ],
+    "garnish": "Thyme Sprig",
+    "instructions": [
+      "Combine all ingredients in a shaker with ice.",
+      "Shake until well chilled.",
+      "Strain into a chilled coupe glass."
+    ],
+    "imageUrl": "https://www.thecocktaildb.com/images/media/drink/91oule1513702624.jpg"
+  },
+  {
+    "id": "paloma-margarita",
+    "name": "Paloma Margarita",
+    "method": "Shaken",
+    "glass": "Coupe",
+    "ice": "None",
+    "spirits": [
+      "Tequila",
+      "Wine & Beer"
+    ],
+    "ingredients": [
+      {
+        "amount": 2,
+        "unit": "oz",
+        "name": "Tequila"
+      },
+      {
+        "amount": 2,
+        "unit": "oz",
+        "name": "Fresh Grapefruit Juice, Plus Wedges For Garnish"
+      },
+      {
+        "amount": 2,
+        "unit": "oz",
+        "name": "Sparkling Water"
+      },
+      {
+        "amount": 0.5,
+        "unit": "oz",
+        "name": "Fresh Lime Juice"
+      },
+      {
+        "amount": 0.25,
+        "unit": "oz",
+        "name": "Agave Nectar or Simple Syrup, or To Taste"
+      }
+    ],
+    "garnish": null,
+    "instructions": [
+      "Combine all ingredients in a shaker with ice.",
+      "Shake until well chilled.",
+      "Strain into a chilled coupe glass."
+    ],
+    "imageUrl": "https://www.thecocktaildb.com/images/media/drink/samm5j1513706393.jpg"
+  },
+  {
+    "id": "bourbon-renewal",
+    "name": "Bourbon Renewal",
+    "method": "Shaken",
+    "glass": "Rocks",
+    "ice": "Cubed",
+    "spirits": [
+      "Whiskey"
+    ],
+    "ingredients": [
+      {
+        "amount": 2,
+        "unit": "oz",
+        "name": "Bourbon"
+      },
+      {
+        "amount": 1,
+        "unit": "oz",
+        "name": "Fresh Lemon Juice"
+      },
+      {
+        "amount": 0.5,
+        "unit": "oz",
+        "name": "Creme De Cassis or Creme De Mure"
+      },
+      {
+        "amount": 0.5,
+        "unit": "oz",
+        "name": "Simple Syrup"
+      },
+      {
+        "amount": 1,
+        "unit": "dash",
+        "name": "Angostura Bitters"
+      }
+    ],
+    "garnish": "A Lemon Wedge, or If in Season, Fresh Currants",
+    "instructions": [
+      "Combine all ingredients in a shaker with ice.",
+      "Shake until well chilled.",
+      "Strain into a rocks glass over cubed ice."
+    ],
+    "imageUrl": "https://www.thecocktaildb.com/images/media/drink/hbkfsh1589574990.jpg"
+  },
+  {
+    "id": "napoleon",
+    "name": "Napoleon",
+    "method": "Shaken",
+    "glass": "Coupe",
+    "ice": "None",
+    "spirits": [
+      "Whiskey"
+    ],
+    "ingredients": [
+      {
+        "amount": 1.5,
+        "unit": "oz",
+        "name": "High-Proof Bourbon"
+      },
+      {
+        "amount": 0.5,
+        "unit": "oz",
+        "name": "Blanc Vermouth"
+      },
+      {
+        "amount": 0.75,
+        "unit": "oz",
+        "name": "Simple Syrup"
+      },
+      {
+        "amount": 0.75,
+        "unit": "oz",
+        "name": "Lemon Juice"
+      },
+      {
+        "amount": 3,
+        "unit": null,
+        "name": "Fresh Raspberries"
+      },
+      {
+        "amount": 1,
+        "unit": "tsp",
+        "name": ". Campari (or 0.25 Oz Aperol)"
+      },
+      {
+        "amount": 1,
+        "unit": null,
+        "name": "Egg White"
+      },
+      {
+        "amount": 3,
+        "unit": null,
+        "name": "Fresh Raspberries For Garnish"
+      }
+    ],
+    "garnish": "3 Raspberries On a Pick",
+    "instructions": [
+      "Muddle fresh ingredients in the shaker.",
+      "Combine all ingredients in a shaker with ice.",
+      "Shake until well chilled.",
+      "Strain into a chilled coupe glass."
+    ],
+    "imageUrl": "https://www.thecocktaildb.com/images/media/drink/x72sik1606854964.jpg"
+  },
+  {
+    "id": "whiskey-smash",
+    "name": "Whiskey Smash",
+    "method": "Shaken",
+    "glass": "Rocks",
+    "ice": "1 large cube",
+    "spirits": [
+      "Whiskey"
+    ],
+    "ingredients": [
+      {
+        "amount": 2,
+        "unit": "oz",
+        "name": "Bourbon"
+      },
+      {
+        "amount": 0.5,
+        "unit": "oz",
+        "name": "Rich Demerara Syrup"
+      },
+      {
+        "amount": 4,
+        "unit": null,
+        "name": "Lemon Slices (Remove Any Seeds)"
+      },
+      {
+        "amount": 4,
+        "unit": null,
+        "name": "-8 Mint Leaves"
+      },
+      {
+        "amount": null,
+        "unit": null,
+        "name": "Lemon Wheel & Mint Sprig For Garnish"
+      }
+    ],
+    "garnish": "A Lemon Wheel and a Mint Leaf",
+    "instructions": [
+      "Muddle fresh ingredients in the shaker.",
+      "Combine all ingredients in a shaker with ice.",
+      "Shake until well chilled.",
+      "Strain into a rocks glass over a large ice cube."
+    ],
+    "imageUrl": "https://images.unsplash.com/photo-1527281400683-1aae7261d147?w=600&q=80"
+  },
+  {
+    "id": "vodka-apricot-cacao",
+    "name": "Vodka Apricot Cacao",
+    "method": "Shaken",
+    "glass": "Martini",
+    "ice": "Cubed",
+    "spirits": [
+      "Vodka"
+    ],
+    "ingredients": [
+      {
+        "amount": null,
+        "unit": null,
+        "name": "Costume Party By Anders Erickson"
+      },
+      {
+        "amount": 1,
+        "unit": "oz",
+        "name": "Vodka"
+      },
+      {
+        "amount": 0.75,
+        "unit": "oz",
+        "name": "White CrèMe De Cacao"
+      },
+      {
+        "amount": 0.5,
+        "unit": "oz",
+        "name": "Giffard Abricot Du Roussillon"
+      },
+      {
+        "amount": 0.5,
+        "unit": "oz",
+        "name": "Fresh Lemon Juice"
+      },
+      {
+        "amount": null,
+        "unit": null,
+        "name": "Sugared Rim For Garnish"
+      },
+      {
+        "amount": null,
+        "unit": null,
+        "name": "Rinse the Rim with Lemon and Sugar the Rim and Freeze."
+      },
+      {
+        "amount": null,
+        "unit": null,
+        "name": "Add All Ingredients To the Shaker with Ice and Shake"
+      }
+    ],
+    "garnish": "The Lemon Peel and Maraschino Cherry, If Using and Serve Immediately",
+    "instructions": [
+      "Combine all ingredients in a shaker with ice.",
+      "Shake until well chilled.",
+      "Strain into a chilled martini glass."
+    ],
+    "imageUrl": "https://www.thecocktaildb.com/images/media/drink/vsrupw1472405732.jpg"
+  },
+  {
+    "id": "classic-margarita",
+    "name": "Classic Margarita",
+    "method": "Shaken",
+    "glass": "Coupe",
+    "ice": "None",
+    "spirits": [
+      "Tequila"
+    ],
+    "ingredients": [
+      {
+        "amount": 1,
+        "unit": "oz",
+        "name": "Blanco/Silver Tequila"
+      },
+      {
+        "amount": 1,
+        "unit": "oz",
+        "name": "Orange Liqueur, Cointreau or Grand Marnier"
+      },
+      {
+        "amount": 1,
+        "unit": "oz",
+        "name": "Fresh Lime Juice, Plus Lime Slices For Garnish"
+      },
+      {
+        "amount": null,
+        "unit": null,
+        "name": "½ Oz Agave Nectar or Simple Syrup, Plus More To Taste"
+      }
+    ],
+    "garnish": null,
+    "instructions": [
+      "Combine all ingredients in a shaker with ice.",
+      "Shake until well chilled.",
+      "Strain into a chilled coupe glass."
+    ],
+    "imageUrl": "https://www.thecocktaildb.com/images/media/drink/5noda61589575158.jpg"
+  },
+  {
+    "id": "devil-s-margarita",
+    "name": "Devil'S Margarita",
+    "method": "Shaken",
+    "glass": "Coupe",
+    "ice": "None",
+    "spirits": [
+      "Tequila"
+    ],
+    "ingredients": [
+      {
+        "amount": 1.5,
+        "unit": "oz",
+        "name": "Blanco Tequila"
+      },
+      {
+        "amount": 1,
+        "unit": "oz",
+        "name": "Lime Juice"
+      },
+      {
+        "amount": 0.75,
+        "unit": "oz",
+        "name": "Simple Syrup"
+      },
+      {
+        "amount": 0.5,
+        "unit": "oz",
+        "name": "Red Wine"
+      }
+    ],
+    "garnish": "Lime Wheel, A Lime Wheel",
+    "instructions": [
+      "Combine all ingredients in a shaker with ice.",
+      "Shake until well chilled.",
+      "Strain into a chilled coupe glass."
+    ],
+    "imageUrl": "https://www.thecocktaildb.com/images/media/drink/5noda61589575158.jpg"
+  },
+  {
+    "id": "bourbon-carajillo",
+    "name": "Bourbon Carajillo",
+    "method": "Shaken",
+    "glass": "Coupe",
+    "ice": "Cubed",
+    "spirits": [
+      "Whiskey"
+    ],
+    "ingredients": [
+      {
+        "amount": 1.5,
+        "unit": "oz",
+        "name": "Espresso"
+      },
+      {
+        "amount": 1,
+        "unit": "oz",
+        "name": "Bourbon"
+      },
+      {
+        "amount": 1,
+        "unit": "oz",
+        "name": "Licor 43"
+      },
+      {
+        "amount": 1,
+        "unit": "dash",
+        "name": "Of Orange Bitters"
+      },
+      {
+        "amount": 1,
+        "unit": null,
+        "name": "Orange Slice"
+      }
+    ],
+    "garnish": "An Orange Slice and Espresso Beans, and Enjoy",
+    "instructions": [
+      "Combine all ingredients in a shaker with ice.",
+      "Shake until well chilled.",
+      "Strain into a chilled coupe glass."
+    ],
+    "imageUrl": "https://www.thecocktaildb.com/images/media/drink/n0sx531504372951.jpg"
+  },
+  {
+    "id": "negroni",
+    "name": "Negroni",
+    "method": "Stirred",
+    "glass": "Rocks",
+    "ice": "1 large cube",
+    "spirits": [
+      "Gin"
+    ],
+    "ingredients": [
+      {
+        "amount": 1,
+        "unit": "oz",
+        "name": "London Dry Gin"
+      },
+      {
+        "amount": 1,
+        "unit": "oz",
+        "name": "Campari"
+      },
+      {
+        "amount": 1,
+        "unit": "oz",
+        "name": "Sweet Vermouth"
+      }
+    ],
+    "garnish": "Orange Peel, An Orange Peel",
+    "instructions": [
+      "Combine all ingredients in a mixing glass with ice.",
+      "Stir until well chilled and properly diluted.",
+      "Strain into a rocks glass over a large ice cube."
+    ],
+    "imageUrl": "https://www.thecocktaildb.com/images/media/drink/qgdu971561574065.jpg"
+  },
+  {
+    "id": "carajillo",
+    "name": "Carajillo",
+    "method": "Shaken",
+    "glass": "Rocks",
+    "ice": "1 large cube",
+    "spirits": [
+      "Other"
+    ],
+    "ingredients": [
+      {
+        "amount": 2,
+        "unit": "oz",
+        "name": "Espresso Coffee"
+      },
+      {
+        "amount": 2,
+        "unit": "oz",
+        "name": "Licor 43"
+      },
+      {
+        "amount": 3,
+        "unit": null,
+        "name": "Coffee Beans For Garnish"
+      }
+    ],
+    "garnish": "Coffee Beans, If Desired",
+    "instructions": [
+      "Combine all ingredients in a shaker with ice.",
+      "Shake until well chilled.",
+      "Strain into a rocks glass over a large ice cube."
+    ],
+    "imageUrl": "https://www.thecocktaildb.com/images/media/drink/n0sx531504372951.jpg"
+  },
+  {
+    "id": "watermelon-margarita",
+    "name": "Watermelon Margarita",
+    "method": "Shaken",
+    "glass": "Rocks",
+    "ice": "Cubed",
+    "spirits": [
+      "Tequila"
+    ],
+    "ingredients": [
+      {
+        "amount": 4,
+        "unit": null,
+        "name": "Mint Leaves"
+      },
+      {
+        "amount": 0.5,
+        "unit": "oz",
+        "name": "Light Agave Nectar"
+      },
+      {
+        "amount": 1.5,
+        "unit": "oz",
+        "name": "Blanco Tequila"
+      },
+      {
+        "amount": 0.5,
+        "unit": "oz",
+        "name": "Lime Juice"
+      },
+      {
+        "amount": 0.5,
+        "unit": "oz",
+        "name": "Watermelon Juice"
+      }
+    ],
+    "garnish": "Mint Sprig, Watermelon Slice, A Fresh Mint Sprig and a Watermelon Slice",
+    "instructions": [
+      "Muddle fresh ingredients in the shaker.",
+      "Combine all ingredients in a shaker with ice.",
+      "Shake until well chilled.",
+      "Strain into a rocks glass over cubed ice."
+    ],
+    "imageUrl": "https://www.thecocktaildb.com/images/media/drink/5noda61589575158.jpg"
+  },
+  {
+    "id": "smoke-on-the-water",
+    "name": "Smoke On the Water",
+    "method": "Shaken",
+    "glass": "Rocks",
+    "ice": "Cubed",
+    "spirits": [
+      "Tequila"
+    ],
+    "ingredients": [
+      {
+        "amount": 1.5,
+        "unit": "oz",
+        "name": "Banhez Mezcal Artesanal"
+      },
+      {
+        "amount": 0.75,
+        "unit": "oz",
+        "name": "Cointreau"
+      },
+      {
+        "amount": 1,
+        "unit": "oz",
+        "name": "Watermelon Juice, Freshly Pressed"
+      },
+      {
+        "amount": 0.5,
+        "unit": "oz",
+        "name": "Hibiscus Simple Syrup*"
+      },
+      {
+        "amount": 0.5,
+        "unit": "oz",
+        "name": "Lime Juice"
+      },
+      {
+        "amount": null,
+        "unit": null,
+        "name": "Rosemary Sprig"
+      },
+      {
+        "amount": 100,
+        "unit": null,
+        "name": "-Proof Alcohol, For Soaking"
+      }
+    ],
+    "garnish": null,
+    "instructions": [
+      "Combine all ingredients in a shaker with ice.",
+      "Shake until well chilled.",
+      "Strain into a rocks glass over cubed ice."
+    ],
+    "imageUrl": "https://www.thecocktaildb.com/images/media/drink/5noda61589575158.jpg"
+  },
+  {
+    "id": "chi-chi",
+    "name": "Chi Chi",
+    "method": "Shaken",
+    "glass": "Tiki",
+    "ice": "Crushed",
+    "spirits": [
+      "Vodka"
+    ],
+    "ingredients": [
+      {
+        "amount": 2,
+        "unit": "oz",
+        "name": "Vodka"
+      },
+      {
+        "amount": 2.5,
+        "unit": "oz",
+        "name": "Pineapple Juice"
+      },
+      {
+        "amount": 0.75,
+        "unit": "oz",
+        "name": "Cream of Coconut (Such As Coco Lopez)"
+      }
+    ],
+    "garnish": "Pineapple Slice, A Pineapple Slice",
+    "instructions": [
+      "Combine all ingredients in a shaker with ice.",
+      "Shake until well chilled.",
+      "Strain into a tiki glass."
+    ],
+    "imageUrl": "https://www.thecocktaildb.com/images/media/drink/upgsue1668419912.jpg"
+  },
+  {
+    "id": "lemon-elderflower-sour-with-vodka",
+    "name": "Lemon Elderflower Sour with Vodka",
+    "method": "Shaken",
+    "glass": "Coupe",
+    "ice": "None",
+    "spirits": [
+      "Vodka"
+    ],
+    "ingredients": [
+      {
+        "amount": 2,
+        "unit": "oz",
+        "name": "Vodka"
+      },
+      {
+        "amount": 1,
+        "unit": "oz",
+        "name": "Elderflower Liqueur"
+      },
+      {
+        "amount": 1,
+        "unit": "oz",
+        "name": "Lemon Juice"
+      },
+      {
+        "amount": 0.5,
+        "unit": "oz",
+        "name": "Simple Syrup (Optional)"
+      },
+      {
+        "amount": 1,
+        "unit": null,
+        "name": "Egg White"
+      },
+      {
+        "amount": null,
+        "unit": null,
+        "name": "Lemon Slices and/or Edible Flower For Garnish Optional"
+      }
+    ],
+    "garnish": null,
+    "instructions": [
+      "Combine all ingredients in a shaker with ice.",
+      "Shake until well chilled.",
+      "Strain into a chilled coupe glass."
+    ],
+    "imageUrl": "https://www.thecocktaildb.com/images/media/drink/hbkfsh1589574990.jpg"
+  },
+  {
+    "id": "pornstar-martini",
+    "name": "Pornstar Martini",
+    "method": "Shaken",
+    "glass": "Coupe",
+    "ice": "Cubed",
+    "spirits": [
+      "Vodka",
+      "Wine & Beer"
+    ],
+    "ingredients": [
+      {
+        "amount": 1,
+        "unit": "oz",
+        "name": "Chinola Passion Fruit Liqueur"
+      },
+      {
+        "amount": 1.5,
+        "unit": "oz",
+        "name": "Vanilla Vodka"
+      },
+      {
+        "amount": 0.75,
+        "unit": "oz",
+        "name": "Lime Juice"
+      },
+      {
+        "amount": 0.5,
+        "unit": "oz",
+        "name": "Simple Syrup"
+      },
+      {
+        "amount": 1.5,
+        "unit": "oz",
+        "name": "Sparkling Wine (Sidecar)"
+      }
+    ],
+    "garnish": "Half Passion Fruit or Lime Wheel",
+    "instructions": [
+      "Combine all ingredients in a shaker with ice.",
+      "Shake until well chilled.",
+      "Strain into a chilled coupe glass."
+    ],
+    "imageUrl": "https://www.thecocktaildb.com/images/media/drink/xjhjdf1630406071.jpg"
+  },
+  {
+    "id": "blacker-the-berry-the-sweeter-the-juice",
+    "name": "Blacker the Berry, the Sweeter the Juice",
+    "method": "Shaken",
+    "glass": "Coupe",
+    "ice": "Crushed",
+    "spirits": [
+      "Tequila"
+    ],
+    "ingredients": [
+      {
+        "amount": 1.5,
+        "unit": "oz",
+        "name": "Mezcal Montelobos Mezcal"
+      },
+      {
+        "amount": 0.75,
+        "unit": "oz",
+        "name": "St. Germain"
+      },
+      {
+        "amount": 0.75,
+        "unit": "oz",
+        "name": "Lime Juice"
+      },
+      {
+        "amount": 0.5,
+        "unit": "oz",
+        "name": "Agave"
+      },
+      {
+        "amount": 0.5,
+        "unit": "oz",
+        "name": "Creme De MûRe"
+      },
+      {
+        "amount": 2,
+        "unit": "dashes",
+        "name": "Hellfire Shrub Bittermen"
+      }
+    ],
+    "garnish": "Blackberry & Sage Leaf",
+    "instructions": [
+      "Combine all ingredients in a shaker with ice.",
+      "Shake until well chilled.",
+      "Strain into a chilled coupe glass."
+    ],
+    "imageUrl": "https://www.thecocktaildb.com/images/media/drink/5noda61589575158.jpg"
+  },
+  {
+    "id": "mr-bullock-avec",
+    "name": "Mr. Bullock (Avec)",
+    "method": "Stirred",
+    "glass": "Rocks",
+    "ice": "1 large cube",
+    "spirits": [
+      "Whiskey"
+    ],
+    "ingredients": [
+      {
+        "amount": 1.5,
+        "unit": "oz",
+        "name": "Bourbon"
+      },
+      {
+        "amount": 0.5,
+        "unit": "oz",
+        "name": "Green Chartreuse"
+      },
+      {
+        "amount": 0.75,
+        "unit": "oz",
+        "name": "Rucolino Amaro"
+      },
+      {
+        "amount": 1,
+        "unit": "dash",
+        "name": "Angostura Bitters"
+      }
+    ],
+    "garnish": "Orange Twist and Cherry, An Orange Twist and Cherry",
+    "instructions": [
+      "Combine all ingredients in a mixing glass with ice.",
+      "Stir until well chilled and properly diluted.",
+      "Strain into a rocks glass over a large ice cube."
+    ],
+    "imageUrl": "https://www.thecocktaildb.com/images/media/drink/yk70e31606771240.jpg"
+  },
+  {
+    "id": "mezcal-espresso-martini",
+    "name": "Mezcal Espresso Martini",
+    "method": "Shaken",
+    "glass": "Coupe",
+    "ice": "None",
+    "spirits": [
+      "Tequila"
+    ],
+    "ingredients": [
+      {
+        "amount": 2,
+        "unit": "oz",
+        "name": "Mezcal"
+      },
+      {
+        "amount": 0.75,
+        "unit": "oz",
+        "name": "Coffee Liqueur"
+      },
+      {
+        "amount": 1,
+        "unit": "oz",
+        "name": "Espresso"
+      },
+      {
+        "amount": 0.5,
+        "unit": "oz",
+        "name": "Orgeat"
+      },
+      {
+        "amount": 2,
+        "unit": "dashes",
+        "name": "Bittermens Xocolatl Mole Bitters"
+      }
+    ],
+    "garnish": null,
+    "instructions": [
+      "Combine all ingredients in a shaker with ice.",
+      "Shake until well chilled.",
+      "Strain into a chilled coupe glass."
+    ],
+    "imageUrl": "https://www.thecocktaildb.com/images/media/drink/n0sx531504372951.jpg"
+  },
+  {
+    "id": "green-negroni",
+    "name": "Green Negroni",
+    "method": "Stirred",
+    "glass": "Coupe",
+    "ice": "None",
+    "spirits": [
+      "Gin"
+    ],
+    "ingredients": [
+      {
+        "amount": 0.75,
+        "unit": "oz",
+        "name": "Dry Gin"
+      },
+      {
+        "amount": 0.75,
+        "unit": "oz",
+        "name": "Dry Vermouth"
+      },
+      {
+        "amount": 0.75,
+        "unit": "oz",
+        "name": "Cochi Americao or Lilet Blanc"
+      },
+      {
+        "amount": 0.75,
+        "unit": "oz",
+        "name": "Green Chartreuse"
+      },
+      {
+        "amount": 0.5,
+        "unit": null,
+        "name": "Melon Liqueur"
+      }
+    ],
+    "garnish": "Melon or Dried Grapefruit Slice",
+    "instructions": [
+      "Combine all ingredients in a mixing glass with ice.",
+      "Stir until well chilled and properly diluted.",
+      "Strain into a chilled coupe glass."
+    ],
+    "imageUrl": "https://www.thecocktaildb.com/images/media/drink/qgdu971561574065.jpg"
+  },
+  {
+    "id": "tiger-dwl-valle-cocktail",
+    "name": "Tiger Dwl Valle Cocktail",
+    "method": "Shaken",
+    "glass": "Rocks",
+    "ice": "Cubed",
+    "spirits": [
+      "Tequila"
+    ],
+    "ingredients": [
+      {
+        "amount": 1,
+        "unit": "oz",
+        "name": "Chinola Passion Fruit Liqueur"
+      },
+      {
+        "amount": 1,
+        "unit": "oz",
+        "name": "Tequila Blanco"
+      },
+      {
+        "amount": 1,
+        "unit": "oz",
+        "name": "Pineapple Juice"
+      },
+      {
+        "amount": 0.75,
+        "unit": "oz",
+        "name": "Freshly Squeezed Lime Juice"
+      },
+      {
+        "amount": 0.5,
+        "unit": "oz",
+        "name": "Turmeric Honey Syrup*"
+      },
+      {
+        "amount": 2,
+        "unit": null,
+        "name": "Mint or Sage Leaves"
+      }
+    ],
+    "garnish": "Pineapple Wedge and a Sage Leaf",
+    "instructions": [
+      "Combine all ingredients in a shaker with ice.",
+      "Shake until well chilled.",
+      "Strain into a rocks glass over cubed ice."
+    ],
+    "imageUrl": "https://www.thecocktaildb.com/images/media/drink/5noda61589575158.jpg"
+  },
+  {
+    "id": "mexican-firing-squad",
+    "name": "Mexican Firing Squad",
+    "method": "Shaken",
+    "glass": "Rocks",
+    "ice": "Cubed",
+    "spirits": [
+      "Tequila"
+    ],
+    "ingredients": [
+      {
+        "amount": 2,
+        "unit": "oz",
+        "name": "Tequila"
+      },
+      {
+        "amount": 0.75,
+        "unit": "oz",
+        "name": "Lime Juice"
+      },
+      {
+        "amount": 0.75,
+        "unit": "oz",
+        "name": "Grenadine"
+      },
+      {
+        "amount": 2,
+        "unit": "dashes",
+        "name": "Angostura Bitters"
+      }
+    ],
+    "garnish": "A Lime Wheel",
+    "instructions": [
+      "Combine all ingredients in a shaker with ice.",
+      "Shake until well chilled.",
+      "Strain into a rocks glass over cubed ice."
+    ],
+    "imageUrl": "https://www.thecocktaildb.com/images/media/drink/5noda61589575158.jpg"
+  },
+  {
+    "id": "paris-is-burning",
+    "name": "Paris Is Burning",
+    "method": "Shaken",
+    "glass": "Coupe",
+    "ice": "None",
+    "spirits": [
+      "Gin",
+      "Tequila"
+    ],
+    "ingredients": [
+      {
+        "amount": 1,
+        "unit": "oz",
+        "name": "Mezcal"
+      },
+      {
+        "amount": 1,
+        "unit": "oz",
+        "name": "London Dry Gin"
+      },
+      {
+        "amount": 1,
+        "unit": "oz",
+        "name": "Pineapple Juice"
+      },
+      {
+        "amount": 0.5,
+        "unit": "oz",
+        "name": "Lemon Juice"
+      },
+      {
+        "amount": 0.5,
+        "unit": "oz",
+        "name": "Elderflower Liqueur"
+      },
+      {
+        "amount": 0.25,
+        "unit": "oz",
+        "name": "Simple Syrup"
+      }
+    ],
+    "garnish": null,
+    "instructions": [
+      "Combine all ingredients in a shaker with ice.",
+      "Shake until well chilled.",
+      "Strain into a chilled coupe glass."
+    ],
+    "imageUrl": "https://www.thecocktaildb.com/images/media/drink/5noda61589575158.jpg"
+  },
+  {
+    "id": "blackberry-sage-margarite",
+    "name": "Blackberry Sage Margarite",
+    "method": "Shaken",
+    "glass": "Coupe",
+    "ice": "None",
+    "spirits": [
+      "Tequila"
+    ],
+    "ingredients": [
+      {
+        "amount": 1,
+        "unit": "tablespoon",
+        "name": "Sugar"
+      },
+      {
+        "amount": 0.5,
+        "unit": null,
+        "name": "Lime, Squeezed"
+      },
+      {
+        "amount": 6,
+        "unit": null,
+        "name": "Blackberries"
+      },
+      {
+        "amount": 2,
+        "unit": null,
+        "name": "Sage Leaves"
+      },
+      {
+        "amount": 2,
+        "unit": "oz",
+        "name": "Tequila"
+      },
+      {
+        "amount": 1,
+        "unit": "oz",
+        "name": "Triple Sec"
+      },
+      {
+        "amount": 0.5,
+        "unit": "oz",
+        "name": "Simple Syrup‌"
+      }
+    ],
+    "garnish": "Sage Leaves and Blackberries Before Serving",
+    "instructions": [
+      "Muddle fresh ingredients in the shaker.",
+      "Combine all ingredients in a shaker with ice.",
+      "Shake until well chilled.",
+      "Strain into a chilled coupe glass."
+    ],
+    "imageUrl": "https://www.thecocktaildb.com/images/media/drink/5noda61589575158.jpg"
+  },
+  {
+    "id": "arnon-s-siesta",
+    "name": "Arnon'S Siesta",
+    "method": "Shaken",
+    "glass": "Coupe",
+    "ice": "None",
+    "spirits": [
+      "Tequila"
+    ],
+    "ingredients": [
+      {
+        "amount": 1,
+        "unit": "oz",
+        "name": "Reposado Tequila"
+      },
+      {
+        "amount": 0.5,
+        "unit": "oz",
+        "name": "Mezcal"
+      },
+      {
+        "amount": 0.5,
+        "unit": "oz",
+        "name": "Grapefruit Juice"
+      },
+      {
+        "amount": 0.75,
+        "unit": "oz",
+        "name": "Lime Juice"
+      },
+      {
+        "amount": 0.75,
+        "unit": "oz",
+        "name": "Agave Syrup"
+      },
+      {
+        "amount": 0.25,
+        "unit": "oz",
+        "name": "Campari or Aperol"
+      }
+    ],
+    "garnish": "Grapefruit Peel, A Grapefruit Peel",
+    "instructions": [
+      "Combine all ingredients in a shaker with ice.",
+      "Shake until well chilled.",
+      "Strain into a chilled coupe glass."
+    ],
+    "imageUrl": "https://www.thecocktaildb.com/images/media/drink/5noda61589575158.jpg"
+  },
+  {
+    "id": "silk-stocking",
+    "name": "Silk Stocking",
+    "method": "Shaken",
+    "glass": "Coupe",
+    "ice": "None",
+    "spirits": [
+      "Tequila"
+    ],
+    "ingredients": [
+      {
+        "amount": 2,
+        "unit": "fl",
+        "name": "Blanco Tequila"
+      },
+      {
+        "amount": 0.75,
+        "unit": "fl",
+        "name": "White CrèMe De Cacao"
+      },
+      {
+        "amount": 0.25,
+        "unit": "fl",
+        "name": "Grenadine Syrup"
+      },
+      {
+        "amount": 0.75,
+        "unit": "fl",
+        "name": "Single Cream/Half-and-Half"
+      }
+    ],
+    "garnish": "Nutmeg or Chocolate",
+    "instructions": [
+      "Combine all ingredients in a shaker with ice.",
+      "Shake until well chilled.",
+      "Strain into a chilled coupe glass."
+    ],
+    "imageUrl": "https://www.thecocktaildb.com/images/media/drink/5noda61589575158.jpg"
+  },
+  {
+    "id": "white-toreador",
+    "name": "(White*) Toreador",
+    "method": "Shaken",
+    "glass": "Coupe",
+    "ice": "None",
+    "spirits": [
+      "Tequila"
+    ],
+    "ingredients": [
+      {
+        "amount": 1.5,
+        "unit": "oz",
+        "name": "Blanco Tequila"
+      },
+      {
+        "amount": 0.5,
+        "unit": "oz",
+        "name": "Lime Juice"
+      },
+      {
+        "amount": 0.5,
+        "unit": "oz",
+        "name": "Apricot Liqueur"
+      },
+      {
+        "amount": 0.5,
+        "unit": "oz",
+        "name": "Simple Syrup"
+      },
+      {
+        "amount": 1,
+        "unit": null,
+        "name": "Egg White (Optional)"
+      },
+      {
+        "amount": 1,
+        "unit": "tsp",
+        "name": "Full-Fat Greek Yogurt"
+      }
+    ],
+    "garnish": null,
+    "instructions": [
+      "Combine all ingredients in a shaker with ice.",
+      "Shake until well chilled.",
+      "Strain into a chilled coupe glass."
+    ],
+    "imageUrl": "https://www.thecocktaildb.com/images/media/drink/5noda61589575158.jpg"
+  },
+  {
+    "id": "division-bell",
+    "name": "Division Bell",
+    "method": "Shaken",
+    "glass": "Coupe",
+    "ice": "None",
+    "spirits": [
+      "Tequila"
+    ],
+    "ingredients": [
+      {
+        "amount": 1,
+        "unit": "oz",
+        "name": "Mezcal (Preferably Del Maguey Vida)"
+      },
+      {
+        "amount": 0.75,
+        "unit": "oz",
+        "name": "Aperol"
+      },
+      {
+        "amount": 0.25,
+        "unit": "oz",
+        "name": "Maraschino Liqueur (Preferably Luxardo)"
+      },
+      {
+        "amount": 0.75,
+        "unit": "oz",
+        "name": "Lime Juice"
+      }
+    ],
+    "garnish": "Grapefruit Twist",
+    "instructions": [
+      "Combine all ingredients in a shaker with ice.",
+      "Shake until well chilled.",
+      "Strain into a chilled coupe glass."
+    ],
+    "imageUrl": "https://www.thecocktaildb.com/images/media/drink/5noda61589575158.jpg"
+  },
+  {
+    "id": "ward-eight",
+    "name": "Ward Eight",
+    "method": "Shaken",
+    "glass": "Coupe",
+    "ice": "None",
+    "spirits": [
+      "Whiskey"
+    ],
+    "ingredients": [
+      {
+        "amount": 2,
+        "unit": "oz",
+        "name": "Rye Whiskey"
+      },
+      {
+        "amount": 0.5,
+        "unit": "oz",
+        "name": "Lemon Juice"
+      },
+      {
+        "amount": 0.5,
+        "unit": "oz",
+        "name": "Orange Juice"
+      },
+      {
+        "amount": 2,
+        "unit": "teaspoon",
+        "name": "S Grenadine"
+      }
+    ],
+    "garnish": "2 or 3 Speared Cherries, Speared Cherries",
+    "instructions": [
+      "Combine all ingredients in a shaker with ice.",
+      "Shake until well chilled.",
+      "Strain into a chilled coupe glass."
+    ],
+    "imageUrl": "https://images.unsplash.com/photo-1470337458703-46ad1756a187?w=600&q=80"
+  },
+  {
+    "id": "dirty-shirley",
+    "name": "Dirty Shirley",
+    "method": "Stirred",
+    "glass": "Highball",
+    "ice": "Cubed",
+    "spirits": [
+      "Vodka"
+    ],
+    "ingredients": [
+      {
+        "amount": 2,
+        "unit": "oz",
+        "name": "Vodka"
+      },
+      {
+        "amount": 1,
+        "unit": "oz",
+        "name": "Grenadine"
+      },
+      {
+        "amount": 6,
+        "unit": null,
+        "name": "-8 Ounces Lemon-Lime Soda (7up, Sprite), Chilled"
+      }
+    ],
+    "garnish": "Maraschino Cherry, A Maraschino Cherry",
+    "instructions": [
+      "Combine all ingredients in a mixing glass with ice.",
+      "Stir until well chilled and properly diluted.",
+      "Strain into a highball glass."
+    ],
+    "imageUrl": "https://images.unsplash.com/photo-1544145945-f90425340c7e?w=600&q=80"
+  },
+  {
+    "id": "white-russian-w-baileys",
+    "name": "White Russian (W. Baileys)",
+    "method": "Stirred",
+    "glass": "Rocks",
+    "ice": "Cubed",
+    "spirits": [
+      "Vodka"
+    ],
+    "ingredients": [
+      {
+        "amount": 2,
+        "unit": "oz",
+        "name": "Bailey'S Irish Cream"
+      },
+      {
+        "amount": 1.5,
+        "unit": "oz",
+        "name": "Kahlua Liqueur"
+      },
+      {
+        "amount": 1.5,
+        "unit": "oz",
+        "name": "Vodka"
+      },
+      {
+        "amount": 1,
+        "unit": "oz",
+        "name": "Half & Half or Heavy Cream"
+      }
+    ],
+    "garnish": null,
+    "instructions": [
+      "Combine all ingredients in a mixing glass with ice.",
+      "Stir until well chilled and properly diluted.",
+      "Strain into a rocks glass over cubed ice."
+    ],
+    "imageUrl": "https://www.thecocktaildb.com/images/media/drink/vsrupw1472405732.jpg"
+  },
+  {
+    "id": "last-word",
+    "name": "Last Word",
+    "method": "Shaken",
+    "glass": "Coupe",
+    "ice": "None",
+    "spirits": [
+      "Gin"
+    ],
+    "ingredients": [
+      {
+        "amount": 0.75,
+        "unit": "oz",
+        "name": "Gin"
+      },
+      {
+        "amount": 0.75,
+        "unit": "oz",
+        "name": "Green Chartreuse"
+      },
+      {
+        "amount": 0.75,
+        "unit": "oz",
+        "name": "Maraschino Liqueur"
+      },
+      {
+        "amount": 0.75,
+        "unit": "oz",
+        "name": "Lime Juice"
+      }
+    ],
+    "garnish": "Brandied Cherry (Optional), A Brandied Cherry (Optional)",
+    "instructions": [
+      "Combine all ingredients in a shaker with ice.",
+      "Shake until well chilled.",
+      "Strain into a chilled coupe glass."
+    ],
+    "imageUrl": "https://www.thecocktaildb.com/images/media/drink/91oule1513702624.jpg"
+  },
+  {
+    "id": "creamy-espresso-martini",
+    "name": "Creamy Espresso Martini",
+    "method": "Shaken",
+    "glass": "Martini",
+    "ice": "None",
+    "spirits": [
+      "Vodka"
+    ],
+    "ingredients": [
+      {
+        "amount": 2,
+        "unit": "oz",
+        "name": "Vodka"
+      },
+      {
+        "amount": 2,
+        "unit": "oz",
+        "name": "Fresh Espresso Cooled"
+      },
+      {
+        "amount": 1,
+        "unit": "oz",
+        "name": "Baileys"
+      },
+      {
+        "amount": 0.5,
+        "unit": "oz",
+        "name": "Kahlúa"
+      },
+      {
+        "amount": 3,
+        "unit": null,
+        "name": "Coffee Beans For Garnish"
+      }
+    ],
+    "garnish": "3 Coffee Beans",
+    "instructions": [
+      "Combine all ingredients in a shaker with ice.",
+      "Shake until well chilled.",
+      "Strain into a chilled martini glass."
+    ],
+    "imageUrl": "https://www.thecocktaildb.com/images/media/drink/n0sx531504372951.jpg"
+  },
+  {
+    "id": "hemingway-daiquiri-papa-doble",
+    "name": "Hemingway Daiquiri (Papa Doble)",
+    "method": "Shaken",
+    "glass": "Coupe",
+    "ice": "None",
+    "spirits": [
+      "Rum"
+    ],
+    "ingredients": [
+      {
+        "amount": 2,
+        "unit": "oz",
+        "name": "White Rum"
+      },
+      {
+        "amount": 0.5,
+        "unit": "oz",
+        "name": "Maraschino Liqueur"
+      },
+      {
+        "amount": 0.75,
+        "unit": "oz",
+        "name": "Lime Juice"
+      },
+      {
+        "amount": 0.5,
+        "unit": "oz",
+        "name": "Grapefruit Juice"
+      }
+    ],
+    "garnish": "Lime Wheel, A Lime Wheel",
+    "instructions": [
+      "Combine all ingredients in a shaker with ice.",
+      "Shake until well chilled.",
+      "Strain into a chilled coupe glass."
+    ],
+    "imageUrl": "https://www.thecocktaildb.com/images/media/drink/mrz9091589574515.jpg"
+  },
+  {
+    "id": "the-henderson-old-fashioned",
+    "name": "The Henderson Old Fashioned",
+    "method": "Stirred",
+    "glass": "Rocks",
+    "ice": "Cubed",
+    "spirits": [
+      "Whiskey"
+    ],
+    "ingredients": [
+      {
+        "amount": 2,
+        "unit": "oz",
+        "name": "Angel'S Envy Bourbon Finished in Port Wine Barrels"
+      },
+      {
+        "amount": 0.25,
+        "unit": "oz",
+        "name": "Ruby Port Syrup"
+      },
+      {
+        "amount": 2,
+        "unit": "dashes",
+        "name": "Angostura® Bitters"
+      },
+      {
+        "amount": 1,
+        "unit": "dash",
+        "name": "Of Orange Bitters"
+      },
+      {
+        "amount": null,
+        "unit": null,
+        "name": "Orange Twist Garnish"
+      }
+    ],
+    "garnish": "An Orange Twist",
+    "instructions": [
+      "Combine all ingredients in a mixing glass with ice.",
+      "Stir until well chilled and properly diluted.",
+      "Strain into a rocks glass over cubed ice."
+    ],
+    "imageUrl": "https://www.thecocktaildb.com/images/media/drink/vrwquq1478252802.jpg"
+  },
+  {
+    "id": "army-navy",
+    "name": "Army & Navy",
+    "method": "Shaken",
+    "glass": "Coupe",
+    "ice": "Cubed",
+    "spirits": [
+      "Gin"
+    ],
+    "ingredients": [
+      {
+        "amount": 2,
+        "unit": "oz",
+        "name": "Of Gin"
+      },
+      {
+        "amount": 0.75,
+        "unit": "oz",
+        "name": "Lemon Juice"
+      },
+      {
+        "amount": 0.5,
+        "unit": "oz",
+        "name": "Of Orgeat"
+      },
+      {
+        "amount": 1,
+        "unit": "dash",
+        "name": "Of Angostura Bitters"
+      }
+    ],
+    "garnish": "A Lemon Twist, and Edible Flowers If Desired",
+    "instructions": [
+      "Combine all ingredients in a shaker with ice.",
+      "Shake until well chilled.",
+      "Strain into a chilled coupe glass."
+    ],
+    "imageUrl": "https://images.unsplash.com/photo-1551024709-8f23befc6f87?w=600&q=80"
+  },
+  {
+    "id": "gold-rush",
+    "name": "Gold Rush",
+    "method": "Shaken",
+    "glass": "Rocks",
+    "ice": "1 large cube",
+    "spirits": [
+      "Whiskey"
+    ],
+    "ingredients": [
+      {
+        "amount": 2,
+        "unit": "oz",
+        "name": "Bourbon"
+      },
+      {
+        "amount": 0.75,
+        "unit": "oz",
+        "name": "Lemon Juice"
+      },
+      {
+        "amount": 0.75,
+        "unit": "oz",
+        "name": "Honey Syrup"
+      }
+    ],
+    "garnish": "Lemon Twist, A Lemon Twist",
+    "instructions": [
+      "Combine all ingredients in a shaker with ice.",
+      "Shake until well chilled.",
+      "Strain into a rocks glass over a large ice cube."
+    ],
+    "imageUrl": "https://images.unsplash.com/photo-1567222379150-75dd856ac297?w=600&q=80"
+  },
+  {
+    "id": "aviation-cocktail",
+    "name": "Aviation Cocktail",
+    "method": "Shaken",
+    "glass": "Coupe",
+    "ice": "Cubed",
+    "spirits": [
+      "Gin"
+    ],
+    "ingredients": [
+      {
+        "amount": 2,
+        "unit": "oz",
+        "name": "Gin"
+      },
+      {
+        "amount": 0.5,
+        "unit": "oz",
+        "name": "Maraschino Liqueur"
+      },
+      {
+        "amount": 0.5,
+        "unit": "oz",
+        "name": "Violet Liqueur"
+      },
+      {
+        "amount": 0.75,
+        "unit": "oz",
+        "name": "Lemon Juice"
+      }
+    ],
+    "garnish": "Lemon Twist or a Maraschino Cherry, A Maraschino Cherry or a Lemon Twist",
+    "instructions": [
+      "Combine all ingredients in a shaker with ice.",
+      "Shake until well chilled.",
+      "Strain into a chilled coupe glass."
+    ],
+    "imageUrl": "https://www.thecocktaildb.com/images/media/drink/trbplb1606855233.jpg"
+  },
+  {
+    "id": "churchill",
+    "name": "Churchill",
+    "method": "Shaken",
+    "glass": "Coupe",
+    "ice": "None",
+    "spirits": [
+      "Whiskey"
+    ],
+    "ingredients": [
+      {
+        "amount": 1.5,
+        "unit": "oz",
+        "name": "Blended Scotch Whisky"
+      },
+      {
+        "amount": 0.5,
+        "unit": "oz",
+        "name": "Cointreau"
+      },
+      {
+        "amount": 0.5,
+        "unit": "oz",
+        "name": "Sweet Vermouth"
+      },
+      {
+        "amount": 0.5,
+        "unit": "oz",
+        "name": "Lime Juice"
+      }
+    ],
+    "garnish": "Lime Twist",
+    "instructions": [
+      "Combine all ingredients in a shaker with ice.",
+      "Shake until well chilled.",
+      "Strain into a chilled coupe glass."
+    ],
+    "imageUrl": "https://www.thecocktaildb.com/images/media/drink/yk70e31606771240.jpg"
+  },
+  {
+    "id": "perfect-manhattan",
+    "name": "Perfect Manhattan",
+    "method": "Stirred",
+    "glass": "Martini",
+    "ice": "None",
+    "spirits": [
+      "Whiskey"
+    ],
+    "ingredients": [
+      {
+        "amount": 2,
+        "unit": "oz",
+        "name": "Rye Whiskey"
+      },
+      {
+        "amount": 0.5,
+        "unit": "oz",
+        "name": "Dry Vermouth"
+      },
+      {
+        "amount": 0.5,
+        "unit": "oz",
+        "name": "Sweet Vermouth"
+      },
+      {
+        "amount": 2,
+        "unit": "dashes",
+        "name": "Angostura Bitters"
+      }
+    ],
+    "garnish": "Brandied Cherry or a Lemon Twist, A Brandied Cherry or a Lemon Twist",
+    "instructions": [
+      "Combine all ingredients in a mixing glass with ice.",
+      "Stir until well chilled and properly diluted.",
+      "Strain into a chilled martini glass."
+    ],
+    "imageUrl": "https://www.thecocktaildb.com/images/media/drink/yk70e31606771240.jpg"
+  },
+  {
+    "id": "naked-famous",
+    "name": "Naked & Famous",
+    "method": "Shaken",
+    "glass": "Coupe",
+    "ice": "None",
+    "spirits": [
+      "Tequila"
+    ],
+    "ingredients": [
+      {
+        "amount": 0.75,
+        "unit": "oz",
+        "name": "Mezcal"
+      },
+      {
+        "amount": 0.75,
+        "unit": "oz",
+        "name": "Aperol"
+      },
+      {
+        "amount": 0.75,
+        "unit": "oz",
+        "name": "Yellow Chartreuse"
+      },
+      {
+        "amount": 0.75,
+        "unit": "oz",
+        "name": "Lime Juice"
+      }
+    ],
+    "garnish": null,
+    "instructions": [
+      "Combine all ingredients in a shaker with ice.",
+      "Shake until well chilled.",
+      "Strain into a chilled coupe glass."
+    ],
+    "imageUrl": "https://images.unsplash.com/photo-1514362545857-3bc16c4c7d86?w=600&q=80"
+  },
+  {
+    "id": "rosemary-gin-fizz",
+    "name": "Rosemary Gin Fizz",
+    "method": "Shaken",
+    "glass": "Coupe",
+    "ice": "Cubed",
+    "spirits": [
+      "Gin"
+    ],
+    "ingredients": [
+      {
+        "amount": 2,
+        "unit": "oz",
+        "name": "Gin"
+      },
+      {
+        "amount": 0.5,
+        "unit": "oz",
+        "name": "Fresh Lemon Juice"
+      },
+      {
+        "amount": 0.5,
+        "unit": "oz",
+        "name": "Rosemary Simple Syrup"
+      },
+      {
+        "amount": 3,
+        "unit": "oz",
+        "name": "Club Soda"
+      },
+      {
+        "amount": 1,
+        "unit": null,
+        "name": "Lemon Slice and 1 Rosemary Spring, For Garnish"
+      }
+    ],
+    "garnish": "A Lemon Slice and Rosemary Spring",
+    "instructions": [
+      "Combine all ingredients in a shaker with ice.",
+      "Shake until well chilled.",
+      "Strain into a chilled coupe glass."
+    ],
+    "imageUrl": "https://www.thecocktaildb.com/images/media/drink/drtihp1606768397.jpg"
+  },
+  {
+    "id": "boulevardier",
+    "name": "Boulevardier",
+    "method": "Stirred",
+    "glass": "Coupe",
+    "ice": "Cubed",
+    "spirits": [
+      "Whiskey"
+    ],
+    "ingredients": [
+      {
+        "amount": 1,
+        "unit": null,
+        "name": "½ Oz Bourbon"
+      },
+      {
+        "amount": null,
+        "unit": null,
+        "name": "¾ Oz Sweet Vermouth"
+      },
+      {
+        "amount": null,
+        "unit": null,
+        "name": "¾ Oz Campari"
+      },
+      {
+        "amount": null,
+        "unit": null,
+        "name": "Twist of Orange Peel, For Garnish"
+      }
+    ],
+    "garnish": "An Orange Twist",
+    "instructions": [
+      "Combine all ingredients in a mixing glass with ice.",
+      "Stir until well chilled and properly diluted.",
+      "Strain into a chilled coupe glass."
+    ],
+    "imageUrl": "https://www.thecocktaildb.com/images/media/drink/km84qi1513705868.jpg"
+  },
+  {
+    "id": "corpse-reviver-no-2",
+    "name": "Corpse Reviver No. 2",
+    "method": "Shaken",
+    "glass": "Coupe",
+    "ice": "None",
+    "spirits": [
+      "Gin"
+    ],
+    "ingredients": [
+      {
+        "amount": null,
+        "unit": null,
+        "name": "Absinthe, To Rinse"
+      },
+      {
+        "amount": 0.75,
+        "unit": "oz",
+        "name": "London Dry Gin"
+      },
+      {
+        "amount": 0.75,
+        "unit": "oz",
+        "name": "Lillet Blanc or Dry Vermouth"
+      },
+      {
+        "amount": 0.75,
+        "unit": "oz",
+        "name": "Orange Liqueur"
+      },
+      {
+        "amount": 0.75,
+        "unit": "oz",
+        "name": "Lemon Juice"
+      }
+    ],
+    "garnish": null,
+    "instructions": [
+      "Rinse a chilled glass with absinthe and discard excess.",
+      "Combine all ingredients in a shaker with ice.",
+      "Shake until well chilled.",
+      "Strain into a chilled coupe glass."
+    ],
+    "imageUrl": "https://www.thecocktaildb.com/images/media/drink/gifgao1513704334.jpg"
+  },
+  {
+    "id": "milk-punch",
+    "name": "Milk Punch",
+    "method": "Shaken",
+    "glass": "Rocks",
+    "ice": "None",
+    "spirits": [
+      "Whiskey",
+      "Brandy"
+    ],
+    "ingredients": [
+      {
+        "amount": 3,
+        "unit": "oz",
+        "name": "Whole Milk"
+      },
+      {
+        "amount": 1,
+        "unit": null,
+        "name": "½ Ounces Bourbon Whiskey"
+      },
+      {
+        "amount": null,
+        "unit": null,
+        "name": "½ Ounce Brandy"
+      },
+      {
+        "amount": null,
+        "unit": null,
+        "name": "½ Ounce Simple Syrup"
+      },
+      {
+        "amount": null,
+        "unit": null,
+        "name": "½ Teaspoon Vanilla"
+      },
+      {
+        "amount": null,
+        "unit": null,
+        "name": "For the Garnish: Grated Nutmeg, Star Anise (Optional)"
+      }
+    ],
+    "garnish": "Freshly Grated Nutmeg and If Desired, Star Anise",
+    "instructions": [
+      "Combine all ingredients in a shaker with ice.",
+      "Shake until well chilled.",
+      "Strain into a chilled rocks glass."
+    ],
+    "imageUrl": "https://www.thecocktaildb.com/images/media/drink/w64lqm1504888810.jpg"
+  },
+  {
+    "id": "classic-daiquiri",
+    "name": "Classic Daiquiri",
+    "method": "Shaken",
+    "glass": "Coupe",
+    "ice": "None",
+    "spirits": [
+      "Rum"
+    ],
+    "ingredients": [
+      {
+        "amount": 2,
+        "unit": "oz",
+        "name": "(60 Ml) Rum"
+      },
+      {
+        "amount": 0.75,
+        "unit": "oz",
+        "name": "(22.5 Ml) Fresh Lime Juice"
+      },
+      {
+        "amount": 0.5,
+        "unit": "oz",
+        "name": "(15 Ml) Semi-Rich Simple Syrup"
+      },
+      {
+        "amount": null,
+        "unit": null,
+        "name": "Lime Wheel For Garnish"
+      }
+    ],
+    "garnish": "A Lime Wheel",
+    "instructions": [
+      "Combine all ingredients in a shaker with ice.",
+      "Shake until well chilled.",
+      "Strain into a chilled coupe glass."
+    ],
+    "imageUrl": "https://www.thecocktaildb.com/images/media/drink/mrz9091589574515.jpg"
+  },
+  {
+    "id": "scofflaw",
+    "name": "Scofflaw",
+    "method": "Shaken",
+    "glass": "Coupe",
+    "ice": "None",
+    "spirits": [
+      "Whiskey"
+    ],
+    "ingredients": [
+      {
+        "amount": 1.5,
+        "unit": "oz",
+        "name": "(45 Ml) Rye Whiskey"
+      },
+      {
+        "amount": 1,
+        "unit": "oz",
+        "name": "(30 Ml) Dry Vermouth"
+      },
+      {
+        "amount": 0.5,
+        "unit": "oz",
+        "name": "(15 Ml) Lemon Juice"
+      },
+      {
+        "amount": 0.25,
+        "unit": "oz",
+        "name": "(7.5 Ml) Grenadine"
+      },
+      {
+        "amount": 2,
+        "unit": "dashes",
+        "name": "Of Orange Bitters"
+      },
+      {
+        "amount": null,
+        "unit": null,
+        "name": "Orange Zest For Garnish"
+      }
+    ],
+    "garnish": null,
+    "instructions": [
+      "Combine all ingredients in a shaker with ice.",
+      "Shake until well chilled.",
+      "Strain into a chilled coupe glass."
+    ],
+    "imageUrl": "https://images.unsplash.com/photo-1470337458703-46ad1756a187?w=600&q=80"
+  }
+]
