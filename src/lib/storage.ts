@@ -8,7 +8,12 @@ const LEGACY_COLLAPSED_GROUPS_KEY = 'cocktail-favorites:collapsed-groups'
 
 let syncSuppressed = false
 
-function triggerSync() {
+function triggerRecipeSync() {
+  if (syncSuppressed) return
+  void import('./sync').then((m) => m.syncAfterRecipeChange())
+}
+
+function triggerPrefsSync() {
   if (syncSuppressed) return
   void import('./sync').then((m) => m.scheduleSyncPush())
 }
@@ -64,7 +69,7 @@ export function loadPrefs(): AppPreferences {
 
 export function savePrefs(prefs: AppPreferences) {
   localStorage.setItem(PREFS_KEY, JSON.stringify(prefs))
-  triggerSync()
+  triggerPrefsSync()
 }
 
 function bumpSyncTimestamp() {
@@ -86,7 +91,7 @@ export function loadCustomCocktails(): Cocktail[] {
 export function saveCustomCocktails(cocktails: Cocktail[]) {
   localStorage.setItem(CUSTOM_KEY, JSON.stringify(cocktails))
   bumpSyncTimestamp()
-  triggerSync()
+  triggerRecipeSync()
 }
 
 export function loadEdits(): Record<string, Cocktail> {
@@ -102,7 +107,7 @@ export function loadEdits(): Record<string, Cocktail> {
 export function saveEdits(edits: Record<string, Cocktail>) {
   localStorage.setItem(EDITS_KEY, JSON.stringify(edits))
   bumpSyncTimestamp()
-  triggerSync()
+  triggerRecipeSync()
 }
 
 export function loadDeletedIds(): string[] {
@@ -118,7 +123,7 @@ export function loadDeletedIds(): string[] {
 export function saveDeletedIds(ids: string[]) {
   localStorage.setItem(DELETED_KEY, JSON.stringify(ids))
   bumpSyncTimestamp()
-  triggerSync()
+  triggerRecipeSync()
 }
 
 export function deleteCocktail(id: string, isCustom: boolean) {

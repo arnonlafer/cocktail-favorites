@@ -16,6 +16,19 @@ export type SyncStatus = 'idle' | 'syncing' | 'synced' | 'error' | 'not-configur
 
 const SYNC_HEADER = 'X-Sync-Code'
 
+const syncAppliedListeners = new Set<() => void>()
+
+export function subscribeSyncApplied(listener: () => void) {
+  syncAppliedListeners.add(listener)
+  return () => {
+    void syncAppliedListeners.delete(listener)
+  }
+}
+
+function notifySyncApplied() {
+  syncAppliedListeners.forEach((listener) => listener())
+}
+
 export function buildSyncPayload(): SyncPayload {
   const prefs = loadPrefs()
   return {
@@ -27,15 +40,21 @@ export function buildSyncPayload(): SyncPayload {
   }
 }
 
-function mergeCustomCocktails(local: Cocktail[], remote: Cocktail[]): Cocktail[] {
+function mergeCustomCocktails(
+  local: Cocktail[],
+  remote: Cocktail[],
+  preferRemote: boolean,
+): Cocktail[] {
   const byId = new Map<string, Cocktail>()
-  for (const cocktail of remote) byId.set(cocktail.id, cocktail)
-  for (const cocktail of local) byId.set(cocktail.id, cocktail)
+  const [base, override] = preferRemote ? [local, remote] : [remote, local]
+  for (const cocktail of base) byId.set(cocktail.id, cocktail)
+  for (const cocktail of override) byId.set(cocktail.id, cocktail)
   return [...byId.values()]
 }
 
-/** Merge remote into local; local wins when both changed the same record. */
+/** Merge payloads; the side with the newer updatedAt wins edit conflicts. */
 export function mergeSyncPayload(local: SyncPayload, remote: SyncPayload): SyncPayload {
+  const preferRemote = remote.updatedAt > local.updatedAt
   const syncCode = local.prefs.syncCode || remote.prefs.syncCode
   const mergedPrefs: AppPreferences = {
     ...remote.prefs,
@@ -49,8 +68,10 @@ export function mergeSyncPayload(local: SyncPayload, remote: SyncPayload): SyncP
 
   return {
     updatedAt: Math.max(local.updatedAt, remote.updatedAt, Date.now()),
-    edits: { ...remote.edits, ...local.edits },
-    custom: mergeCustomCocktails(local.custom, remote.custom),
+    edits: preferRemote
+      ? { ...local.edits, ...remote.edits }
+      : { ...remote.edits, ...local.edits },
+    custom: mergeCustomCocktails(local.custom, remote.custom, preferRemote),
     deletedIds: [...new Set([...remote.deletedIds, ...local.deletedIds])],
     prefs: mergedPrefs,
   }
@@ -119,6 +140,12 @@ async function uploadPayload(code: string, payload: SyncPayload): Promise<SyncSt
 
 let pushTimer: ReturnType<typeof setTimeout> | null = null
 
+export function syncAfterRecipeChange() {
+  const code = loadPrefs().syncCode?.trim()
+  if (!code) return
+  void syncNow(code)
+}
+
 export function scheduleSyncPush() {
   const code = loadPrefs().syncCode?.trim()
   if (!code) return
@@ -140,6 +167,7 @@ export async function pullSync(syncCode: string): Promise<SyncStatus> {
 
   const local = buildSyncPayload()
   applySyncPayload(mergeSyncPayload(local, remote))
+  notifySyncApplied()
   return 'synced'
 }
 
@@ -165,6 +193,7 @@ export async function syncNow(syncCode: string): Promise<SyncStatus> {
   applySyncPayload(merged)
 
   const uploaded = await uploadPayload(code, merged)
+  if (uploaded === 'synced') notifySyncApplied()
   return uploaded
 }
 

@@ -4,7 +4,7 @@ import { useCocktails } from './hooks/useCocktails'
 import { validateSession } from './lib/auth'
 import { applyAppearance } from './lib/theme'
 import { loadPrefs } from './lib/storage'
-import { syncNow } from './lib/sync'
+import { pullSync, subscribeSyncApplied } from './lib/sync'
 import { HomePage } from './components/HomePage'
 import { CocktailDetailPage } from './components/CocktailDetailPage'
 import { CocktailFormPage } from './components/CocktailFormPage'
@@ -37,14 +37,26 @@ export default function App() {
     applyAppearance(prefs.theme, prefs.fontSize)
   }, [prefs.theme, prefs.fontSize])
 
+  useEffect(() => subscribeSyncApplied(refreshPrefs), [refreshPrefs])
+
   useEffect(() => {
     if (!authenticated) return
     const code = loadPrefs().syncCode?.trim()
     if (!code) return
 
-    void syncNow(code).then((status) => {
-      if (status === 'synced') refreshPrefs()
-    })
+    const pull = () => {
+      void pullSync(code).then((status) => {
+        if (status === 'synced') refreshPrefs()
+      })
+    }
+
+    pull()
+
+    const onPageShow = (event: PageTransitionEvent) => {
+      if (event.persisted) pull()
+    }
+    window.addEventListener('pageshow', onPageShow)
+    return () => window.removeEventListener('pageshow', onPageShow)
   }, [authenticated, refreshPrefs])
 
   useEffect(() => {
@@ -54,7 +66,7 @@ export default function App() {
       if (document.visibilityState !== 'visible') return
       const code = loadPrefs().syncCode?.trim()
       if (!code) return
-      void syncNow(code).then((status) => {
+      void pullSync(code).then((status) => {
         if (status === 'synced') refreshPrefs()
       })
     }
