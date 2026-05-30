@@ -165,6 +165,12 @@ export function syncAfterRecipeChange() {
   void syncNow(code)
 }
 
+export function syncAfterNutritionChange() {
+  const code = loadPrefs().syncCode?.trim()
+  if (!code) return
+  void syncNow(code)
+}
+
 export function syncAfterPrefsChange() {
   const code = loadPrefs().syncCode?.trim()
   if (!code) return

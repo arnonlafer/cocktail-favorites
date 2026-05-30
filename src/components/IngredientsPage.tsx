@@ -1,8 +1,9 @@
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import type { IngredientNutrition } from '../types'
 import { getAllNutritionEntries } from '../lib/nutrition'
-import { deleteNutritionEntry, loadNutritionOverrides, upsertNutritionEntry } from '../lib/storage'
+import { deleteNutritionEntry, loadNutritionOverrides, loadPrefs, upsertNutritionEntry } from '../lib/storage'
+import { subscribeSyncApplied, syncNow, type SyncStatus } from '../lib/sync'
 
 interface Props {
   onChanged: () => void
@@ -21,6 +22,7 @@ export function IngredientsPage({ onChanged }: Props) {
   const [version, setVersion] = useState(0)
   const [editing, setEditing] = useState<IngredientNutrition | null>(null)
   const [isNew, setIsNew] = useState(false)
+  const [syncStatus, setSyncStatus] = useState<SyncStatus>('idle')
 
   const entries = useMemo(() => getAllNutritionEntries(), [version])
 
@@ -33,6 +35,8 @@ export function IngredientsPage({ onChanged }: Props) {
         e.aliases?.some((a) => a.toLowerCase().includes(q)),
     )
   }, [entries, query])
+
+  useEffect(() => subscribeSyncApplied(() => setVersion((v) => v + 1)), [])
 
   const refresh = () => {
     setVersion((v) => v + 1)
@@ -56,7 +60,19 @@ export function IngredientsPage({ onChanged }: Props) {
     setIsNew(false)
   }
 
-  const saveEntry = () => {
+  const pushSync = async () => {
+    const code = loadPrefs().syncCode?.trim()
+    if (!code) {
+      setSyncStatus('not-configured')
+      return
+    }
+    setSyncStatus('syncing')
+    const status = await syncNow(code)
+    setSyncStatus(status)
+    if (status === 'synced') refresh()
+  }
+
+  const saveEntry = async () => {
     if (!editing || !editing.name.trim()) return
     const entry: IngredientNutrition = {
       ...editing,
@@ -68,12 +84,14 @@ export function IngredientsPage({ onChanged }: Props) {
     upsertNutritionEntry(entry)
     setEditing(null)
     refresh()
+    await pushSync()
   }
 
-  const removeEntry = (id: string) => {
+  const removeEntry = async (id: string) => {
     deleteNutritionEntry(id)
     setEditing(null)
     refresh()
+    await pushSync()
   }
 
   const hasOverride = (id: string) => loadNutritionOverrides().some((e) => e.id === id)
@@ -89,8 +107,16 @@ export function IngredientsPage({ onChanged }: Props) {
 
       <div className="space-y-4 px-4 pt-4">
         <p className="text-sm text-muted">
-          Calories and carbs per fluid ounce. Used to estimate totals for each cocktail.
+          Calories and carbs per fluid ounce. Used to estimate totals for each cocktail. Changes sync
+          automatically when a sync code is set.
         </p>
+
+        {syncStatus === 'syncing' && <p className="text-xs text-subtle">Syncing…</p>}
+        {syncStatus === 'synced' && <p className="text-xs text-emerald-300">Saved and synced.</p>}
+        {syncStatus === 'not-configured' && (
+          <p className="text-xs text-amber-light/80">Saved locally. Add a sync code in Settings to sync.</p>
+        )}
+        {syncStatus === 'error' && <p className="text-xs text-red-300">Saved locally, but sync failed.</p>}
 
         <input
           type="search"
@@ -108,10 +134,47 @@ export function IngredientsPage({ onChanged }: Props) {
           + Add ingredient
         </button>
 
-        {editing && (
-          <section className="rounded-2xl border border-amber-accent/40 bg-bar-900/80 p-4">
+        <div className="space-y-2">
+          {filtered.map((entry) => (
+            <button
+              key={entry.id}
+              type="button"
+              onClick={() => startEdit(entry)}
+              className="flex w-full items-center justify-between rounded-2xl border border-app bg-bar-900/60 px-4 py-3 text-left active:bg-bar-800"
+            >
+              <div>
+                <p className="font-medium text-foreground">{entry.name}</p>
+                <p className="text-xs text-subtle">
+                  {entry.caloriesPerOz} cal/oz · {entry.carbsPerOz}g carbs/oz
+                  {entry.custom ? ' · custom' : ''}
+                  {hasOverride(entry.id) && !entry.custom ? ' · edited' : ''}
+                </p>
+              </div>
+              <span className="shrink-0 text-amber-accent">Edit</span>
+            </button>
+          ))}
+        </div>
+
+        {filtered.length === 0 && (
+          <p className="py-8 text-center text-sm text-muted">No ingredients match your search.</p>
+        )}
+
+        <Link to="/settings" className="block text-center text-sm text-amber-accent">
+          Back to settings
+        </Link>
+      </div>
+
+      {editing && (
+        <div
+          className="fixed inset-0 z-50 flex items-end justify-center bg-black/60 p-4 sm:items-center"
+          onClick={() => setEditing(null)}
+        >
+          <section
+            className="max-h-[90dvh] w-full max-w-lg overflow-y-auto rounded-2xl border border-amber-accent/40 bg-bar-900 p-4 shadow-xl"
+            onClick={(e) => e.stopPropagation()}
+          >
             <h2 className="mb-3 text-base font-semibold text-foreground">
-              {isNew ? 'New ingredient' : 'Edit ingredient'}
+              {isNew ? 'New ingredient' : `Edit ${editing.name}`}
             </h2>
             <div className="space-y-3">
               <label className="block">
@@ -169,7 +232,7 @@ export function IngredientsPage({ onChanged }: Props) {
               <div className="flex gap-2">
                 <button
                   type="button"
-                  onClick={saveEntry}
+                  onClick={() => void saveEntry()}
                   className="flex-1 rounded-xl bg-amber-accent py-2 text-sm font-semibold text-bar-950"
                 >
                   Save
@@ -185,7 +248,7 @@ export function IngredientsPage({ onChanged }: Props) {
               {!isNew && (editing.custom || hasOverride(editing.id)) && (
                 <button
                   type="button"
-                  onClick={() => removeEntry(editing.id)}
+                  onClick={() => void removeEntry(editing.id)}
                   className="w-full rounded-xl border border-red-900/50 py-2 text-sm text-red-300"
                 >
                   {editing.custom ? 'Delete custom entry' : 'Reset to default'}
@@ -193,36 +256,8 @@ export function IngredientsPage({ onChanged }: Props) {
               )}
             </div>
           </section>
-        )}
-
-        <div className="space-y-2">
-          {filtered.map((entry) => (
-            <button
-              key={entry.id}
-              type="button"
-              onClick={() => startEdit(entry)}
-              className="flex w-full items-center justify-between rounded-2xl border border-app bg-bar-900/60 px-4 py-3 text-left"
-            >
-              <div>
-                <p className="font-medium text-foreground">{entry.name}</p>
-                <p className="text-xs text-subtle">
-                  {entry.caloriesPerOz} cal/oz · {entry.carbsPerOz}g carbs/oz
-                  {entry.custom ? ' · custom' : ''}
-                </p>
-              </div>
-              <span className="text-amber-accent">Edit</span>
-            </button>
-          ))}
         </div>
-
-        {filtered.length === 0 && (
-          <p className="py-8 text-center text-sm text-muted">No ingredients match your search.</p>
-        )}
-
-        <Link to="/settings" className="block text-center text-sm text-amber-accent">
-          Back to settings
-        </Link>
-      </div>
+      )}
     </div>
   )
 }

@@ -22,7 +22,7 @@ function triggerPrefsSync() {
 function triggerNutritionSync() {
   if (syncSuppressed) return
   bumpSyncTimestamp()
-  void import('./sync').then((m) => m.syncAfterRecipeChange())
+  void import('./sync').then((m) => m.syncAfterNutritionChange())
 }
 
 export function runWithoutSync(fn: () => void) {
