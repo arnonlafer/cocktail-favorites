@@ -16,7 +16,6 @@ interface Props {
   onMultiplierChange: (multiplier: number) => void
   onFavoriteChange: () => void
   onViewed: () => void
-  onDelete: (id: string) => void
 }
 
 export function CocktailDetailPage({
@@ -28,7 +27,6 @@ export function CocktailDetailPage({
   onMultiplierChange,
   onFavoriteChange,
   onViewed,
-  onDelete,
 }: Props) {
   const { id } = useParams()
   const navigate = useNavigate()
@@ -68,17 +66,6 @@ export function CocktailDetailPage({
           >
             Edit
           </Link>
-          <button
-            type="button"
-            className="rounded-lg border border-red-900/60 px-3 py-1.5 text-xs font-medium text-red-300"
-            onClick={() => {
-              if (!window.confirm(`Delete "${cocktail.name}"? This cannot be undone.`)) return
-              onDelete(cocktail.id)
-              navigate('/')
-            }}
-          >
-            Delete
-          </button>
           <button
             type="button"
             aria-label={isFavorite ? 'Remove favorite' : 'Add favorite'}

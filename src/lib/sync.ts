@@ -56,11 +56,12 @@ function mergeCustomCocktails(
 export function mergeSyncPayload(local: SyncPayload, remote: SyncPayload): SyncPayload {
   const preferRemote = remote.updatedAt > local.updatedAt
   const syncCode = local.prefs.syncCode || remote.prefs.syncCode
+  const sourcePrefs = preferRemote ? remote.prefs : local.prefs
   const mergedPrefs: AppPreferences = {
     ...remote.prefs,
     ...local.prefs,
     syncCode,
-    favorites: [...new Set([...remote.prefs.favorites, ...local.prefs.favorites])],
+    favorites: sourcePrefs.favorites,
     recentlyViewed: { ...remote.prefs.recentlyViewed, ...local.prefs.recentlyViewed },
     collapsedGroups: local.prefs.collapsedGroups ?? remote.prefs.collapsedGroups,
     lastSyncedAt: Date.now(),
@@ -141,6 +142,12 @@ async function uploadPayload(code: string, payload: SyncPayload): Promise<SyncSt
 let pushTimer: ReturnType<typeof setTimeout> | null = null
 
 export function syncAfterRecipeChange() {
+  const code = loadPrefs().syncCode?.trim()
+  if (!code) return
+  void syncNow(code)
+}
+
+export function syncAfterPrefsChange() {
   const code = loadPrefs().syncCode?.trim()
   if (!code) return
   void syncNow(code)

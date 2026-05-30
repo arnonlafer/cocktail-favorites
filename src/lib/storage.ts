@@ -175,6 +175,8 @@ export function toggleFavorite(id: string): boolean {
   if (set.has(id)) set.delete(id)
   else set.add(id)
   prefs.favorites = [...set]
-  savePrefs(prefs)
+  prefs.syncUpdatedAt = Date.now()
+  localStorage.setItem(PREFS_KEY, JSON.stringify(prefs))
+  void import('./sync').then((m) => m.syncAfterPrefsChange())
   return set.has(id)
 }

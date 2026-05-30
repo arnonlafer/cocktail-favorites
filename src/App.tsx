@@ -132,7 +132,6 @@ export default function App() {
                 onMultiplierChange={(multiplier) => updatePrefs({ multiplier })}
                 onFavoriteChange={refreshPrefs}
                 onViewed={refreshPrefs}
-                onDelete={deleteCocktail}
               />
             }
           />
