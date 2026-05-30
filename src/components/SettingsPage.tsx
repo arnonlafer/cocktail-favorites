@@ -180,6 +180,19 @@ export function SettingsPage({
           </div>
         </section>
 
+        <section className="rounded-2xl border border-app bg-bar-900/60 p-4">
+          <h2 className="mb-1 text-base font-semibold text-foreground">Ingredient nutrition</h2>
+          <p className="mb-3 text-sm text-muted">
+            Manage calories and carbs per ounce for spirits, juices, and syrups.
+          </p>
+          <Link
+            to="/settings/ingredients"
+            className="inline-flex rounded-xl border border-app bg-bar-800 px-4 py-2 text-sm font-medium text-foreground"
+          >
+            Edit ingredient nutrition →
+          </Link>
+        </section>
+
         <p className="px-1 text-xs text-subtle">
           Spirit groups collapse by default except the category of your last opened cocktail. Expand or collapse
           groups manually — your layout resets when you open a new recipe.

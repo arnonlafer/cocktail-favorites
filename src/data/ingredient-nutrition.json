@@ -1,0 +1,492 @@
+[
+  {
+    "id": "bourbon",
+    "name": "Bourbon",
+    "caloriesPerOz": 64,
+    "carbsPerOz": 0,
+    "aliases": ["bourbon", "bourbon whiskey", "buffalo trace bourbon", "high proof bourbon", "american rye whiskey", "rye whiskey", "rye", "blended scotch", "blended scotch whisky", "islay single malt scotch", "whiskey", "scotch"]
+  },
+  {
+    "id": "gin",
+    "name": "Gin",
+    "caloriesPerOz": 64,
+    "carbsPerOz": 0,
+    "aliases": ["gin", "dry gin", "london dry gin", "haymans london dry gin", "of gin"]
+  },
+  {
+    "id": "vodka",
+    "name": "Vodka",
+    "caloriesPerOz": 64,
+    "carbsPerOz": 0,
+    "aliases": ["vodka", "ketel one vodka", "vanilla vodka", "odka"]
+  },
+  {
+    "id": "tequila-blanco",
+    "name": "Blanco Tequila",
+    "caloriesPerOz": 64,
+    "carbsPerOz": 0,
+    "aliases": ["blanco tequila", "tequila blanco", "blanco or reposado tequila", "blanco silver tequila", "tequila", "reposado tequila"]
+  },
+  {
+    "id": "mezcal",
+    "name": "Mezcal",
+    "caloriesPerOz": 64,
+    "carbsPerOz": 0,
+    "aliases": ["mezcal", "banhez mezcal artesanal", "mezcal montelobos mezcal"]
+  },
+  {
+    "id": "rum",
+    "name": "Rum",
+    "caloriesPerOz": 64,
+    "carbsPerOz": 0,
+    "aliases": ["white rum", "aged rum", "rum"]
+  },
+  {
+    "id": "brandy",
+    "name": "Brandy / Cognac",
+    "caloriesPerOz": 64,
+    "carbsPerOz": 0,
+    "aliases": ["brandy cognac", "brandy", "cognac"]
+  },
+  {
+    "id": "pisco",
+    "name": "Pisco",
+    "caloriesPerOz": 64,
+    "carbsPerOz": 0,
+    "aliases": ["pisco"]
+  },
+  {
+    "id": "aquavit",
+    "name": "Aquavit",
+    "caloriesPerOz": 64,
+    "carbsPerOz": 0,
+    "aliases": ["aquavit"]
+  },
+  {
+    "id": "absinthe",
+    "name": "Absinthe",
+    "caloriesPerOz": 103,
+    "carbsPerOz": 0,
+    "aliases": ["absinthe to rinse", "absinthe"]
+  },
+  {
+    "id": "sweet-vermouth",
+    "name": "Sweet Vermouth",
+    "caloriesPerOz": 45,
+    "carbsPerOz": 4.5,
+    "aliases": ["sweet vermouth", "os sweet vermouth", "punt e mes"]
+  },
+  {
+    "id": "dry-vermouth",
+    "name": "Dry Vermouth",
+    "caloriesPerOz": 35,
+    "carbsPerOz": 0.5,
+    "aliases": ["dry vermouth", "blanc vermouth"]
+  },
+  {
+    "id": "lillet",
+    "name": "Lillet Blanc",
+    "caloriesPerOz": 40,
+    "carbsPerOz": 5,
+    "aliases": ["lillet blanc", "lillet blanc or dry vermouth", "cochi americao or lilet blanc"]
+  },
+  {
+    "id": "campari",
+    "name": "Campari",
+    "caloriesPerOz": 80,
+    "carbsPerOz": 8,
+    "aliases": ["campari", "campari or aperol"]
+  },
+  {
+    "id": "aperol",
+    "name": "Aperol",
+    "caloriesPerOz": 70,
+    "carbsPerOz": 11,
+    "aliases": ["aperol"]
+  },
+  {
+    "id": "cynar",
+    "name": "Cynar",
+    "caloriesPerOz": 60,
+    "carbsPerOz": 8,
+    "aliases": ["cynar"]
+  },
+  {
+    "id": "amaro-averna",
+    "name": "Amaro Averna",
+    "caloriesPerOz": 90,
+    "carbsPerOz": 12,
+    "aliases": ["amaro averna", "averna", "averna amaro"]
+  },
+  {
+    "id": "amaro-nonino",
+    "name": "Amaro Nonino",
+    "caloriesPerOz": 85,
+    "carbsPerOz": 10,
+    "aliases": ["amaro nonino quintessentia", "meletti amaro", "amaro nonino"]
+  },
+  {
+    "id": "green-chartreuse",
+    "name": "Green Chartreuse",
+    "caloriesPerOz": 103,
+    "carbsPerOz": 3,
+    "aliases": ["green chartreuse"]
+  },
+  {
+    "id": "yellow-chartreuse",
+    "name": "Yellow Chartreuse",
+    "caloriesPerOz": 103,
+    "carbsPerOz": 8,
+    "aliases": ["yellow chartreuse"]
+  },
+  {
+    "id": "benedictine",
+    "name": "Benedictine",
+    "caloriesPerOz": 103,
+    "carbsPerOz": 11,
+    "aliases": ["benedictine", "benedictine"]
+  },
+  {
+    "id": "suze",
+    "name": "Suze",
+    "caloriesPerOz": 60,
+    "carbsPerOz": 8,
+    "aliases": ["suze gentian liqueur", "suze"]
+  },
+  {
+    "id": "st-germain",
+    "name": "St. Germain",
+    "caloriesPerOz": 90,
+    "carbsPerOz": 12,
+    "aliases": ["st germain", "st germain elderflower liqueur", "elderflower liqueur"]
+  },
+  {
+    "id": "cointreau",
+    "name": "Cointreau / Triple Sec",
+    "caloriesPerOz": 95,
+    "carbsPerOz": 11,
+    "aliases": ["cointreau", "triple sec", "orange liqueur", "orange liqueur cointreau or grand marnier"]
+  },
+  {
+    "id": "maraschino",
+    "name": "Maraschino Liqueur",
+    "caloriesPerOz": 90,
+    "carbsPerOz": 10,
+    "aliases": ["maraschino liqueur"]
+  },
+  {
+    "id": "coffee-liqueur",
+    "name": "Coffee Liqueur",
+    "caloriesPerOz": 103,
+    "carbsPerOz": 11,
+    "aliases": ["coffee liqueur", "coffee liquor", "kahlua", "kahlua liqueur"]
+  },
+  {
+    "id": "licor-43",
+    "name": "Licor 43",
+    "caloriesPerOz": 103,
+    "carbsPerOz": 12,
+    "aliases": ["licor 43", "liqueur 43"]
+  },
+  {
+    "id": "amaretto",
+    "name": "Amaretto",
+    "caloriesPerOz": 103,
+    "carbsPerOz": 14,
+    "aliases": ["amaretto"]
+  },
+  {
+    "id": "baileys",
+    "name": "Irish Cream",
+    "caloriesPerOz": 103,
+    "carbsPerOz": 9,
+    "aliases": ["baileys", "baileys irish cream", "irish cream liqueur", "bourbon cream"]
+  },
+  {
+    "id": "frangelico",
+    "name": "Frangelico",
+    "caloriesPerOz": 103,
+    "carbsPerOz": 11,
+    "aliases": ["frangelico", "hazelnut liqueur"]
+  },
+  {
+    "id": "creme-cacao-white",
+    "name": "White Crème de Cacao",
+    "caloriesPerOz": 103,
+    "carbsPerOz": 12,
+    "aliases": ["white creme de cacao", "creme de cacao white", "creme de cacao white"]
+  },
+  {
+    "id": "creme-cacao-dark",
+    "name": "Dark Crème de Cacao",
+    "caloriesPerOz": 103,
+    "carbsPerOz": 12,
+    "aliases": ["dark creme de cacao", "creme de cacao"]
+  },
+  {
+    "id": "creme-cassis",
+    "name": "Crème de Cassis",
+    "caloriesPerOz": 103,
+    "carbsPerOz": 14,
+    "aliases": ["creme de cassis", "creme de cassis or creme de mure", "creme de mure", "creme de noyaux"]
+  },
+  {
+    "id": "orgeat",
+    "name": "Orgeat",
+    "caloriesPerOz": 90,
+    "carbsPerOz": 12,
+    "aliases": ["orgeat", "of orgeat"]
+  },
+  {
+    "id": "falernum",
+    "name": "Falernum",
+    "caloriesPerOz": 90,
+    "carbsPerOz": 12,
+    "aliases": ["falernum"]
+  },
+  {
+    "id": "grenadine",
+    "name": "Grenadine",
+    "caloriesPerOz": 55,
+    "carbsPerOz": 14,
+    "aliases": ["grenadine", "grenadine syrup", "s grenadine"]
+  },
+  {
+    "id": "simple-syrup",
+    "name": "Simple Syrup",
+    "caloriesPerOz": 50,
+    "carbsPerOz": 13,
+    "aliases": ["simple syrup", "simple rich syrup", "sugar syrup rich", "semi rich simple syrup", "salted simple syrup", "hibiscus simple syrup", "rosemary simple syrup"]
+  },
+  {
+    "id": "rich-demerara",
+    "name": "Rich Demerara Syrup",
+    "caloriesPerOz": 75,
+    "carbsPerOz": 20,
+    "aliases": ["rich demerara syrup", "demerara syrup"]
+  },
+  {
+    "id": "agave",
+    "name": "Agave Syrup",
+    "caloriesPerOz": 60,
+    "carbsPerOz": 16,
+    "aliases": ["agave", "agave nectar", "agave syrup", "light agave nectar", "agave nectar or simple syrup"]
+  },
+  {
+    "id": "honey-syrup",
+    "name": "Honey Syrup",
+    "caloriesPerOz": 90,
+    "carbsPerOz": 23,
+    "aliases": ["honey syrup", "honey ginger syrup", "turmeric honey syrup", "maple syrup"]
+  },
+  {
+    "id": "cinnamon-syrup",
+    "name": "Cinnamon Syrup",
+    "caloriesPerOz": 55,
+    "carbsPerOz": 14,
+    "aliases": ["cinnamon syrup", "palo santo smoked cinnamon syrup", "ruby port syrup", "passion fruit syrup"]
+  },
+  {
+    "id": "lemon-juice",
+    "name": "Lemon Juice",
+    "caloriesPerOz": 8,
+    "carbsPerOz": 2.6,
+    "aliases": ["lemon juice", "fresh lemon juice", "lemon juice freshly squeezed", "lemon or lime juice"]
+  },
+  {
+    "id": "lime-juice",
+    "name": "Lime Juice",
+    "caloriesPerOz": 8,
+    "carbsPerOz": 2.8,
+    "aliases": ["lime juice", "fresh lime juice", "freshly squeezed lime juice"]
+  },
+  {
+    "id": "grapefruit-juice",
+    "name": "Grapefruit Juice",
+    "caloriesPerOz": 11,
+    "carbsPerOz": 2.5,
+    "aliases": ["grapefruit juice", "fresh grapefruit juice", "ruby red grapefruit juice", "fresh pink grapefruit juice"]
+  },
+  {
+    "id": "orange-juice",
+    "name": "Orange Juice",
+    "caloriesPerOz": 14,
+    "carbsPerOz": 3.3,
+    "aliases": ["orange juice"]
+  },
+  {
+    "id": "pineapple-juice",
+    "name": "Pineapple Juice",
+    "caloriesPerOz": 15,
+    "carbsPerOz": 3.5,
+    "aliases": ["pineapple juice"]
+  },
+  {
+    "id": "watermelon-juice",
+    "name": "Watermelon Juice",
+    "caloriesPerOz": 10,
+    "carbsPerOz": 2.5,
+    "aliases": ["watermelon juice", "watermelon juice freshly pressed"]
+  },
+  {
+    "id": "passion-fruit-puree",
+    "name": "Passion Fruit Puree",
+    "caloriesPerOz": 20,
+    "carbsPerOz": 5,
+    "aliases": ["passion fruit puree", "chinola passion fruit liqueur", "pamplemousseliqueur"]
+  },
+  {
+    "id": "espresso",
+    "name": "Espresso",
+    "caloriesPerOz": 2,
+    "carbsPerOz": 0,
+    "aliases": ["espresso", "espresso coffee", "fresh espresso cooled", "espresso freshly brewed", "cold brew concentrate"]
+  },
+  {
+    "id": "egg-white",
+    "name": "Egg White",
+    "caloriesPerOz": 17,
+    "carbsPerOz": 0.2,
+    "aliases": ["egg white"]
+  },
+  {
+    "id": "heavy-cream",
+    "name": "Heavy Cream",
+    "caloriesPerOz": 103,
+    "carbsPerOz": 0.8,
+    "aliases": ["heavy cream", "half half or heavy cream", "single cream half and half", "whole milk"]
+  },
+  {
+    "id": "coconut-cream",
+    "name": "Cream of Coconut",
+    "caloriesPerOz": 120,
+    "carbsPerOz": 15,
+    "aliases": ["cream of coconut"]
+  },
+  {
+    "id": "bitters",
+    "name": "Bitters",
+    "caloriesPerOz": 10,
+    "carbsPerOz": 0,
+    "aliases": ["angostura bitters", "orange bitters", "peychauds bitters", "celery bitters", "chocolate bitters", "lemon bitters", "black walnut bitters", "cardamon bitters", "bittermens xocolatl mole bitters", "drops angustora bitters", "of angostura bitters", "of orange bitters", "of chocolate bitters", "of cardamon bitters", "of black walnut bitters", "of lemon bitters"]
+  },
+  {
+    "id": "club-soda",
+    "name": "Club Soda",
+    "caloriesPerOz": 0,
+    "carbsPerOz": 0,
+    "aliases": ["club soda", "sparkling water"]
+  },
+  {
+    "id": "wine-sparkling",
+    "name": "Sparkling Wine",
+    "caloriesPerOz": 20,
+    "carbsPerOz": 0.8,
+    "aliases": ["dry sparkling wine", "sparkling wine sidecar", "red wine"]
+  },
+  {
+    "id": "beer",
+    "name": "Beer",
+    "caloriesPerOz": 13,
+    "carbsPerOz": 1.2,
+    "aliases": ["lager beer", "of beer"]
+  },
+  {
+    "id": "sherry",
+    "name": "Sherry",
+    "caloriesPerOz": 40,
+    "carbsPerOz": 3,
+    "aliases": ["px sherry"]
+  },
+  {
+    "id": "allspice-dram",
+    "name": "Allspice Dram",
+    "caloriesPerOz": 90,
+    "carbsPerOz": 10,
+    "aliases": ["st elizabeth allspice dram liqueur", "st elizabeth allspice liqueur", "allspice dram"]
+  },
+  {
+    "id": "ancho-reyes",
+    "name": "Ancho Reyes",
+    "caloriesPerOz": 90,
+    "carbsPerOz": 10,
+    "aliases": ["ancho reyes chile liqueur"]
+  },
+  {
+    "id": "apricot-liqueur",
+    "name": "Apricot Liqueur",
+    "caloriesPerOz": 95,
+    "carbsPerOz": 12,
+    "aliases": ["apricot liqueur", "giffard abricot du roussillon"]
+  },
+  {
+    "id": "banana-liqueur",
+    "name": "Banana Liqueur",
+    "caloriesPerOz": 95,
+    "carbsPerOz": 12,
+    "aliases": ["banana liqueur"]
+  },
+  {
+    "id": "melon-liqueur",
+    "name": "Melon Liqueur",
+    "caloriesPerOz": 95,
+    "carbsPerOz": 12,
+    "aliases": ["melon liqueur"]
+  },
+  {
+    "id": "peach-liqueur",
+    "name": "Peach Liqueur",
+    "caloriesPerOz": 95,
+    "carbsPerOz": 12,
+    "aliases": ["peach liqueur"]
+  },
+  {
+    "id": "violet-liqueur",
+    "name": "Violet Liqueur",
+    "caloriesPerOz": 95,
+    "carbsPerOz": 12,
+    "aliases": ["violet liqueur"]
+  },
+  {
+    "id": "rucolino",
+    "name": "Rucolino Amaro",
+    "caloriesPerOz": 85,
+    "carbsPerOz": 10,
+    "aliases": ["rucolino amaro"]
+  },
+  {
+    "id": "saline",
+    "name": "Saline",
+    "caloriesPerOz": 0,
+    "carbsPerOz": 0,
+    "aliases": ["saline", "saline solution", "of saline solution", "pinch of salt", "pinch of fine sea salt"]
+  },
+  {
+    "id": "sugar",
+    "name": "Sugar",
+    "caloriesPerOz": 110,
+    "carbsPerOz": 28,
+    "aliases": ["sugar"]
+  },
+  {
+    "id": "yogurt",
+    "name": "Greek Yogurt",
+    "caloriesPerOz": 18,
+    "carbsPerOz": 1.2,
+    "aliases": ["full fat greek yogurt"]
+  },
+  {
+    "id": "vinegar",
+    "name": "White Balsamic Vinegar",
+    "caloriesPerOz": 5,
+    "carbsPerOz": 1,
+    "aliases": ["white balsamic vinegar"]
+  },
+  {
+    "id": "vanilla",
+    "name": "Vanilla Extract",
+    "caloriesPerOz": 12,
+    "carbsPerOz": 0.5,
+    "aliases": ["teaspoon vanilla", "vanilla"]
+  }
+]

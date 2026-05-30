@@ -1,14 +1,16 @@
-import type { AppPreferences, Cocktail, SyncPayload } from '../types'
+import type { AppPreferences, Cocktail, IngredientNutrition, SyncPayload } from '../types'
 import { authHeaders } from './auth'
 import {
   loadCustomCocktails,
   loadDeletedIds,
   loadEdits,
+  loadNutritionOverrides,
   loadPrefs,
   runWithoutSync,
   saveCustomCocktails,
   saveDeletedIds,
   saveEdits,
+  saveNutritionOverrides,
   savePrefs,
 } from './storage'
 
@@ -37,6 +39,7 @@ export function buildSyncPayload(): SyncPayload {
     custom: loadCustomCocktails(),
     deletedIds: loadDeletedIds(),
     prefs,
+    nutritionOverrides: loadNutritionOverrides(),
   }
 }
 
@@ -75,7 +78,20 @@ export function mergeSyncPayload(local: SyncPayload, remote: SyncPayload): SyncP
     custom: mergeCustomCocktails(local.custom, remote.custom, preferRemote),
     deletedIds: [...new Set([...remote.deletedIds, ...local.deletedIds])],
     prefs: mergedPrefs,
+    nutritionOverrides: preferRemote
+      ? mergeNutritionOverrides(local.nutritionOverrides ?? [], remote.nutritionOverrides ?? [])
+      : mergeNutritionOverrides(remote.nutritionOverrides ?? [], local.nutritionOverrides ?? []),
   }
+}
+
+function mergeNutritionOverrides(
+  base: IngredientNutrition[],
+  override: IngredientNutrition[],
+): IngredientNutrition[] {
+  const byId = new Map<string, IngredientNutrition>()
+  for (const entry of base) byId.set(entry.id, entry)
+  for (const entry of override) byId.set(entry.id, entry)
+  return [...byId.values()]
 }
 
 function hasSyncableData(payload: SyncPayload): boolean {
@@ -83,7 +99,8 @@ function hasSyncableData(payload: SyncPayload): boolean {
     payload.updatedAt > 0 ||
     Object.keys(payload.edits).length > 0 ||
     payload.custom.length > 0 ||
-    payload.deletedIds.length > 0
+    payload.deletedIds.length > 0 ||
+    (payload.nutritionOverrides?.length ?? 0) > 0
   )
 }
 
@@ -93,6 +110,7 @@ export function applySyncPayload(payload: SyncPayload) {
     saveEdits(payload.edits ?? {})
     saveCustomCocktails(payload.custom ?? [])
     saveDeletedIds(payload.deletedIds ?? [])
+    saveNutritionOverrides(payload.nutritionOverrides ?? [])
     savePrefs({
       ...loadPrefs(),
       ...payload.prefs,

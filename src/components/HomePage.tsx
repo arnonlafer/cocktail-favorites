@@ -1,10 +1,11 @@
 import { useMemo, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import type { AppPreferences, Cocktail } from '../types'
+import type { AppPreferences, Cocktail, ListView } from '../types'
 import { SPIRIT_ORDER } from '../types'
 import { computeCollapsedGroups } from '../lib/groups'
 import { toggleFavorite } from '../lib/storage'
 import { CocktailCard } from './CocktailCard'
+import { CocktailGridCard } from './CocktailGridCard'
 import { SearchBar } from './SearchBar'
 import type Fuse from 'fuse.js'
 
@@ -16,6 +17,7 @@ interface Props {
   sortByRecent: (items: Cocktail[]) => Cocktail[]
   onFavoriteChange: () => void
   onUpdateCollapsedGroups: (collapsed: string[]) => void
+  onListViewChange: (view: ListView) => void
 }
 
 export function HomePage({
@@ -26,10 +28,12 @@ export function HomePage({
   sortByRecent,
   onFavoriteChange,
   onUpdateCollapsedGroups,
+  onListViewChange,
 }: Props) {
   const [query, setQuery] = useState('')
   const [favoritesOnly, setFavoritesOnly] = useState(false)
   const navigate = useNavigate()
+  const listView = prefs.listView ?? 'list'
 
   const filtered = useMemo(() => {
     let items = query.trim() ? fuse.search(query.trim()).map((r) => r.item) : cocktails
@@ -71,23 +75,30 @@ export function HomePage({
     onUpdateCollapsedGroups([...next])
   }
 
-  const renderList = (items: Cocktail[]) => (
-    <div className="space-y-2">
-      {items.map((cocktail) => (
-        <CocktailCard
-          key={cocktail.id}
-          cocktail={cocktail}
-          isFavorite={favorites.includes(cocktail.id)}
-          onClick={() => navigate(`/cocktail/${cocktail.id}`)}
-          onToggleFavorite={(e) => {
-            e.stopPropagation()
-            toggleFavorite(cocktail.id)
-            onFavoriteChange()
-          }}
-        />
-      ))}
-    </div>
-  )
+  const renderCard = (cocktail: Cocktail) => {
+    const props = {
+      key: cocktail.id,
+      cocktail,
+      isFavorite: favorites.includes(cocktail.id),
+      onClick: () => navigate(`/cocktail/${cocktail.id}`),
+      onToggleFavorite: (e: React.MouseEvent) => {
+        e.stopPropagation()
+        toggleFavorite(cocktail.id)
+        onFavoriteChange()
+      },
+    }
+
+    return listView === 'grid' ? <CocktailGridCard {...props} /> : <CocktailCard {...props} />
+  }
+
+  const renderList = (items: Cocktail[]) =>
+    listView === 'grid' ? (
+      <div className="grid grid-cols-2 gap-3">
+        {items.map((cocktail) => renderCard(cocktail))}
+      </div>
+    ) : (
+      <div className="space-y-2">{items.map((cocktail) => renderCard(cocktail))}</div>
+    )
 
   return (
     <div className="safe-bottom pb-24">
@@ -112,17 +123,41 @@ export function HomePage({
         </div>
         <p className="mb-4 text-xs text-subtle">{cocktails.length} recipes · sorted by recently opened</p>
         <SearchBar value={query} onChange={setQuery} />
-        <button
-          type="button"
-          onClick={() => setFavoritesOnly((v) => !v)}
-          className={`mt-3 rounded-full border px-3 py-1.5 text-xs font-medium transition ${
-            favoritesOnly
-              ? 'border-amber-accent bg-amber-accent/15 text-amber-light'
-              : 'border-app-strong text-muted'
-          }`}
-        >
-          {favoritesOnly ? '★ Favorites only' : '☆ Show favorites only'}
-        </button>
+        <div className="mt-3 flex flex-wrap items-center gap-2">
+          <button
+            type="button"
+            onClick={() => setFavoritesOnly((v) => !v)}
+            className={`rounded-full border px-3 py-1.5 text-xs font-medium transition ${
+              favoritesOnly
+                ? 'border-amber-accent bg-amber-accent/15 text-amber-light'
+                : 'border-app-strong text-muted'
+            }`}
+          >
+            {favoritesOnly ? '★ Favorites only' : '☆ Show favorites only'}
+          </button>
+          <div className="inline-flex rounded-full border border-app bg-bar-900/60 p-0.5">
+            <button
+              type="button"
+              aria-label="List view"
+              onClick={() => onListViewChange('list')}
+              className={`rounded-full px-3 py-1 text-xs font-medium ${
+                listView === 'list' ? 'bg-amber-accent text-bar-950' : 'text-muted'
+              }`}
+            >
+              List
+            </button>
+            <button
+              type="button"
+              aria-label="Thumbnail view"
+              onClick={() => onListViewChange('grid')}
+              className={`rounded-full px-3 py-1 text-xs font-medium ${
+                listView === 'grid' ? 'bg-amber-accent text-bar-950' : 'text-muted'
+              }`}
+            >
+              Thumbnails
+            </button>
+          </div>
+        </div>
       </header>
 
       <main className="px-4 pt-4">
@@ -152,21 +187,7 @@ export function HomePage({
                     </span>
                   </button>
                   {!isCollapsed && (
-                    <div className="space-y-2 border-t border-app px-3 pb-3 pt-2">
-                      {groupCocktails.map((cocktail) => (
-                        <CocktailCard
-                          key={cocktail.id}
-                          cocktail={cocktail}
-                          isFavorite={favorites.includes(cocktail.id)}
-                          onClick={() => navigate(`/cocktail/${cocktail.id}`)}
-                          onToggleFavorite={(e) => {
-                            e.stopPropagation()
-                            toggleFavorite(cocktail.id)
-                            onFavoriteChange()
-                          }}
-                        />
-                      ))}
-                    </div>
+                    <div className="border-t border-app px-3 pb-3 pt-2">{renderList(groupCocktails)}</div>
                   )}
                 </section>
               )

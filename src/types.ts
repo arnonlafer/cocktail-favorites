@@ -4,6 +4,15 @@ export interface Ingredient {
   name: string
 }
 
+export interface IngredientNutrition {
+  id: string
+  name: string
+  caloriesPerOz: number
+  carbsPerOz: number
+  aliases?: string[]
+  custom?: boolean
+}
+
 export interface Cocktail {
   id: string
   name: string
@@ -21,6 +30,7 @@ export interface Cocktail {
 export type UnitSystem = 'oz' | 'ml'
 export type Theme = 'dark' | 'light'
 export type FontSize = 'sm' | 'md' | 'lg' | 'xl'
+export type ListView = 'list' | 'grid'
 
 export interface AppPreferences {
   favorites: string[]
@@ -35,6 +45,7 @@ export interface AppPreferences {
   syncCode: string
   syncUpdatedAt: number
   lastSyncedAt: number | null
+  listView: ListView
 }
 
 export interface SyncPayload {
@@ -43,6 +54,7 @@ export interface SyncPayload {
   custom: Cocktail[]
   deletedIds: string[]
   prefs: AppPreferences
+  nutritionOverrides: IngredientNutrition[]
 }
 
 export const SPIRIT_ORDER = [

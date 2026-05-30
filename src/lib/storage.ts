@@ -1,9 +1,10 @@
-import type { AppPreferences, Cocktail } from '../types'
+import type { AppPreferences, Cocktail, IngredientNutrition } from '../types'
 
 const PREFS_KEY = 'cocktail-favorites:prefs'
 const CUSTOM_KEY = 'cocktail-favorites:custom'
 const EDITS_KEY = 'cocktail-favorites:edits'
 const DELETED_KEY = 'cocktail-favorites:deleted'
+const NUTRITION_KEY = 'cocktail-favorites:nutrition'
 const LEGACY_COLLAPSED_GROUPS_KEY = 'cocktail-favorites:collapsed-groups'
 
 let syncSuppressed = false
@@ -16,6 +17,12 @@ function triggerRecipeSync() {
 function triggerPrefsSync() {
   if (syncSuppressed) return
   void import('./sync').then((m) => m.scheduleSyncPush())
+}
+
+function triggerNutritionSync() {
+  if (syncSuppressed) return
+  bumpSyncTimestamp()
+  void import('./sync').then((m) => m.syncAfterRecipeChange())
 }
 
 export function runWithoutSync(fn: () => void) {
@@ -38,6 +45,7 @@ const defaultPrefs: AppPreferences = {
   syncCode: '',
   syncUpdatedAt: 0,
   lastSyncedAt: null,
+  listView: 'list',
 }
 
 function migrateLegacyCollapsedGroups(): string[] | null {
@@ -124,6 +132,33 @@ export function saveDeletedIds(ids: string[]) {
   localStorage.setItem(DELETED_KEY, JSON.stringify(ids))
   bumpSyncTimestamp()
   triggerRecipeSync()
+}
+
+export function loadNutritionOverrides(): IngredientNutrition[] {
+  try {
+    const raw = localStorage.getItem(NUTRITION_KEY)
+    if (!raw) return []
+    return JSON.parse(raw) as IngredientNutrition[]
+  } catch {
+    return []
+  }
+}
+
+export function saveNutritionOverrides(entries: IngredientNutrition[]) {
+  localStorage.setItem(NUTRITION_KEY, JSON.stringify(entries))
+  triggerNutritionSync()
+}
+
+export function upsertNutritionEntry(entry: IngredientNutrition) {
+  const entries = loadNutritionOverrides()
+  const idx = entries.findIndex((e) => e.id === entry.id)
+  if (idx >= 0) entries[idx] = entry
+  else entries.push(entry)
+  saveNutritionOverrides(entries)
+}
+
+export function deleteNutritionEntry(id: string) {
+  saveNutritionOverrides(loadNutritionOverrides().filter((e) => e.id !== id))
 }
 
 export function deleteCocktail(id: string, isCustom: boolean) {

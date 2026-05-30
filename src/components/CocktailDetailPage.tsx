@@ -1,6 +1,7 @@
-import { useEffect } from 'react'
+import { useEffect, useMemo } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import type { Cocktail, UnitSystem } from '../types'
+import { calculateCocktailNutrition } from '../lib/nutrition'
 import { cocktailInitials, spiritGradient, subtitle } from '../lib/cocktailUtils'
 import { markRecentlyViewed, toggleFavorite } from '../lib/storage'
 import { UnitControls } from './UnitControls'
@@ -39,6 +40,11 @@ export function CocktailDetailPage({
       onViewed()
     }
   }, [id, onViewed])
+
+  const nutrition = useMemo(
+    () => (cocktail ? calculateCocktailNutrition(cocktail, multiplier) : null),
+    [cocktail, multiplier],
+  )
 
   if (!cocktail) {
     return (
@@ -100,6 +106,14 @@ export function CocktailDetailPage({
         <header>
           <h1 className="font-display text-3xl font-bold leading-tight text-foreground">{cocktail.name}</h1>
           <p className="mt-2 text-sm text-amber-light/80">{subtitle(cocktail)}</p>
+          {nutrition && (
+            <p className="mt-2 text-sm text-muted">
+              {nutrition.calories} calories · {nutrition.carbs}g carbs
+              {nutrition.unknown.length > 0 && (
+                <span className="text-subtle"> · {nutrition.unknown.length} ingredient(s) not in database</span>
+              )}
+            </p>
+          )}
         </header>
 
         <section>

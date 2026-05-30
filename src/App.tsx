@@ -8,6 +8,7 @@ import { pullSync, subscribeSyncApplied } from './lib/sync'
 import { HomePage } from './components/HomePage'
 import { CocktailDetailPage } from './components/CocktailDetailPage'
 import { CocktailFormPage } from './components/CocktailFormPage'
+import { IngredientsPage } from './components/IngredientsPage'
 import { LoginPage } from './components/LoginPage'
 import { SettingsPage } from './components/SettingsPage'
 
@@ -102,6 +103,7 @@ export default function App() {
                 sortByRecent={sortByRecent}
                 onFavoriteChange={refreshPrefs}
                 onUpdateCollapsedGroups={(collapsedGroups) => updatePrefs({ collapsedGroups })}
+                onListViewChange={(listView) => updatePrefs({ listView })}
               />
             }
           />
@@ -120,6 +122,7 @@ export default function App() {
               />
             }
           />
+          <Route path="/settings/ingredients" element={<IngredientsPage onChanged={refreshPrefs} />} />
           <Route
             path="/cocktail/:id"
             element={
