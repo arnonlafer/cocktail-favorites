@@ -95,7 +95,12 @@ export function CocktailDetailPage({
 
       <div className={`mx-4 mt-4 aspect-[4/3] overflow-hidden rounded-2xl bg-linear-to-br ${gradient}`}>
         {cocktail.imageUrl ? (
-          <img src={cocktail.imageUrl} alt={cocktail.name} className="h-full w-full object-cover" />
+          <img
+            key={cocktail.imageUrl}
+            src={cocktail.imageUrl}
+            alt={cocktail.name}
+            className="h-full w-full object-cover"
+          />
         ) : (
           <div className="flex h-full flex-col items-center justify-center gap-2">
             <span className="font-display text-5xl font-bold text-foreground/90">{cocktailInitials(cocktail.name)}</span>

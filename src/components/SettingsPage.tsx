@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import type { FontSize, Theme } from '../types'
 import { FONT_SIZE_LABELS, stepFontSize } from '../lib/theme'
-import { formatSyncTime, pullSync, pushSync, type SyncStatus } from '../lib/sync'
+import { formatSyncTime, syncNow, type SyncStatus } from '../lib/sync'
 
 interface Props {
   theme: Theme
@@ -50,14 +50,9 @@ export function SettingsPage({
     if (!code) return
 
     setSyncStatus('syncing')
-    const pulled = await pullSync(code)
-    if (pulled === 'error') {
-      setSyncStatus('error')
-      return
-    }
-    const pushed = await pushSync(code)
-    setSyncStatus(pushed)
-    if (pushed === 'synced') onSynced()
+    const status = await syncNow(code)
+    setSyncStatus(status)
+    if (status === 'synced') onSynced()
   }
 
   async function handleSyncNow() {
@@ -65,14 +60,9 @@ export function SettingsPage({
     if (!code) return
 
     setSyncStatus('syncing')
-    const pulled = await pullSync(code)
-    if (pulled === 'error') {
-      setSyncStatus('error')
-      return
-    }
-    const pushed = await pushSync(code)
-    setSyncStatus(pushed)
-    if (pushed === 'synced') onSynced()
+    const status = await syncNow(code)
+    setSyncStatus(status)
+    if (status === 'synced') onSynced()
   }
 
   return (
@@ -126,6 +116,12 @@ export function SettingsPage({
             {syncStatus !== 'idle' && syncStatus !== 'synced' ? ` · ${statusLabel(syncStatus)}` : ''}
             {syncStatus === 'synced' ? ' · Synced just now' : ''}
           </p>
+          {syncStatus === 'not-configured' && (
+            <p className="mt-2 rounded-xl border border-amber-accent/30 bg-amber-accent/10 px-3 py-2 text-xs text-amber-light">
+              Cloud storage is not set up on the server yet. Sync cannot work until a KV namespace named{' '}
+              <strong>SYNC_KV</strong> is bound to this worker in Cloudflare.
+            </p>
+          )}
         </section>
 
         <section className="rounded-2xl border border-app bg-bar-900/60 p-4">

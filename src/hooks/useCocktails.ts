@@ -51,7 +51,10 @@ export function useCocktails() {
     [cocktails],
   )
 
-  const refresh = useCallback(() => setDataVersion((v) => v + 1), [])
+  const refresh = useCallback(() => {
+    setCustomCocktails(loadCustomCocktails())
+    setDataVersion((v) => v + 1)
+  }, [])
 
   const addCocktail = useCallback(
     (cocktail: Cocktail) => {

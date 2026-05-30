@@ -19,7 +19,12 @@ export function CocktailCard({ cocktail, isFavorite, onToggleFavorite, onClick }
           className={`relative h-16 w-16 shrink-0 overflow-hidden rounded-xl bg-linear-to-br ${gradient}`}
         >
           {cocktail.imageUrl ? (
-            <img src={cocktail.imageUrl} alt="" className="h-full w-full object-cover" />
+            <img
+              key={cocktail.imageUrl}
+              src={cocktail.imageUrl}
+              alt=""
+              className="h-full w-full object-cover"
+            />
           ) : (
             <div className="flex h-full w-full items-center justify-center font-display text-lg font-semibold text-foreground/90">
               {cocktailInitials(cocktail.name)}

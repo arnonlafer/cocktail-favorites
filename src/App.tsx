@@ -4,7 +4,7 @@ import { useCocktails } from './hooks/useCocktails'
 import { validateSession } from './lib/auth'
 import { applyAppearance } from './lib/theme'
 import { loadPrefs } from './lib/storage'
-import { pullSync } from './lib/sync'
+import { syncNow } from './lib/sync'
 import { HomePage } from './components/HomePage'
 import { CocktailDetailPage } from './components/CocktailDetailPage'
 import { CocktailFormPage } from './components/CocktailFormPage'
@@ -42,7 +42,7 @@ export default function App() {
     const code = loadPrefs().syncCode?.trim()
     if (!code) return
 
-    void pullSync(code).then((status) => {
+    void syncNow(code).then((status) => {
       if (status === 'synced') refreshPrefs()
     })
   }, [authenticated, refreshPrefs])
@@ -54,7 +54,7 @@ export default function App() {
       if (document.visibilityState !== 'visible') return
       const code = loadPrefs().syncCode?.trim()
       if (!code) return
-      void pullSync(code).then((status) => {
+      void syncNow(code).then((status) => {
         if (status === 'synced') refreshPrefs()
       })
     }

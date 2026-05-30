@@ -67,6 +67,12 @@ export function savePrefs(prefs: AppPreferences) {
   triggerSync()
 }
 
+function bumpSyncTimestamp() {
+  const prefs = loadPrefs()
+  prefs.syncUpdatedAt = Date.now()
+  localStorage.setItem(PREFS_KEY, JSON.stringify(prefs))
+}
+
 export function loadCustomCocktails(): Cocktail[] {
   try {
     const raw = localStorage.getItem(CUSTOM_KEY)
@@ -79,6 +85,7 @@ export function loadCustomCocktails(): Cocktail[] {
 
 export function saveCustomCocktails(cocktails: Cocktail[]) {
   localStorage.setItem(CUSTOM_KEY, JSON.stringify(cocktails))
+  bumpSyncTimestamp()
   triggerSync()
 }
 
@@ -94,6 +101,7 @@ export function loadEdits(): Record<string, Cocktail> {
 
 export function saveEdits(edits: Record<string, Cocktail>) {
   localStorage.setItem(EDITS_KEY, JSON.stringify(edits))
+  bumpSyncTimestamp()
   triggerSync()
 }
 
@@ -109,6 +117,7 @@ export function loadDeletedIds(): string[] {
 
 export function saveDeletedIds(ids: string[]) {
   localStorage.setItem(DELETED_KEY, JSON.stringify(ids))
+  bumpSyncTimestamp()
   triggerSync()
 }
 

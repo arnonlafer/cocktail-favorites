@@ -13,7 +13,8 @@
     "images": "node scripts/fetch-images.mjs && node scripts/manual-images.mjs",
     "lint": "eslint .",
     "preview": "npm run build && wrangler dev",
-    "deploy": "npm run build && wrangler deploy"
+    "deploy": "npm run build && wrangler deploy",
+    "setup-kv": "bash scripts/setup-kv.sh"
   },
   "dependencies": {
     "fuse.js": "^7.3.0",
