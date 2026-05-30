@@ -1,20 +1,79 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import { useCocktails } from './hooks/useCocktails'
+import { validateSession } from './lib/auth'
 import { applyAppearance } from './lib/theme'
 import { loadPrefs } from './lib/storage'
+import { pullSync } from './lib/sync'
 import { HomePage } from './components/HomePage'
 import { CocktailDetailPage } from './components/CocktailDetailPage'
 import { CocktailFormPage } from './components/CocktailFormPage'
+import { LoginPage } from './components/LoginPage'
 import { SettingsPage } from './components/SettingsPage'
 
 export default function App() {
-  const { cocktails, prefs, fuse, addCocktail, saveCocktail, updatePrefs, sortByRecent, refreshPrefs } =
-    useCocktails()
+  const [authReady, setAuthReady] = useState(false)
+  const [authenticated, setAuthenticated] = useState(false)
+  const {
+    cocktails,
+    prefs,
+    fuse,
+    addCocktail,
+    saveCocktail,
+    deleteCocktail,
+    updatePrefs,
+    sortByRecent,
+    refreshPrefs,
+  } = useCocktails()
+
+  useEffect(() => {
+    void validateSession().then((ok) => {
+      setAuthenticated(ok)
+      setAuthReady(true)
+    })
+  }, [])
 
   useEffect(() => {
     applyAppearance(prefs.theme, prefs.fontSize)
   }, [prefs.theme, prefs.fontSize])
+
+  useEffect(() => {
+    if (!authenticated) return
+    const code = loadPrefs().syncCode?.trim()
+    if (!code) return
+
+    void pullSync(code).then((status) => {
+      if (status === 'synced') refreshPrefs()
+    })
+  }, [authenticated, refreshPrefs])
+
+  useEffect(() => {
+    if (!authenticated) return
+
+    const onVisible = () => {
+      if (document.visibilityState !== 'visible') return
+      const code = loadPrefs().syncCode?.trim()
+      if (!code) return
+      void pullSync(code).then((status) => {
+        if (status === 'synced') refreshPrefs()
+      })
+    }
+
+    document.addEventListener('visibilitychange', onVisible)
+    return () => document.removeEventListener('visibilitychange', onVisible)
+  }, [authenticated, refreshPrefs])
+
+  if (!authReady) {
+    return <div className="mx-auto min-h-dvh max-w-lg bg-bar-950" />
+  }
+
+  if (!authenticated) {
+    return (
+      <div className="mx-auto min-h-dvh max-w-lg bg-bar-950">
+        <LoginPage onSuccess={() => setAuthenticated(true)} />
+      </div>
+    )
+  }
 
   return (
     <BrowserRouter>
@@ -40,8 +99,12 @@ export default function App() {
               <SettingsPage
                 theme={prefs.theme}
                 fontSize={prefs.fontSize}
+                syncCode={prefs.syncCode}
+                lastSyncedAt={prefs.lastSyncedAt}
                 onThemeChange={(theme) => updatePrefs({ theme })}
                 onFontSizeChange={(fontSize) => updatePrefs({ fontSize })}
+                onSyncCodeChange={(syncCode) => updatePrefs({ syncCode })}
+                onSynced={refreshPrefs}
               />
             }
           />
@@ -57,13 +120,21 @@ export default function App() {
                 onMultiplierChange={(multiplier) => updatePrefs({ multiplier })}
                 onFavoriteChange={refreshPrefs}
                 onViewed={refreshPrefs}
+                onDelete={deleteCocktail}
               />
             }
           />
           <Route path="/add" element={<CocktailFormPage cocktails={cocktails} onSave={addCocktail} mode="add" />} />
           <Route
             path="/cocktail/:id/edit"
-            element={<CocktailFormPage cocktails={cocktails} onSave={saveCocktail} mode="edit" />}
+            element={
+              <CocktailFormPage
+                cocktails={cocktails}
+                onSave={saveCocktail}
+                onDelete={deleteCocktail}
+                mode="edit"
+              />
+            }
           />
         </Routes>
       </div>

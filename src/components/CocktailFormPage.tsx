@@ -11,6 +11,7 @@ import {
 interface Props {
   cocktails: Cocktail[]
   onSave: (cocktail: Cocktail) => void
+  onDelete?: (id: string) => void
   mode: 'add' | 'edit'
 }
 
@@ -51,7 +52,7 @@ function ingredientsToText(ingredients: Ingredient[]): string {
     .join('\n')
 }
 
-export function CocktailFormPage({ cocktails, onSave, mode }: Props) {
+export function CocktailFormPage({ cocktails, onSave, onDelete, mode }: Props) {
   const { id } = useParams()
   const navigate = useNavigate()
   const existing = mode === 'edit' ? cocktails.find((c) => c.id === id) : undefined
@@ -244,6 +245,20 @@ export function CocktailFormPage({ cocktails, onSave, mode }: Props) {
         >
           {mode === 'edit' ? 'Save Changes' : 'Save Cocktail'}
         </button>
+
+        {mode === 'edit' && existing && onDelete && (
+          <button
+            type="button"
+            className="w-full rounded-2xl border border-red-900/60 py-3.5 text-base font-semibold text-red-300"
+            onClick={() => {
+              if (!window.confirm(`Delete "${existing.name}"? This cannot be undone.`)) return
+              onDelete(existing.id)
+              navigate('/')
+            }}
+          >
+            Delete Cocktail
+          </button>
+        )}
       </form>
     </div>
   )

@@ -3,7 +3,9 @@ import Fuse from 'fuse.js'
 import baseCocktails from '../data/cocktails.json'
 import type { Cocktail } from '../types'
 import {
+  deleteCocktail as removeCocktail,
   loadCustomCocktails,
+  loadDeletedIds,
   loadEdits,
   loadPrefs,
   saveCustomCocktails,
@@ -13,11 +15,14 @@ import {
 
 function mergeCocktails(customCocktails: Cocktail[]): Cocktail[] {
   const edits = loadEdits()
+  const deletedIds = new Set(loadDeletedIds())
   const customIds = new Set(customCocktails.map((c) => c.id))
   const base = (baseCocktails as Cocktail[])
-    .filter((c) => !customIds.has(c.id))
+    .filter((c) => !customIds.has(c.id) && !deletedIds.has(c.id))
     .map((c) => edits[c.id] ?? c)
-  const custom = customCocktails.map((c) => edits[c.id] ?? c)
+  const custom = customCocktails
+    .filter((c) => !deletedIds.has(c.id))
+    .map((c) => edits[c.id] ?? c)
   return [...base, ...custom]
 }
 
@@ -79,6 +84,16 @@ export function useCocktails() {
     [customCocktails, addCocktail, refresh],
   )
 
+  const deleteCocktail = useCallback(
+    (id: string) => {
+      const isCustom = customCocktails.some((c) => c.id === id)
+      removeCocktail(id, isCustom)
+      setCustomCocktails(loadCustomCocktails())
+      refresh()
+    },
+    [customCocktails, refresh],
+  )
+
   const updatePrefs = useCallback(
     (partial: Partial<ReturnType<typeof loadPrefs>>) => {
       const current = loadPrefs()
@@ -102,6 +117,7 @@ export function useCocktails() {
     fuse,
     addCocktail,
     saveCocktail,
+    deleteCocktail,
     updatePrefs,
     sortByRecent,
     refreshPrefs: refresh,

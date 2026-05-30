@@ -1,10 +1,26 @@
 import type { AppPreferences, Cocktail } from '../types'
-import { scheduleSyncPush } from './sync'
 
 const PREFS_KEY = 'cocktail-favorites:prefs'
 const CUSTOM_KEY = 'cocktail-favorites:custom'
 const EDITS_KEY = 'cocktail-favorites:edits'
+const DELETED_KEY = 'cocktail-favorites:deleted'
 const LEGACY_COLLAPSED_GROUPS_KEY = 'cocktail-favorites:collapsed-groups'
+
+let syncSuppressed = false
+
+function triggerSync() {
+  if (syncSuppressed) return
+  void import('./sync').then((m) => m.scheduleSyncPush())
+}
+
+export function runWithoutSync(fn: () => void) {
+  syncSuppressed = true
+  try {
+    fn()
+  } finally {
+    syncSuppressed = false
+  }
+}
 
 const defaultPrefs: AppPreferences = {
   favorites: [],
@@ -48,7 +64,7 @@ export function loadPrefs(): AppPreferences {
 
 export function savePrefs(prefs: AppPreferences) {
   localStorage.setItem(PREFS_KEY, JSON.stringify(prefs))
-  scheduleSyncPush()
+  triggerSync()
 }
 
 export function loadCustomCocktails(): Cocktail[] {
@@ -63,7 +79,7 @@ export function loadCustomCocktails(): Cocktail[] {
 
 export function saveCustomCocktails(cocktails: Cocktail[]) {
   localStorage.setItem(CUSTOM_KEY, JSON.stringify(cocktails))
-  scheduleSyncPush()
+  triggerSync()
 }
 
 export function loadEdits(): Record<string, Cocktail> {
@@ -78,7 +94,43 @@ export function loadEdits(): Record<string, Cocktail> {
 
 export function saveEdits(edits: Record<string, Cocktail>) {
   localStorage.setItem(EDITS_KEY, JSON.stringify(edits))
-  scheduleSyncPush()
+  triggerSync()
+}
+
+export function loadDeletedIds(): string[] {
+  try {
+    const raw = localStorage.getItem(DELETED_KEY)
+    if (!raw) return []
+    return JSON.parse(raw) as string[]
+  } catch {
+    return []
+  }
+}
+
+export function saveDeletedIds(ids: string[]) {
+  localStorage.setItem(DELETED_KEY, JSON.stringify(ids))
+  triggerSync()
+}
+
+export function deleteCocktail(id: string, isCustom: boolean) {
+  if (isCustom) {
+    saveCustomCocktails(loadCustomCocktails().filter((c) => c.id !== id))
+  } else {
+    const deleted = new Set(loadDeletedIds())
+    deleted.add(id)
+    saveDeletedIds([...deleted])
+  }
+
+  const edits = loadEdits()
+  if (edits[id]) {
+    delete edits[id]
+    saveEdits(edits)
+  }
+
+  const prefs = loadPrefs()
+  prefs.favorites = prefs.favorites.filter((f) => f !== id)
+  delete prefs.recentlyViewed[id]
+  savePrefs(prefs)
 }
 
 export function saveCocktailEdit(cocktail: Cocktail) {

@@ -37,6 +37,14 @@ export interface AppPreferences {
   lastSyncedAt: number | null
 }
 
+export interface SyncPayload {
+  updatedAt: number
+  edits: Record<string, Cocktail>
+  custom: Cocktail[]
+  deletedIds: string[]
+  prefs: AppPreferences
+}
+
 export const SPIRIT_ORDER = [
   'Whiskey',
   'Gin',

@@ -182,7 +182,7 @@
       },
       {
         "amount": 2,
-        "unit": "dashes",
+        "unit": "dash",
         "name": "Orange Bitters"
       },
       {
@@ -222,12 +222,12 @@
       },
       {
         "amount": 2,
-        "unit": "dashes",
+        "unit": "dash",
         "name": "Of Cardamon Bitters"
       },
       {
         "amount": 2,
-        "unit": "dashes",
+        "unit": "dash",
         "name": "Of Black Walnut Bitters"
       },
       {
@@ -355,7 +355,7 @@
       },
       {
         "amount": 2,
-        "unit": "dashes",
+        "unit": "dash",
         "name": "Saline Solution (1/5 Salt/Water)"
       }
     ],
@@ -513,7 +513,7 @@
       },
       {
         "amount": 3,
-        "unit": "dashes",
+        "unit": "dash",
         "name": "Of Lemon Bitters"
       }
     ],
@@ -557,7 +557,7 @@
       },
       {
         "amount": 2,
-        "unit": "dashes",
+        "unit": "dash",
         "name": "Angostura Bitters"
       },
       {
@@ -694,7 +694,7 @@
       },
       {
         "amount": 4,
-        "unit": "dashes",
+        "unit": "dash",
         "name": "Of Angostura Bitters"
       },
       {
@@ -993,7 +993,7 @@
       },
       {
         "amount": 2,
-        "unit": "dashes",
+        "unit": "dash",
         "name": "Angostura Bitters (or Chocolate Bitters)"
       }
     ],
@@ -1469,7 +1469,7 @@
       },
       {
         "amount": 2,
-        "unit": "dashes",
+        "unit": "dash",
         "name": "Of Saline Solution"
       }
     ],
@@ -1509,7 +1509,7 @@
       },
       {
         "amount": 3,
-        "unit": "dashes",
+        "unit": "dash",
         "name": "Of Chocolate Bitters"
       }
     ],
@@ -1533,7 +1533,7 @@
     "ingredients": [
       {
         "amount": 2,
-        "unit": "dashes",
+        "unit": "dash",
         "name": "Celery Bitters"
       },
       {
@@ -1603,7 +1603,7 @@
       },
       {
         "amount": 2,
-        "unit": "dashes",
+        "unit": "dash",
         "name": "Peychaud'S Bitters"
       }
     ],
@@ -1876,7 +1876,7 @@
     "ingredients": [
       {
         "amount": 2,
-        "unit": "dashes",
+        "unit": "dash",
         "name": "Of Chocolate Bitters"
       },
       {
@@ -2938,7 +2938,7 @@
       },
       {
         "amount": 2,
-        "unit": "dashes",
+        "unit": "dash",
         "name": "Hellfire Shrub Bittermen"
       }
     ],
@@ -3021,7 +3021,7 @@
       },
       {
         "amount": 2,
-        "unit": "dashes",
+        "unit": "dash",
         "name": "Bittermens Xocolatl Mole Bitters"
       }
     ],
@@ -3153,7 +3153,7 @@
       },
       {
         "amount": 2,
-        "unit": "dashes",
+        "unit": "dash",
         "name": "Angostura Bitters"
       }
     ],
@@ -3702,7 +3702,7 @@
       },
       {
         "amount": 2,
-        "unit": "dashes",
+        "unit": "dash",
         "name": "Angostura® Bitters"
       },
       {
@@ -3902,7 +3902,7 @@
       },
       {
         "amount": 2,
-        "unit": "dashes",
+        "unit": "dash",
         "name": "Angostura Bitters"
       }
     ],
@@ -4202,7 +4202,7 @@
       },
       {
         "amount": 2,
-        "unit": "dashes",
+        "unit": "dash",
         "name": "Of Orange Bitters"
       },
       {

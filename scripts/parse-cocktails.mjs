@@ -72,7 +72,8 @@ function parseAmount(text) {
   }
 
   const unit = unitRaw?.toLowerCase().replace(/\.$/, '') ?? null;
-  const normalizedUnit = unit?.startsWith('ounce') || unit === 'oz' ? 'oz' : unit;
+  const normalizedUnit =
+    unit?.startsWith('ounce') || unit === 'oz' ? 'oz' : unit?.startsWith('dash') ? 'dash' : unit;
   return { amount: Number.isFinite(amount) ? amount : null, unit: normalizedUnit, name: rest.trim() || text.trim() };
 }
 

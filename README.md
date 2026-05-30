@@ -55,5 +55,21 @@ All three are free, work great on Android, and support PWAs. Cloudflare Pages ha
 ## Data notes
 
 - Built-in recipes live in `src/data/cocktails.json`
-- Favorites, recently viewed, unit prefs, and custom cocktails are stored in your browser (localStorage)
-- To sync across devices later, you could add Supabase (also has a generous free tier)
+- Favorites, edits, custom cocktails, and preferences are stored in your browser (localStorage)
+- **Sync across devices:** open Settings, enter the same sync code on each device, then tap **Sync now**. Edits (including image URLs), favorites, and custom cocktails will stay in sync.
+
+### One-time Cloudflare KV setup (for sync)
+
+1. In the [Cloudflare dashboard](https://dash.cloudflare.com), go to **Workers & Pages → KV** and create a namespace (e.g. `COCKTAIL_SYNC`).
+2. Open your **cocktail-favorites** worker → **Settings → Bindings** → add a KV binding named `SYNC_KV` pointing to that namespace.
+3. Add the same binding to `wrangler.jsonc` so future deploys keep it:
+
+```jsonc
+"kv_namespaces": [
+  { "binding": "SYNC_KV", "id": "YOUR_NAMESPACE_ID" }
+]
+```
+
+4. Redeploy (`npm run deploy` or push to GitHub).
+
+Until KV is configured, the app still works — data stays on each device only.

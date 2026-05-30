@@ -48,6 +48,6 @@ export function formatIngredientParts(
 
   const scaled = amount * multiplier
   const amountText = Number.isInteger(scaled) ? String(scaled) : formatAmount(scaled)
-  const unitLabel = ingUnit === 'dash' || ingUnit === 'dashes' ? (scaled === 1 ? 'dash' : 'dashes') : ingUnit
+  const unitLabel = ingUnit === 'dash' || ingUnit === 'dashes' ? 'dash' : ingUnit
   return { amount: `${amountText} ${unitLabel}`, name }
 }
