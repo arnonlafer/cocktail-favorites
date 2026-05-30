@@ -43,7 +43,6 @@ export function LoginPage({ onSuccess }: Props) {
             value={username}
             onChange={(e) => setUsername(e.target.value)}
             className="w-full rounded-xl border border-app bg-bar-800 px-3 py-2.5 text-foreground outline-none focus:border-amber-accent/60"
-            placeholder="Anything works"
           />
         </label>
 
