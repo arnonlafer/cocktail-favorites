@@ -172,3 +172,18 @@ export function formatSyncTime(timestamp: number | null | undefined): string {
   if (!timestamp) return 'Never'
   return new Date(timestamp).toLocaleString()
 }
+
+/** Returns whether the server has cloud storage (KV) connected. */
+export async function checkSyncServer(): Promise<'ready' | 'not-configured' | 'error'> {
+  try {
+    const res = await fetch('/api/sync', {
+      headers: { ...authHeaders(), [SYNC_HEADER]: 'probe' },
+    })
+    if (res.status === 503) return 'not-configured'
+    if (res.status === 401) return 'ready'
+    if (!res.ok) return 'error'
+    return 'ready'
+  } catch {
+    return 'error'
+  }
+}

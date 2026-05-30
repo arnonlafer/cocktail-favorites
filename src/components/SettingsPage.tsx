@@ -1,8 +1,8 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import type { FontSize, Theme } from '../types'
 import { FONT_SIZE_LABELS, stepFontSize } from '../lib/theme'
-import { formatSyncTime, syncNow, type SyncStatus } from '../lib/sync'
+import { checkSyncServer, formatSyncTime, syncNow, type SyncStatus } from '../lib/sync'
 
 interface Props {
   theme: Theme
@@ -13,21 +13,6 @@ interface Props {
   onFontSizeChange: (fontSize: FontSize) => void
   onSyncCodeChange: (syncCode: string) => void
   onSynced: () => void
-}
-
-function statusLabel(status: SyncStatus): string {
-  switch (status) {
-    case 'syncing':
-      return 'Syncing…'
-    case 'synced':
-      return 'Synced'
-    case 'error':
-      return 'Sync failed — check your connection'
-    case 'not-configured':
-      return 'Cloud sync is not set up on the server yet'
-    default:
-      return ''
-  }
 }
 
 export function SettingsPage({
@@ -43,27 +28,38 @@ export function SettingsPage({
   const navigate = useNavigate()
   const [draftCode, setDraftCode] = useState(syncCode)
   const [syncStatus, setSyncStatus] = useState<SyncStatus>('idle')
+  const [serverReady, setServerReady] = useState<'checking' | 'ready' | 'not-configured' | 'error'>('checking')
+
+  useEffect(() => {
+    void checkSyncServer().then(setServerReady)
+  }, [])
+
+  async function runSync(code: string) {
+    setSyncStatus('syncing')
+    const status = await syncNow(code)
+    setSyncStatus(status)
+    if (status === 'synced') {
+      setServerReady('ready')
+      onSynced()
+    } else if (status === 'not-configured') {
+      setServerReady('not-configured')
+    }
+  }
 
   async function saveSyncCode() {
     const code = draftCode.trim()
     onSyncCodeChange(code)
     if (!code) return
-
-    setSyncStatus('syncing')
-    const status = await syncNow(code)
-    setSyncStatus(status)
-    if (status === 'synced') onSynced()
+    await runSync(code)
   }
 
   async function handleSyncNow() {
     const code = draftCode.trim() || syncCode.trim()
     if (!code) return
-
-    setSyncStatus('syncing')
-    const status = await syncNow(code)
-    setSyncStatus(status)
-    if (status === 'synced') onSynced()
+    await runSync(code)
   }
+
+  const showServerWarning = serverReady === 'not-configured' || syncStatus === 'not-configured'
 
   return (
     <div className="safe-bottom pb-8">
@@ -77,10 +73,27 @@ export function SettingsPage({
       <div className="space-y-4 px-4 pt-4">
         <section className="rounded-2xl border border-app bg-bar-900/60 p-4">
           <h2 className="mb-1 text-base font-semibold text-foreground">Sync across devices</h2>
-          <p className="mb-4 text-sm text-muted">
-            Edits, custom cocktails, favorites, and preferences are stored on each device by default. Enter the
-            same sync code on every phone or browser to keep them in sync.
+          <p className="mb-3 text-sm text-muted">
+            The sync code links your devices together, but your edits only travel between them after they are
+            saved to Cloudflare storage on the server.
           </p>
+          <ol className="mb-4 list-decimal space-y-1 pl-4 text-xs text-subtle">
+            <li>Finish the one-time Cloudflare setup (bind SYNC_KV — see README)</li>
+            <li>Enter the same sync code on every device</li>
+            <li>After editing a recipe, tap Sync now on that device</li>
+            <li>On the other device, tap Sync now to download the change</li>
+          </ol>
+          {showServerWarning && (
+            <p className="mb-4 rounded-xl border border-red-900/50 bg-red-950/40 px-3 py-2 text-sm text-red-200">
+              Cloud storage is not connected yet. Sync will not work until you bind the SYNC_KV namespace to the
+              cocktail-favorites worker in Cloudflare (Step 3 in the README).
+            </p>
+          )}
+          {serverReady === 'ready' && !showServerWarning && (
+            <p className="mb-4 rounded-xl border border-emerald-900/40 bg-emerald-950/30 px-3 py-2 text-xs text-emerald-200">
+              Cloud storage is connected. Sync should work between devices.
+            </p>
+          )}
           <label className="mb-2 block text-sm font-medium text-foreground" htmlFor="sync-code">
             Sync code
           </label>
@@ -113,15 +126,11 @@ export function SettingsPage({
           </div>
           <p className="mt-3 text-xs text-subtle">
             Last synced: {formatSyncTime(lastSyncedAt)}
-            {syncStatus !== 'idle' && syncStatus !== 'synced' ? ` · ${statusLabel(syncStatus)}` : ''}
+            {syncStatus === 'syncing' ? ' · Syncing…' : ''}
             {syncStatus === 'synced' ? ' · Synced just now' : ''}
+            {syncStatus === 'error' ? ' · Sync failed — check connection and sign-in' : ''}
+            {syncStatus === 'not-configured' ? ' · Server storage not set up' : ''}
           </p>
-          {syncStatus === 'not-configured' && (
-            <p className="mt-2 rounded-xl border border-amber-accent/30 bg-amber-accent/10 px-3 py-2 text-xs text-amber-light">
-              Cloud storage is not set up on the server yet. Sync cannot work until a KV namespace named{' '}
-              <strong>SYNC_KV</strong> is bound to this worker in Cloudflare.
-            </p>
-          )}
         </section>
 
         <section className="rounded-2xl border border-app bg-bar-900/60 p-4">
