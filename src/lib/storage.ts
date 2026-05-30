@@ -1,4 +1,5 @@
 import type { AppPreferences, Cocktail } from '../types'
+import { scheduleSyncPush } from './sync'
 
 const PREFS_KEY = 'cocktail-favorites:prefs'
 const CUSTOM_KEY = 'cocktail-favorites:custom'
@@ -13,6 +14,9 @@ const defaultPrefs: AppPreferences = {
   theme: 'dark',
   fontSize: 'md',
   collapsedGroups: null,
+  syncCode: '',
+  syncUpdatedAt: 0,
+  lastSyncedAt: null,
 }
 
 function migrateLegacyCollapsedGroups(): string[] | null {
@@ -44,6 +48,7 @@ export function loadPrefs(): AppPreferences {
 
 export function savePrefs(prefs: AppPreferences) {
   localStorage.setItem(PREFS_KEY, JSON.stringify(prefs))
+  scheduleSyncPush()
 }
 
 export function loadCustomCocktails(): Cocktail[] {
@@ -58,6 +63,7 @@ export function loadCustomCocktails(): Cocktail[] {
 
 export function saveCustomCocktails(cocktails: Cocktail[]) {
   localStorage.setItem(CUSTOM_KEY, JSON.stringify(cocktails))
+  scheduleSyncPush()
 }
 
 export function loadEdits(): Record<string, Cocktail> {
@@ -72,6 +78,7 @@ export function loadEdits(): Record<string, Cocktail> {
 
 export function saveEdits(edits: Record<string, Cocktail>) {
   localStorage.setItem(EDITS_KEY, JSON.stringify(edits))
+  scheduleSyncPush()
 }
 
 export function saveCocktailEdit(cocktail: Cocktail) {
