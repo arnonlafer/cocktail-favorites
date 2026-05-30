@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
+import { createPortal } from 'react-dom'
 import { Link, useNavigate } from 'react-router-dom'
 import type { IngredientNutrition } from '../types'
 import { getAllNutritionEntries } from '../lib/nutrition'
@@ -37,6 +38,15 @@ export function IngredientsPage({ onChanged }: Props) {
   }, [entries, query])
 
   useEffect(() => subscribeSyncApplied(() => setVersion((v) => v + 1)), [])
+
+  useEffect(() => {
+    if (!editing) return
+    const prev = document.body.style.overflow
+    document.body.style.overflow = 'hidden'
+    return () => {
+      document.body.style.overflow = prev
+    }
+  }, [editing])
 
   const refresh = () => {
     setVersion((v) => v + 1)
@@ -95,6 +105,107 @@ export function IngredientsPage({ onChanged }: Props) {
   }
 
   const hasOverride = (id: string) => loadNutritionOverrides().some((e) => e.id === id)
+
+  const editDialog =
+    editing &&
+    createPortal(
+      <div
+        className="fixed inset-0 z-[100] flex items-end justify-center bg-black/60 p-4 sm:items-center"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="ingredient-edit-title"
+        onClick={() => setEditing(null)}
+      >
+        <section
+          className="max-h-[min(90dvh,640px)] w-full max-w-lg overflow-y-auto rounded-2xl border border-amber-accent/40 bg-bar-900 p-4 shadow-xl"
+          onClick={(e) => e.stopPropagation()}
+        >
+          <h2 id="ingredient-edit-title" className="mb-3 text-base font-semibold text-foreground">
+            {isNew ? 'New ingredient' : `Edit ${editing.name}`}
+          </h2>
+          <div className="space-y-3">
+            <label className="block">
+              <span className="mb-1 block text-xs text-subtle">Name</span>
+              <input
+                value={editing.name}
+                onChange={(e) => setEditing({ ...editing, name: e.target.value })}
+                className="w-full rounded-xl border border-app bg-bar-800 px-3 py-2 text-sm text-foreground"
+              />
+            </label>
+            <div className="grid grid-cols-2 gap-3">
+              <label className="block">
+                <span className="mb-1 block text-xs text-subtle">Calories / oz</span>
+                <input
+                  type="number"
+                  min={0}
+                  step={1}
+                  value={editing.caloriesPerOz}
+                  onChange={(e) =>
+                    setEditing({ ...editing, caloriesPerOz: Number(e.target.value) || 0 })
+                  }
+                  className="w-full rounded-xl border border-app bg-bar-800 px-3 py-2 text-sm text-foreground"
+                />
+              </label>
+              <label className="block">
+                <span className="mb-1 block text-xs text-subtle">Carbs / oz (g)</span>
+                <input
+                  type="number"
+                  min={0}
+                  step={0.1}
+                  value={editing.carbsPerOz}
+                  onChange={(e) =>
+                    setEditing({ ...editing, carbsPerOz: Number(e.target.value) || 0 })
+                  }
+                  className="w-full rounded-xl border border-app bg-bar-800 px-3 py-2 text-sm text-foreground"
+                />
+              </label>
+            </div>
+            <label className="block">
+              <span className="mb-1 block text-xs text-subtle">
+                Aliases (comma-separated, for matching recipe names)
+              </span>
+              <input
+                value={(editing.aliases ?? []).join(', ')}
+                onChange={(e) =>
+                  setEditing({
+                    ...editing,
+                    aliases: e.target.value.split(',').map((s) => s.trim()),
+                  })
+                }
+                placeholder="e.g. blanco tequila, tequila blanco"
+                className="w-full rounded-xl border border-app bg-bar-800 px-3 py-2 text-sm text-foreground"
+              />
+            </label>
+            <div className="flex gap-2">
+              <button
+                type="button"
+                onClick={() => void saveEntry()}
+                className="flex-1 rounded-xl bg-amber-accent py-2 text-sm font-semibold text-bar-950"
+              >
+                Save
+              </button>
+              <button
+                type="button"
+                onClick={() => setEditing(null)}
+                className="flex-1 rounded-xl border border-app py-2 text-sm text-muted"
+              >
+                Cancel
+              </button>
+            </div>
+            {!isNew && (editing.custom || hasOverride(editing.id)) && (
+              <button
+                type="button"
+                onClick={() => void removeEntry(editing.id)}
+                className="w-full rounded-xl border border-red-900/50 py-2 text-sm text-red-300"
+              >
+                {editing.custom ? 'Delete custom entry' : 'Reset to default'}
+              </button>
+            )}
+          </div>
+        </section>
+      </div>,
+      document.body,
+    )
 
   return (
     <div className="safe-bottom pb-8">
@@ -164,100 +275,7 @@ export function IngredientsPage({ onChanged }: Props) {
         </Link>
       </div>
 
-      {editing && (
-        <div
-          className="fixed inset-0 z-50 flex items-end justify-center bg-black/60 p-4 sm:items-center"
-          onClick={() => setEditing(null)}
-        >
-          <section
-            className="max-h-[90dvh] w-full max-w-lg overflow-y-auto rounded-2xl border border-amber-accent/40 bg-bar-900 p-4 shadow-xl"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <h2 className="mb-3 text-base font-semibold text-foreground">
-              {isNew ? 'New ingredient' : `Edit ${editing.name}`}
-            </h2>
-            <div className="space-y-3">
-              <label className="block">
-                <span className="mb-1 block text-xs text-subtle">Name</span>
-                <input
-                  value={editing.name}
-                  onChange={(e) => setEditing({ ...editing, name: e.target.value })}
-                  className="w-full rounded-xl border border-app bg-bar-800 px-3 py-2 text-sm text-foreground"
-                />
-              </label>
-              <div className="grid grid-cols-2 gap-3">
-                <label className="block">
-                  <span className="mb-1 block text-xs text-subtle">Calories / oz</span>
-                  <input
-                    type="number"
-                    min={0}
-                    step={1}
-                    value={editing.caloriesPerOz}
-                    onChange={(e) =>
-                      setEditing({ ...editing, caloriesPerOz: Number(e.target.value) || 0 })
-                    }
-                    className="w-full rounded-xl border border-app bg-bar-800 px-3 py-2 text-sm text-foreground"
-                  />
-                </label>
-                <label className="block">
-                  <span className="mb-1 block text-xs text-subtle">Carbs / oz (g)</span>
-                  <input
-                    type="number"
-                    min={0}
-                    step={0.1}
-                    value={editing.carbsPerOz}
-                    onChange={(e) =>
-                      setEditing({ ...editing, carbsPerOz: Number(e.target.value) || 0 })
-                    }
-                    className="w-full rounded-xl border border-app bg-bar-800 px-3 py-2 text-sm text-foreground"
-                  />
-                </label>
-              </div>
-              <label className="block">
-                <span className="mb-1 block text-xs text-subtle">
-                  Aliases (comma-separated, for matching recipe names)
-                </span>
-                <input
-                  value={(editing.aliases ?? []).join(', ')}
-                  onChange={(e) =>
-                    setEditing({
-                      ...editing,
-                      aliases: e.target.value.split(',').map((s) => s.trim()),
-                    })
-                  }
-                  placeholder="e.g. blanco tequila, tequila blanco"
-                  className="w-full rounded-xl border border-app bg-bar-800 px-3 py-2 text-sm text-foreground"
-                />
-              </label>
-              <div className="flex gap-2">
-                <button
-                  type="button"
-                  onClick={() => void saveEntry()}
-                  className="flex-1 rounded-xl bg-amber-accent py-2 text-sm font-semibold text-bar-950"
-                >
-                  Save
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setEditing(null)}
-                  className="flex-1 rounded-xl border border-app py-2 text-sm text-muted"
-                >
-                  Cancel
-                </button>
-              </div>
-              {!isNew && (editing.custom || hasOverride(editing.id)) && (
-                <button
-                  type="button"
-                  onClick={() => void removeEntry(editing.id)}
-                  className="w-full rounded-xl border border-red-900/50 py-2 text-sm text-red-300"
-                >
-                  {editing.custom ? 'Delete custom entry' : 'Reset to default'}
-                </button>
-              )}
-            </div>
-          </section>
-        </div>
-      )}
+      {editDialog}
     </div>
   )
 }
