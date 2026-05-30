@@ -13,11 +13,11 @@ export function IngredientList({ ingredients, unit, multiplier }: Props) {
       {ingredients.map((ing, i) => {
         const { amount, name } = formatIngredientParts(ing, unit, multiplier)
         return (
-          <li key={i} className="flex items-baseline gap-4 px-4 py-3">
-            <span className="w-12 shrink-0 text-right font-semibold tabular-nums text-amber-light">
+          <li key={i} className="flex items-baseline gap-3 px-4 py-3">
+            <span className="w-16 shrink-0 text-right text-base font-semibold tabular-nums text-amber-light">
               {amount}
             </span>
-            <span className="flex-1 text-sm leading-snug text-foreground/90">{name}</span>
+            <span className="flex-1 text-base leading-snug text-foreground/90">{name}</span>
           </li>
         )
       })}
