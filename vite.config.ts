@@ -8,7 +8,7 @@ import { cloudflare } from "@cloudflare/vite-plugin";
 export default defineConfig({
   plugins: [react(), tailwindcss(), VitePWA({
     registerType: 'autoUpdate',
-    includeAssets: ['favicon.svg'],
+    includeAssets: ['icon-512.png'],
     manifest: {
       name: 'Cocktail Favorites',
       short_name: 'Cocktails',
@@ -20,10 +20,16 @@ export default defineConfig({
       start_url: '/',
       icons: [
         {
-          src: 'favicon.svg',
+          src: 'icon-512.png',
           sizes: '512x512',
-          type: 'image/svg+xml',
-          purpose: 'any maskable',
+          type: 'image/png',
+          purpose: 'any',
+        },
+        {
+          src: 'icon-512.png',
+          sizes: '512x512',
+          type: 'image/png',
+          purpose: 'maskable',
         },
       ],
     },

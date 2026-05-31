@@ -1,12 +1,17 @@
-import { useEffect, useMemo } from 'react'
-import { Link, useNavigate, useParams } from 'react-router-dom'
+import { useCallback, useEffect, useMemo, useRef } from 'react'
+import { Link, useLocation, useNavigate, useParams, useSearchParams } from 'react-router-dom'
 import type { Cocktail, UnitSystem } from '../types'
+import { browseNeighbors, resolveBrowseIds, saveBrowseIds } from '../lib/browse'
 import { calculateCocktailNutrition } from '../lib/nutrition'
 import { cocktailInitials, spiritGradient, subtitle } from '../lib/cocktailUtils'
 import { markRecentlyViewed, toggleFavorite } from '../lib/storage'
 import { UnitControls } from './UnitControls'
 import { IngredientList } from './IngredientList'
 import { InstructionList } from './InstructionList'
+
+interface BrowseState {
+  browseIds?: string[]
+}
 
 interface Props {
   cocktails: Cocktail[]
@@ -18,6 +23,8 @@ interface Props {
   onFavoriteChange: () => void
   onViewed: () => void
 }
+
+const SWIPE_THRESHOLD = 60
 
 export function CocktailDetailPage({
   cocktails,
@@ -31,8 +38,44 @@ export function CocktailDetailPage({
 }: Props) {
   const { id } = useParams()
   const navigate = useNavigate()
+  const location = useLocation()
+  const [searchParams] = useSearchParams()
+  const touchStartX = useRef<number | null>(null)
+
   const cocktail = cocktails.find((c) => c.id === id)
   const isFavorite = id ? favorites.includes(id) : false
+
+  const allIds = useMemo(() => cocktails.map((c) => c.id), [cocktails])
+  const browseIds = useMemo(
+    () => resolveBrowseIds((location.state as BrowseState | null)?.browseIds, id ?? '', allIds),
+    [location.state, id, allIds],
+  )
+
+  const { index, prevId, nextId, total } = useMemo(
+    () => (id ? browseNeighbors(browseIds, id) : { index: -1, prevId: null, nextId: null, total: 0 }),
+    [browseIds, id],
+  )
+
+  const filterSearch = searchParams.toString()
+
+  const goToCocktail = useCallback(
+    (targetId: string) => {
+      saveBrowseIds(browseIds)
+      navigate(`/cocktail/${targetId}${filterSearch ? `?${filterSearch}` : ''}`, {
+        replace: true,
+        state: { browseIds },
+      })
+    },
+    [browseIds, filterSearch, navigate],
+  )
+
+  const goBack = useCallback(() => {
+    if (filterSearch) {
+      navigate(`/?${filterSearch}`)
+      return
+    }
+    navigate('/')
+  }, [filterSearch, navigate])
 
   useEffect(() => {
     if (id) {
@@ -40,6 +83,15 @@ export function CocktailDetailPage({
       onViewed()
     }
   }, [id, onViewed])
+
+  useEffect(() => {
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'ArrowLeft' && prevId) goToCocktail(prevId)
+      if (event.key === 'ArrowRight' && nextId) goToCocktail(nextId)
+    }
+    window.addEventListener('keydown', onKeyDown)
+    return () => window.removeEventListener('keydown', onKeyDown)
+  }, [goToCocktail, nextId, prevId])
 
   const nutrition = useMemo(
     () => (cocktail ? calculateCocktailNutrition(cocktail, multiplier) : null),
@@ -50,40 +102,81 @@ export function CocktailDetailPage({
     return (
       <div className="px-4 py-8 text-center">
         <p className="text-muted">Cocktail not found.</p>
-        <Link to="/" className="mt-4 inline-block text-amber-accent">
+        <button type="button" onClick={goBack} className="mt-4 inline-block text-amber-accent">
           Back to list
-        </Link>
+        </button>
       </div>
     )
   }
 
   const gradient = spiritGradient(cocktail)
+  const showBrowse = total > 1 && index >= 0
 
   return (
-    <div className="safe-bottom pb-24">
-      <div className="sticky top-0 z-10 flex items-center justify-between border-b border-app bg-app px-4 py-3 backdrop-blur">
-        <button type="button" onClick={() => navigate(-1)} className="text-amber-accent">
-          ← Back
-        </button>
-        <div className="flex items-center gap-2">
-          <Link
-            to={`/cocktail/${cocktail.id}/edit`}
-            className="rounded-lg border border-app-strong px-3 py-1.5 text-xs font-medium text-muted"
-          >
-            Edit
-          </Link>
-          <button
-            type="button"
-            aria-label={isFavorite ? 'Remove favorite' : 'Add favorite'}
-            className="text-2xl"
-            onClick={() => {
-              toggleFavorite(cocktail.id)
-              onFavoriteChange()
-            }}
-          >
-            {isFavorite ? '❤️' : '🤍'}
+    <div
+      className="safe-bottom pb-24"
+      onTouchStart={(e) => {
+        touchStartX.current = e.touches[0]?.clientX ?? null
+      }}
+      onTouchEnd={(e) => {
+        if (touchStartX.current == null) return
+        const endX = e.changedTouches[0]?.clientX
+        if (endX == null) return
+        const delta = endX - touchStartX.current
+        touchStartX.current = null
+        if (Math.abs(delta) < SWIPE_THRESHOLD) return
+        if (delta < 0 && nextId) goToCocktail(nextId)
+        if (delta > 0 && prevId) goToCocktail(prevId)
+      }}
+    >
+      <div className="sticky top-0 z-10 border-b border-app bg-app px-4 py-3 backdrop-blur">
+        <div className="flex items-center justify-between">
+          <button type="button" onClick={goBack} className="text-amber-accent">
+            ← Back
           </button>
+          <div className="flex items-center gap-2">
+            <Link
+              to={`/cocktail/${cocktail.id}/edit`}
+              className="rounded-lg border border-app-strong px-3 py-1.5 text-xs font-medium text-muted"
+            >
+              Edit
+            </Link>
+            <button
+              type="button"
+              aria-label={isFavorite ? 'Remove favorite' : 'Add favorite'}
+              className="text-2xl"
+              onClick={() => {
+                toggleFavorite(cocktail.id)
+                onFavoriteChange()
+              }}
+            >
+              {isFavorite ? '❤️' : '🤍'}
+            </button>
+          </div>
         </div>
+        {showBrowse && (
+          <div className="mt-2 flex items-center justify-between gap-2">
+            <button
+              type="button"
+              disabled={!prevId}
+              onClick={() => prevId && goToCocktail(prevId)}
+              className="rounded-lg border border-app px-3 py-1 text-xs font-medium text-muted disabled:opacity-30"
+            >
+              ← Prev
+            </button>
+            <span className="text-xs text-subtle">
+              {index + 1} of {total}
+            </span>
+            <button
+              type="button"
+              disabled={!nextId}
+              onClick={() => nextId && goToCocktail(nextId)}
+              className="rounded-lg border border-app px-3 py-1 text-xs font-medium text-muted disabled:opacity-30"
+            >
+              Next →
+            </button>
+          </div>
+        )}
       </div>
 
       <div className={`mx-4 mt-4 aspect-[4/3] overflow-hidden rounded-2xl bg-linear-to-br ${gradient}`}>
@@ -113,6 +206,9 @@ export function CocktailDetailPage({
                 <span className="text-subtle"> · {nutrition.unknown.length} ingredient(s) not in database</span>
               )}
             </p>
+          )}
+          {showBrowse && (
+            <p className="mt-1 text-xs text-subtle">Swipe left/right for next or previous recipe</p>
           )}
         </header>
 

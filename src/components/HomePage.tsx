@@ -1,7 +1,8 @@
-import { useMemo, useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { useCallback, useMemo } from 'react'
+import { Link, useNavigate, useSearchParams } from 'react-router-dom'
 import type { AppPreferences, Cocktail, ListView } from '../types'
 import { SPIRIT_ORDER } from '../types'
+import { saveBrowseIds } from '../lib/browse'
 import { computeCollapsedGroups } from '../lib/groups'
 import { toggleFavorite } from '../lib/storage'
 import { CocktailCard } from './CocktailCard'
@@ -30,10 +31,42 @@ export function HomePage({
   onUpdateCollapsedGroups,
   onListViewChange,
 }: Props) {
-  const [query, setQuery] = useState('')
-  const [favoritesOnly, setFavoritesOnly] = useState(false)
+  const [searchParams, setSearchParams] = useSearchParams()
   const navigate = useNavigate()
   const listView = prefs.listView ?? 'list'
+
+  const query = searchParams.get('q') ?? ''
+  const favoritesOnly = searchParams.get('favorites') === '1'
+
+  const setQuery = useCallback(
+    (value: string) => {
+      setSearchParams(
+        (prev) => {
+          const next = new URLSearchParams(prev)
+          if (value.trim()) next.set('q', value)
+          else next.delete('q')
+          return next
+        },
+        { replace: true },
+      )
+    },
+    [setSearchParams],
+  )
+
+  const setFavoritesOnly = useCallback(
+    (value: boolean) => {
+      setSearchParams(
+        (prev) => {
+          const next = new URLSearchParams(prev)
+          if (value) next.set('favorites', '1')
+          else next.delete('favorites')
+          return next
+        },
+        { replace: true },
+      )
+    },
+    [setSearchParams],
+  )
 
   const filtered = useMemo(() => {
     let items = query.trim() ? fuse.search(query.trim()).map((r) => r.item) : cocktails
@@ -75,12 +108,23 @@ export function HomePage({
     onUpdateCollapsedGroups([...next])
   }
 
-  const renderCard = (cocktail: Cocktail) => {
+  const openCocktail = useCallback(
+    (cocktail: Cocktail, browseIds: string[]) => {
+      saveBrowseIds(browseIds)
+      const search = searchParams.toString()
+      navigate(`/cocktail/${cocktail.id}${search ? `?${search}` : ''}`, {
+        state: { browseIds },
+      })
+    },
+    [navigate, searchParams],
+  )
+
+  const renderCard = (cocktail: Cocktail, browseIds: string[]) => {
     const props = {
       key: cocktail.id,
       cocktail,
       isFavorite: favorites.includes(cocktail.id),
-      onClick: () => navigate(`/cocktail/${cocktail.id}`),
+      onClick: () => openCocktail(cocktail, browseIds),
       onToggleFavorite: (e: React.MouseEvent) => {
         e.stopPropagation()
         toggleFavorite(cocktail.id)
@@ -91,14 +135,16 @@ export function HomePage({
     return listView === 'grid' ? <CocktailGridCard {...props} /> : <CocktailCard {...props} />
   }
 
-  const renderList = (items: Cocktail[]) =>
+  const renderList = (items: Cocktail[], browseIds: string[]) =>
     listView === 'grid' ? (
       <div className="grid grid-cols-2 gap-3">
-        {items.map((cocktail) => renderCard(cocktail))}
+        {items.map((cocktail) => renderCard(cocktail, browseIds))}
       </div>
     ) : (
-      <div className="space-y-2">{items.map((cocktail) => renderCard(cocktail))}</div>
+      <div className="space-y-2">{items.map((cocktail) => renderCard(cocktail, browseIds))}</div>
     )
+
+  const flatBrowseIds = useMemo(() => filtered.map((c) => c.id), [filtered])
 
   return (
     <div className="safe-bottom pb-24">
@@ -121,12 +167,16 @@ export function HomePage({
             </Link>
           </div>
         </div>
-        <p className="mb-4 text-xs text-subtle">{cocktails.length} recipes · sorted by recently opened</p>
+        <p className="mb-4 text-xs text-subtle">
+          {filtered.length === cocktails.length
+            ? `${cocktails.length} recipes · sorted by recently opened`
+            : `${filtered.length} of ${cocktails.length} recipes`}
+        </p>
         <SearchBar value={query} onChange={setQuery} />
         <div className="mt-3 flex flex-wrap items-center gap-2">
           <button
             type="button"
-            onClick={() => setFavoritesOnly((v) => !v)}
+            onClick={() => setFavoritesOnly(!favoritesOnly)}
             className={`rounded-full border px-3 py-1.5 text-xs font-medium transition ${
               favoritesOnly
                 ? 'border-amber-accent bg-amber-accent/15 text-amber-light'
@@ -167,6 +217,7 @@ export function HomePage({
           <div className="space-y-4">
             {grouped.map(({ spirit, cocktails: groupCocktails }) => {
               const isCollapsed = collapsedGroups.has(spirit)
+              const groupBrowseIds = groupCocktails.map((c) => c.id)
               return (
                 <section key={spirit} className="rounded-2xl border border-app bg-bar-900/40">
                   <button
@@ -187,14 +238,16 @@ export function HomePage({
                     </span>
                   </button>
                   {!isCollapsed && (
-                    <div className="border-t border-app px-3 pb-3 pt-2">{renderList(groupCocktails)}</div>
+                    <div className="border-t border-app px-3 pb-3 pt-2">
+                      {renderList(groupCocktails, groupBrowseIds)}
+                    </div>
                   )}
                 </section>
               )
             })}
           </div>
         ) : (
-          renderList(filtered)
+          renderList(filtered, flatBrowseIds)
         )}
       </main>
     </div>
