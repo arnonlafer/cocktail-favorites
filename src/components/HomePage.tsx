@@ -150,7 +150,9 @@ export function HomePage({
     <div className="safe-bottom pb-24">
       <header className="sticky top-0 z-10 border-b border-app bg-app px-4 py-4 backdrop-blur">
         <div className="mb-1 flex items-center justify-between">
-          <h1 className="font-display text-2xl font-bold text-foreground">Cocktail Favorites</h1>
+          <h1 className="font-display text-2xl font-bold text-foreground">
+            Hi {prefs.userName.trim() || 'there'}
+          </h1>
           <div className="flex items-center gap-2">
             <Link
               to="/settings"

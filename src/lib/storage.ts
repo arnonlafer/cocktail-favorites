@@ -42,6 +42,7 @@ const defaultPrefs: AppPreferences = {
   theme: 'dark',
   fontSize: 'md',
   collapsedGroups: null,
+  userName: '',
   syncCode: '',
   syncUpdatedAt: 0,
   lastSyncedAt: null,
@@ -78,6 +79,18 @@ export function loadPrefs(): AppPreferences {
 export function savePrefs(prefs: AppPreferences) {
   localStorage.setItem(PREFS_KEY, JSON.stringify(prefs))
   triggerPrefsSync()
+}
+
+const DEFAULT_SYNC_CODE = 'arnon'
+
+/** Save display name on login; set default sync code on first use. */
+export function saveLoginProfile(userName: string) {
+  const prefs = loadPrefs()
+  prefs.userName = userName.trim()
+  if (!prefs.syncCode.trim()) {
+    prefs.syncCode = DEFAULT_SYNC_CODE
+  }
+  savePrefs(prefs)
 }
 
 function bumpSyncTimestamp() {

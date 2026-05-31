@@ -41,6 +41,7 @@ export interface AppPreferences {
   fontSize: FontSize
   /** null = auto-collapse all except last-viewed cocktail's group(s) */
   collapsedGroups: string[] | null
+  userName: string
   /** Same code on all devices to sync edits, custom cocktails, and preferences */
   syncCode: string
   syncUpdatedAt: number

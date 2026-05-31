@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { login } from '../lib/auth'
+import { saveLoginProfile } from '../lib/storage'
 
 interface Props {
   onSuccess: () => void
@@ -24,6 +25,7 @@ export function LoginPage({ onSuccess }: Props) {
       return
     }
 
+    saveLoginProfile(username)
     onSuccess()
   }
 
@@ -36,12 +38,13 @@ export function LoginPage({ onSuccess }: Props) {
 
       <form onSubmit={(e) => void handleSubmit(e)} className="space-y-4 rounded-2xl border border-app bg-bar-900/60 p-5">
         <label className="block space-y-1.5">
-          <span className="text-sm text-muted">Username</span>
+          <span className="text-sm text-muted">Your Name</span>
           <input
             type="text"
-            autoComplete="username"
+            autoComplete="name"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
+            required
             className="w-full rounded-xl border border-app bg-bar-800 px-3 py-2.5 text-foreground outline-none focus:border-amber-accent/60"
           />
         </label>
@@ -62,7 +65,7 @@ export function LoginPage({ onSuccess }: Props) {
 
         <button
           type="submit"
-          disabled={loading || !password}
+          disabled={loading || !password || !username.trim()}
           className="w-full rounded-2xl bg-amber-accent py-3.5 text-base font-semibold text-bar-950 disabled:opacity-50"
         >
           {loading ? 'Signing in…' : 'Sign in'}
