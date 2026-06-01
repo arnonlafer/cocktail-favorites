@@ -40,9 +40,26 @@ export function SearchBar({ value, onChange, placeholder = 'Search cocktails or 
     }
   }
 
+  const clear = () => {
+    publish('')
+    inputRef.current?.focus()
+  }
+
+  const hasQuery = draft.length > 0
+
   return (
     <div className="relative">
       <span className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-subtle">🔍</span>
+      {hasQuery && (
+        <button
+          type="button"
+          aria-label="Clear search"
+          onClick={clear}
+          className="absolute right-2 top-1/2 flex h-8 w-8 -translate-y-1/2 items-center justify-center rounded-full text-muted transition hover:bg-bar-700 hover:text-foreground"
+        >
+          ×
+        </button>
+      )}
       <input
         ref={inputRef}
         type="text"
@@ -68,7 +85,7 @@ export function SearchBar({ value, onChange, placeholder = 'Search cocktails or 
           readAndPublish()
         }}
         placeholder={placeholder}
-        className="w-full rounded-2xl border border-app bg-bar-800 py-3 pl-10 pr-4 text-foreground placeholder:text-subtle outline-none focus:border-amber-accent/60"
+        className={`w-full rounded-2xl border border-app bg-bar-800 py-3 pl-10 text-foreground placeholder:text-subtle outline-none focus:border-amber-accent/60 ${hasQuery ? 'pr-11' : 'pr-4'}`}
       />
     </div>
   )
