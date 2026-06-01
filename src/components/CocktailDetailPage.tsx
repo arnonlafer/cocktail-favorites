@@ -1,10 +1,11 @@
-import { useCallback, useEffect, useMemo, useRef } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { Link, useLocation, useNavigate, useParams, useSearchParams } from 'react-router-dom'
-import type { Cocktail, UnitSystem } from '../types'
+import type { Cocktail, Collection, UnitSystem } from '../types'
 import { browseNeighbors, resolveBrowseIds, saveBrowseIds } from '../lib/browse'
 import { calculateCocktailNutrition } from '../lib/nutrition'
 import { cocktailInitials, spiritGradient, subtitle } from '../lib/cocktailUtils'
 import { markRecentlyViewed, toggleFavorite } from '../lib/storage'
+import { CollectionPicker } from './CollectionPicker'
 import { UnitControls } from './UnitControls'
 import { IngredientList } from './IngredientList'
 import { InstructionList } from './InstructionList'
@@ -16,6 +17,7 @@ interface BrowseState {
 interface Props {
   cocktails: Cocktail[]
   favorites: string[]
+  collections: Collection[]
   unit: UnitSystem
   multiplier: number
   onUnitChange: (unit: UnitSystem) => void
@@ -29,6 +31,7 @@ const SWIPE_THRESHOLD = 60
 export function CocktailDetailPage({
   cocktails,
   favorites,
+  collections,
   unit,
   multiplier,
   onUnitChange,
@@ -41,6 +44,7 @@ export function CocktailDetailPage({
   const location = useLocation()
   const [searchParams] = useSearchParams()
   const touchStartX = useRef<number | null>(null)
+  const [showCollections, setShowCollections] = useState(false)
 
   const cocktail = cocktails.find((c) => c.id === id)
   const isFavorite = id ? favorites.includes(id) : false
@@ -135,6 +139,13 @@ export function CocktailDetailPage({
             ← Back
           </button>
           <div className="flex items-center gap-2">
+            <button
+              type="button"
+              onClick={() => setShowCollections(true)}
+              className="rounded-lg border border-app-strong px-3 py-1.5 text-xs font-medium text-muted"
+            >
+              Collection
+            </button>
             <Link
               to={`/cocktail/${cocktail.id}/edit`}
               className="rounded-lg border border-app-strong px-3 py-1.5 text-xs font-medium text-muted"
@@ -242,6 +253,15 @@ export function CocktailDetailPage({
           <InstructionList steps={cocktail.instructions} />
         </section>
       </div>
+
+      {showCollections && id && (
+        <CollectionPicker
+          cocktailId={id}
+          collections={collections}
+          onClose={() => setShowCollections(false)}
+          onChanged={onViewed}
+        />
+      )}
     </div>
   )
 }

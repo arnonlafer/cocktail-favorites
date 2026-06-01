@@ -1,5 +1,6 @@
 import baseNutrition from '../data/ingredient-nutrition.json'
 import type { Cocktail, Ingredient, IngredientNutrition } from '../types'
+import { normalizeIngredient } from './ingredients'
 import { loadNutritionOverrides } from './storage'
 
 const OZ_TO_ML = 29.5735
@@ -111,7 +112,8 @@ function calculateIngredientNutrition(
   ingredient: Ingredient,
   multiplier: number,
 ): { calories: number; carbs: number } | null {
-  const { amount, unit, name } = ingredient
+  const normalized = normalizeIngredient(ingredient)
+  const { amount, unit, name } = normalized
   if (amount == null || !unit) return null
 
   const nutrition = lookupNutrition(name)

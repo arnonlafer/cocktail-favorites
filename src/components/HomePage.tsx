@@ -37,6 +37,23 @@ export function HomePage({
 
   const query = searchParams.get('q') ?? ''
   const favoritesOnly = searchParams.get('favorites') === '1'
+  const collectionId = searchParams.get('collection')
+
+  const activeCollection = useMemo(
+    () => prefs.collections.find((c) => c.id === collectionId) ?? null,
+    [prefs.collections, collectionId],
+  )
+
+  const clearCollection = useCallback(() => {
+    setSearchParams(
+      (prev) => {
+        const next = new URLSearchParams(prev)
+        next.delete('collection')
+        return next
+      },
+      { replace: true },
+    )
+  }, [setSearchParams])
 
   const setQuery = useCallback(
     (value: string) => {
@@ -71,11 +88,15 @@ export function HomePage({
   const filtered = useMemo(() => {
     let items = query.trim() ? fuse.search(query.trim()).map((r) => r.item) : cocktails
     if (favoritesOnly) items = items.filter((c) => favorites.includes(c.id))
+    if (activeCollection) {
+      const ids = new Set(activeCollection.cocktailIds)
+      items = items.filter((c) => ids.has(c.id))
+    }
     return sortByRecent(items)
-  }, [query, cocktails, fuse, favoritesOnly, favorites, sortByRecent])
+  }, [query, cocktails, fuse, favoritesOnly, favorites, activeCollection, sortByRecent])
 
   const grouped = useMemo(() => {
-    if (query.trim() || favoritesOnly) return null
+    if (query.trim() || favoritesOnly || activeCollection) return null
 
     const map = new Map<string, Cocktail[]>()
     for (const spirit of SPIRIT_ORDER) map.set(spirit, [])
@@ -92,7 +113,7 @@ export function HomePage({
       spirit,
       cocktails: map.get(spirit) ?? [],
     }))
-  }, [filtered, query, favoritesOnly])
+  }, [filtered, query, favoritesOnly, activeCollection])
 
   const visibleSpirits = useMemo(() => grouped?.map((g) => g.spirit) ?? [], [grouped])
 
@@ -187,6 +208,15 @@ export function HomePage({
           >
             {favoritesOnly ? '★ Favorites only' : '☆ Show favorites only'}
           </button>
+          {activeCollection && (
+            <button
+              type="button"
+              onClick={clearCollection}
+              className="rounded-full border border-amber-accent bg-amber-accent/15 px-3 py-1.5 text-xs font-medium text-amber-light"
+            >
+              📁 {activeCollection.name} ×
+            </button>
+          )}
           <div className="inline-flex rounded-full border border-app bg-bar-900/60 p-0.5">
             <button
               type="button"

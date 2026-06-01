@@ -181,6 +181,17 @@ export function SettingsPage({
         </section>
 
         <section className="rounded-2xl border border-app bg-bar-900/60 p-4">
+          <h2 className="mb-1 text-base font-semibold text-foreground">Collections</h2>
+          <p className="mb-3 text-sm text-muted">Create and manage recipe collections.</p>
+          <Link
+            to="/settings/collections"
+            className="inline-flex rounded-xl border border-app bg-bar-800 px-4 py-2 text-sm font-medium text-foreground"
+          >
+            Manage collections →
+          </Link>
+        </section>
+
+        <section className="rounded-2xl border border-app bg-bar-900/60 p-4">
           <h2 className="mb-1 text-base font-semibold text-foreground">Ingredient nutrition</h2>
           <p className="mb-3 text-sm text-muted">
             Manage calories and carbs per ounce for spirits, juices, and syrups.

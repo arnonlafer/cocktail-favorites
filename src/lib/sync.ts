@@ -1,17 +1,21 @@
-import type { AppPreferences, Cocktail, IngredientNutrition, SyncPayload } from '../types'
+import type { AppPreferences, Cocktail, IngredientNutrition, SyncPayload, UserProfile } from '../types'
 import { authHeaders } from './auth'
 import {
+  exportSyncUserData,
+  importSyncUserData,
   loadCustomCocktails,
   loadDeletedIds,
   loadEdits,
   loadNutritionOverrides,
   loadPrefs,
+  loadSharedSettings,
   runWithoutSync,
   saveCustomCocktails,
   saveDeletedIds,
   saveEdits,
   saveNutritionOverrides,
-  savePrefs,
+  saveSharedSettings,
+  userKey,
 } from './storage'
 
 export type SyncStatus = 'idle' | 'syncing' | 'synced' | 'error' | 'not-configured'
@@ -31,15 +35,37 @@ function notifySyncApplied() {
   syncAppliedListeners.forEach((listener) => listener())
 }
 
-export function buildSyncPayload(): SyncPayload {
-  const prefs = loadPrefs()
+function legacyPrefsToProfiles(prefs: AppPreferences): Record<string, UserProfile> {
+  const name = prefs.userName?.trim() || 'Guest'
+  const key = userKey(name)
   return {
-    updatedAt: prefs.syncUpdatedAt,
+    [key]: {
+      userName: name,
+      favorites: prefs.favorites ?? [],
+      recentlyViewed: prefs.recentlyViewed ?? {},
+      unit: prefs.unit ?? 'oz',
+      multiplier: prefs.multiplier ?? 1,
+      theme: prefs.theme ?? 'dark',
+      fontSize: prefs.fontSize ?? 'md',
+      collapsedGroups: prefs.collapsedGroups ?? null,
+      listView: prefs.listView ?? 'list',
+      collections: prefs.collections ?? [],
+      updatedAt: prefs.syncUpdatedAt ?? Date.now(),
+    },
+  }
+}
+
+export function buildSyncPayload(): SyncPayload {
+  const shared = loadSharedSettings()
+  const { syncCode, userProfiles } = exportSyncUserData()
+  return {
+    updatedAt: shared.syncUpdatedAt,
     edits: loadEdits(),
     custom: loadCustomCocktails(),
     deletedIds: loadDeletedIds(),
-    prefs,
     nutritionOverrides: loadNutritionOverrides(),
+    syncCode,
+    userProfiles,
   }
 }
 
@@ -55,32 +81,58 @@ function mergeCustomCocktails(
   return [...byId.values()]
 }
 
-/** Merge payloads; the side with the newer updatedAt wins edit conflicts. */
-export function mergeSyncPayload(local: SyncPayload, remote: SyncPayload): SyncPayload {
-  const preferRemote = remote.updatedAt > local.updatedAt
-  const syncCode = local.prefs.syncCode || remote.prefs.syncCode
-  const sourcePrefs = preferRemote ? remote.prefs : local.prefs
-  const mergedPrefs: AppPreferences = {
-    ...remote.prefs,
-    ...local.prefs,
-    syncCode,
-    favorites: sourcePrefs.favorites,
-    recentlyViewed: { ...remote.prefs.recentlyViewed, ...local.prefs.recentlyViewed },
-    collapsedGroups: local.prefs.collapsedGroups ?? remote.prefs.collapsedGroups,
-    lastSyncedAt: Date.now(),
+function mergeUserProfiles(
+  local: Record<string, UserProfile>,
+  remote: Record<string, UserProfile>,
+): Record<string, UserProfile> {
+  const merged = { ...local }
+  for (const [key, remoteProfile] of Object.entries(remote)) {
+    const localProfile = merged[key]
+    if (!localProfile || remoteProfile.updatedAt > localProfile.updatedAt) {
+      merged[key] = remoteProfile
+    }
   }
+  return merged
+}
+
+function normalizePayload(payload: SyncPayload): SyncPayload {
+  if (payload.userProfiles && Object.keys(payload.userProfiles).length > 0) {
+    return payload
+  }
+  if (payload.prefs) {
+    return {
+      ...payload,
+      syncCode: payload.syncCode || payload.prefs.syncCode || '',
+      userProfiles: legacyPrefsToProfiles(payload.prefs),
+    }
+  }
+  return { ...payload, userProfiles: {} }
+}
+
+/** Merge payloads; recipe edits use newer updatedAt; each user profile merges independently. */
+export function mergeSyncPayload(local: SyncPayload, remote: SyncPayload): SyncPayload {
+  const normLocal = normalizePayload(local)
+  const normRemote = normalizePayload(remote)
+  const preferRemote = normRemote.updatedAt > normLocal.updatedAt
 
   return {
-    updatedAt: Math.max(local.updatedAt, remote.updatedAt, Date.now()),
+    updatedAt: Math.max(normLocal.updatedAt, normRemote.updatedAt, Date.now()),
     edits: preferRemote
-      ? { ...local.edits, ...remote.edits }
-      : { ...remote.edits, ...local.edits },
-    custom: mergeCustomCocktails(local.custom, remote.custom, preferRemote),
-    deletedIds: [...new Set([...remote.deletedIds, ...local.deletedIds])],
-    prefs: mergedPrefs,
+      ? { ...normLocal.edits, ...normRemote.edits }
+      : { ...normRemote.edits, ...normLocal.edits },
+    custom: mergeCustomCocktails(normLocal.custom, normRemote.custom, preferRemote),
+    deletedIds: [...new Set([...normRemote.deletedIds, ...normLocal.deletedIds])],
+    syncCode: normLocal.syncCode || normRemote.syncCode,
+    userProfiles: mergeUserProfiles(normLocal.userProfiles, normRemote.userProfiles),
     nutritionOverrides: preferRemote
-      ? mergeNutritionOverrides(local.nutritionOverrides ?? [], remote.nutritionOverrides ?? [])
-      : mergeNutritionOverrides(remote.nutritionOverrides ?? [], local.nutritionOverrides ?? []),
+      ? mergeNutritionOverrides(
+          normLocal.nutritionOverrides ?? [],
+          normRemote.nutritionOverrides ?? [],
+        )
+      : mergeNutritionOverrides(
+          normRemote.nutritionOverrides ?? [],
+          normLocal.nutritionOverrides ?? [],
+        ),
   }
 }
 
@@ -100,24 +152,31 @@ function hasSyncableData(payload: SyncPayload): boolean {
     Object.keys(payload.edits).length > 0 ||
     payload.custom.length > 0 ||
     payload.deletedIds.length > 0 ||
-    (payload.nutritionOverrides?.length ?? 0) > 0
+    (payload.nutritionOverrides?.length ?? 0) > 0 ||
+    Object.keys(payload.userProfiles ?? {}).length > 0
   )
 }
 
 export function applySyncPayload(payload: SyncPayload) {
-  const syncCode = loadPrefs().syncCode
+  const normalized = normalizePayload(payload)
+  const localSyncCode = loadSharedSettings().syncCode
+
   runWithoutSync(() => {
-    saveEdits(payload.edits ?? {})
-    saveCustomCocktails(payload.custom ?? [])
-    saveDeletedIds(payload.deletedIds ?? [])
-    saveNutritionOverrides(payload.nutritionOverrides ?? [])
-    savePrefs({
-      ...loadPrefs(),
-      ...payload.prefs,
-      syncCode,
-      syncUpdatedAt: payload.updatedAt,
-      lastSyncedAt: Date.now(),
-    })
+    saveEdits(normalized.edits ?? {})
+    saveCustomCocktails(normalized.custom ?? [])
+    saveDeletedIds(normalized.deletedIds ?? [])
+    saveNutritionOverrides(normalized.nutritionOverrides ?? [])
+
+    importSyncUserData(
+      normalized.syncCode || localSyncCode,
+      normalized.userProfiles ?? {},
+      true,
+    )
+
+    const shared = loadSharedSettings()
+    shared.syncUpdatedAt = normalized.updatedAt
+    shared.lastSyncedAt = Date.now()
+    saveSharedSettings(shared)
   })
 }
 
@@ -233,7 +292,6 @@ export function formatSyncTime(timestamp: number | null | undefined): string {
   return new Date(timestamp).toLocaleString()
 }
 
-/** Returns whether the server has cloud storage (KV) connected. */
 export async function checkSyncServer(): Promise<'ready' | 'not-configured' | 'error'> {
   try {
     const res = await fetch('/api/sync', {

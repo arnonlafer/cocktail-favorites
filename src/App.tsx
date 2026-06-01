@@ -8,6 +8,7 @@ import { pullSync, subscribeSyncApplied } from './lib/sync'
 import { HomePage } from './components/HomePage'
 import { CocktailDetailPage } from './components/CocktailDetailPage'
 import { CocktailFormPage } from './components/CocktailFormPage'
+import { CollectionsPage } from './components/CollectionsPage'
 import { IngredientsPage } from './components/IngredientsPage'
 import { LoginPage } from './components/LoginPage'
 import { SettingsPage } from './components/SettingsPage'
@@ -83,7 +84,14 @@ export default function App() {
   if (!authenticated) {
     return (
       <div className="mx-auto min-h-dvh max-w-lg bg-bar-950">
-        <LoginPage onSuccess={() => setAuthenticated(true)} />
+        <LoginPage
+          onSuccess={() => {
+            refreshPrefs()
+            const p = loadPrefs()
+            applyAppearance(p.theme, p.fontSize)
+            setAuthenticated(true)
+          }}
+        />
       </div>
     )
   }
@@ -123,12 +131,14 @@ export default function App() {
             }
           />
           <Route path="/settings/ingredients" element={<IngredientsPage onChanged={refreshPrefs} />} />
+          <Route path="/settings/collections" element={<CollectionsPage onChanged={refreshPrefs} />} />
           <Route
             path="/cocktail/:id"
             element={
               <CocktailDetailPage
                 cocktails={cocktails}
                 favorites={prefs.favorites}
+                collections={prefs.collections}
                 unit={prefs.unit}
                 multiplier={prefs.multiplier}
                 onUnitChange={(unit) => updatePrefs({ unit })}

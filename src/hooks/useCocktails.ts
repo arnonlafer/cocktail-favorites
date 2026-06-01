@@ -12,6 +12,7 @@ import {
   saveCocktailEdit,
   savePrefs,
 } from '../lib/storage'
+import { normalizeCocktail } from '../lib/ingredients'
 
 function mergeCocktails(customCocktails: Cocktail[]): Cocktail[] {
   const edits = loadEdits()
@@ -19,10 +20,10 @@ function mergeCocktails(customCocktails: Cocktail[]): Cocktail[] {
   const customIds = new Set(customCocktails.map((c) => c.id))
   const base = (baseCocktails as Cocktail[])
     .filter((c) => !customIds.has(c.id) && !deletedIds.has(c.id))
-    .map((c) => edits[c.id] ?? c)
+    .map((c) => normalizeCocktail(edits[c.id] ?? c))
   const custom = customCocktails
     .filter((c) => !deletedIds.has(c.id))
-    .map((c) => edits[c.id] ?? c)
+    .map((c) => normalizeCocktail(edits[c.id] ?? c))
   return [...base, ...custom]
 }
 

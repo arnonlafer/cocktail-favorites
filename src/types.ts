@@ -32,6 +32,28 @@ export type Theme = 'dark' | 'light'
 export type FontSize = 'sm' | 'md' | 'lg' | 'xl'
 export type ListView = 'list' | 'grid'
 
+export interface Collection {
+  id: string
+  name: string
+  cocktailIds: string[]
+}
+
+/** Per-user settings synced by username key. */
+export interface UserProfile {
+  userName: string
+  favorites: string[]
+  recentlyViewed: Record<string, number>
+  unit: UnitSystem
+  multiplier: number
+  theme: Theme
+  fontSize: FontSize
+  collapsedGroups: string[] | null
+  listView: ListView
+  collections: Collection[]
+  updatedAt: number
+}
+
+/** View model: current user profile + shared sync settings. */
 export interface AppPreferences {
   favorites: string[]
   recentlyViewed: Record<string, number>
@@ -39,14 +61,13 @@ export interface AppPreferences {
   multiplier: number
   theme: Theme
   fontSize: FontSize
-  /** null = auto-collapse all except last-viewed cocktail's group(s) */
   collapsedGroups: string[] | null
   userName: string
-  /** Same code on all devices to sync edits, custom cocktails, and preferences */
   syncCode: string
   syncUpdatedAt: number
   lastSyncedAt: number | null
   listView: ListView
+  collections: Collection[]
 }
 
 export interface SyncPayload {
@@ -54,8 +75,11 @@ export interface SyncPayload {
   edits: Record<string, Cocktail>
   custom: Cocktail[]
   deletedIds: string[]
-  prefs: AppPreferences
   nutritionOverrides: IngredientNutrition[]
+  syncCode: string
+  userProfiles: Record<string, UserProfile>
+  /** @deprecated legacy single-user prefs — migrated on read */
+  prefs?: AppPreferences
 }
 
 export const SPIRIT_ORDER = [
