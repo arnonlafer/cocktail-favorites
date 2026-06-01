@@ -8,6 +8,10 @@ export function clearAuthToken() {
   localStorage.removeItem(AUTH_KEY)
 }
 
+export function logout() {
+  clearAuthToken()
+}
+
 export function authHeaders(): Record<string, string> {
   const token = getAuthToken()
   return token ? { Authorization: `Bearer ${token}` } : {}

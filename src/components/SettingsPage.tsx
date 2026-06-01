@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import type { FontSize, Theme } from '../types'
 import { FONT_SIZE_LABELS, stepFontSize } from '../lib/theme'
+import { logout } from '../lib/auth'
 import { checkSyncServer, formatSyncTime, syncNow, type SyncStatus } from '../lib/sync'
 
 interface Props {
@@ -13,6 +14,7 @@ interface Props {
   onFontSizeChange: (fontSize: FontSize) => void
   onSyncCodeChange: (syncCode: string) => void
   onSynced: () => void
+  onLogout: () => void
 }
 
 export function SettingsPage({
@@ -24,6 +26,7 @@ export function SettingsPage({
   onFontSizeChange,
   onSyncCodeChange,
   onSynced,
+  onLogout,
 }: Props) {
   const navigate = useNavigate()
   const [draftCode, setDraftCode] = useState(syncCode)
@@ -208,6 +211,21 @@ export function SettingsPage({
           Spirit groups collapse by default except the category of your last opened cocktail. Expand or collapse
           groups manually — your layout resets when you open a new recipe.
         </p>
+
+        <section className="rounded-2xl border border-app bg-bar-900/60 p-4">
+          <h2 className="mb-1 text-base font-semibold text-foreground">Account</h2>
+          <p className="mb-3 text-sm text-muted">Sign out to switch to a different user on this device.</p>
+          <button
+            type="button"
+            onClick={() => {
+              logout()
+              onLogout()
+            }}
+            className="w-full rounded-xl border border-red-900/50 py-2.5 text-sm font-medium text-red-300"
+          >
+            Log out
+          </button>
+        </section>
 
         <Link to="/" className="block text-center text-sm text-amber-accent">
           Back to cocktails

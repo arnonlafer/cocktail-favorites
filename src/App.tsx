@@ -127,6 +127,7 @@ export default function App() {
                 onFontSizeChange={(fontSize) => updatePrefs({ fontSize })}
                 onSyncCodeChange={(syncCode) => updatePrefs({ syncCode })}
                 onSynced={refreshPrefs}
+                onLogout={() => setAuthenticated(false)}
               />
             }
           />
