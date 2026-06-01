@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { Link, useNavigate, useSearchParams } from 'react-router-dom'
 import type { AppPreferences, Cocktail, ListView } from '../types'
 import { SPIRIT_ORDER } from '../types'
@@ -8,8 +8,34 @@ import { restoreHomeScroll, saveHomeScroll } from '../lib/scroll'
 import { toggleFavorite } from '../lib/storage'
 import { CocktailCard } from './CocktailCard'
 import { CocktailGridCard } from './CocktailGridCard'
+import { CollectionFilterPicker } from './CollectionFilterPicker'
 import { SearchBar } from './SearchBar'
 import type Fuse from 'fuse.js'
+
+interface IconToggleProps {
+  active: boolean
+  onClick: () => void
+  ariaLabel: string
+  children: React.ReactNode
+}
+
+function IconToggle({ active, onClick, ariaLabel, children }: IconToggleProps) {
+  return (
+    <button
+      type="button"
+      aria-label={ariaLabel}
+      aria-pressed={active}
+      onClick={onClick}
+      className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border text-lg transition ${
+        active
+          ? 'border-amber-accent bg-amber-accent/15 text-amber-light'
+          : 'border-app-strong text-muted'
+      }`}
+    >
+      {children}
+    </button>
+  )
+}
 
 interface Props {
   cocktails: Cocktail[]
@@ -35,6 +61,7 @@ export function HomePage({
   const [searchParams, setSearchParams] = useSearchParams()
   const navigate = useNavigate()
   const listView = prefs.listView ?? 'list'
+  const [showCollectionPicker, setShowCollectionPicker] = useState(false)
 
   useEffect(() => {
     restoreHomeScroll()
@@ -49,16 +76,21 @@ export function HomePage({
     [prefs.collections, collectionId],
   )
 
-  const clearCollection = useCallback(() => {
-    setSearchParams(
-      (prev) => {
-        const next = new URLSearchParams(prev)
-        next.delete('collection')
-        return next
-      },
-      { replace: true },
-    )
-  }, [setSearchParams])
+  const selectCollection = useCallback(
+    (id: string | null) => {
+      setSearchParams(
+        (prev) => {
+          const next = new URLSearchParams(prev)
+          if (id) next.set('collection', id)
+          else next.delete('collection')
+          return next
+        },
+        { replace: true },
+      )
+      setShowCollectionPicker(false)
+    },
+    [setSearchParams],
+  )
 
   const setQuery = useCallback(
     (value: string) => {
@@ -197,53 +229,45 @@ export function HomePage({
           </div>
         </div>
         <p className="mb-4 text-xs text-subtle">
-          {filtered.length === cocktails.length
-            ? `${cocktails.length} recipes · sorted by recently opened`
-            : `${filtered.length} of ${cocktails.length} recipes`}
+          {activeCollection
+            ? `${activeCollection.name} · ${filtered.length} recipe${filtered.length === 1 ? '' : 's'}`
+            : filtered.length === cocktails.length
+              ? `${cocktails.length} recipes · sorted by recently opened`
+              : `${filtered.length} of ${cocktails.length} recipes`}
         </p>
         <SearchBar value={query} onChange={setQuery} />
-        <div className="mt-3 flex flex-wrap items-center gap-2">
-          <button
-            type="button"
+        <div className="mt-3 flex items-center gap-2">
+          <IconToggle
+            active={favoritesOnly}
             onClick={() => setFavoritesOnly(!favoritesOnly)}
-            className={`rounded-full border px-3 py-1.5 text-xs font-medium transition ${
-              favoritesOnly
-                ? 'border-amber-accent bg-amber-accent/15 text-amber-light'
-                : 'border-app-strong text-muted'
-            }`}
+            ariaLabel={favoritesOnly ? 'Showing favorites only' : 'Show favorites only'}
           >
-            {favoritesOnly ? '★ Favorites only' : '☆ Show favorites only'}
-          </button>
-          {activeCollection && (
-            <button
-              type="button"
-              onClick={clearCollection}
-              className="rounded-full border border-amber-accent bg-amber-accent/15 px-3 py-1.5 text-xs font-medium text-amber-light"
-            >
-              📁 {activeCollection.name} ×
-            </button>
-          )}
-          <div className="inline-flex rounded-full border border-app bg-bar-900/60 p-0.5">
-            <button
-              type="button"
-              aria-label="List view"
+            {favoritesOnly ? '❤️' : '🤍'}
+          </IconToggle>
+          <IconToggle
+            active={!!activeCollection}
+            onClick={() => setShowCollectionPicker(true)}
+            ariaLabel={
+              activeCollection ? `Collection: ${activeCollection.name}` : 'Filter by collection'
+            }
+          >
+            📁
+          </IconToggle>
+          <div className="ml-auto flex items-center gap-2">
+            <IconToggle
+              active={listView === 'list'}
               onClick={() => onListViewChange('list')}
-              className={`rounded-full px-3 py-1 text-xs font-medium ${
-                listView === 'list' ? 'bg-amber-accent text-bar-950' : 'text-muted'
-              }`}
+              ariaLabel="List view"
             >
-              List
-            </button>
-            <button
-              type="button"
-              aria-label="Thumbnail view"
+              ☰
+            </IconToggle>
+            <IconToggle
+              active={listView === 'grid'}
               onClick={() => onListViewChange('grid')}
-              className={`rounded-full px-3 py-1 text-xs font-medium ${
-                listView === 'grid' ? 'bg-amber-accent text-bar-950' : 'text-muted'
-              }`}
+              ariaLabel="Thumbnail view"
             >
-              Thumbnails
-            </button>
+              ⊞
+            </IconToggle>
           </div>
         </div>
       </header>
@@ -288,6 +312,15 @@ export function HomePage({
           renderList(filtered, flatBrowseIds)
         )}
       </main>
+
+      {showCollectionPicker && (
+        <CollectionFilterPicker
+          collections={prefs.collections}
+          activeCollectionId={collectionId}
+          onSelect={selectCollection}
+          onClose={() => setShowCollectionPicker(false)}
+        />
+      )}
     </div>
   )
 }
