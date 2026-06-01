@@ -1,9 +1,10 @@
-import { useCallback, useMemo } from 'react'
+import { useCallback, useEffect, useMemo } from 'react'
 import { Link, useNavigate, useSearchParams } from 'react-router-dom'
 import type { AppPreferences, Cocktail, ListView } from '../types'
 import { SPIRIT_ORDER } from '../types'
 import { saveBrowseIds } from '../lib/browse'
 import { computeCollapsedGroups } from '../lib/groups'
+import { restoreHomeScroll, saveHomeScroll } from '../lib/scroll'
 import { toggleFavorite } from '../lib/storage'
 import { CocktailCard } from './CocktailCard'
 import { CocktailGridCard } from './CocktailGridCard'
@@ -34,6 +35,10 @@ export function HomePage({
   const [searchParams, setSearchParams] = useSearchParams()
   const navigate = useNavigate()
   const listView = prefs.listView ?? 'list'
+
+  useEffect(() => {
+    restoreHomeScroll()
+  }, [])
 
   const query = searchParams.get('q') ?? ''
   const favoritesOnly = searchParams.get('favorites') === '1'
@@ -131,6 +136,7 @@ export function HomePage({
 
   const openCocktail = useCallback(
     (cocktail: Cocktail, browseIds: string[]) => {
+      saveHomeScroll()
       saveBrowseIds(browseIds)
       const search = searchParams.toString()
       navigate(`/cocktail/${cocktail.id}${search ? `?${search}` : ''}`, {

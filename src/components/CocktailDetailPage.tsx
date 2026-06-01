@@ -2,6 +2,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { Link, useLocation, useNavigate, useParams, useSearchParams } from 'react-router-dom'
 import type { Cocktail, Collection, UnitSystem } from '../types'
 import { browseNeighbors, resolveBrowseIds, saveBrowseIds } from '../lib/browse'
+import { scrollToTop } from '../lib/scroll'
 import { calculateCocktailNutrition } from '../lib/nutrition'
 import { cocktailInitials, spiritGradient, subtitle } from '../lib/cocktailUtils'
 import { markRecentlyViewed, toggleFavorite } from '../lib/storage'
@@ -87,6 +88,10 @@ export function CocktailDetailPage({
       onViewed()
     }
   }, [id, onViewed])
+
+  useEffect(() => {
+    scrollToTop()
+  }, [id])
 
   useEffect(() => {
     const onKeyDown = (event: KeyboardEvent) => {
