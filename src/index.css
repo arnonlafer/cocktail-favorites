@@ -23,6 +23,24 @@
   color-scheme: dark;
 }
 
+[data-theme='dim'] {
+  --color-bar-950: #1c1816;
+  --color-bar-900: #262220;
+  --color-bar-800: #35302c;
+  --color-bar-700: #4a443e;
+  --color-bar-600: #6b635a;
+  --color-amber-accent: #c49a6a;
+  --color-amber-light: #d4b896;
+  --color-text: #e8e2da;
+  --color-text-muted: rgb(232 226 218 / 0.68);
+  --color-text-subtle: rgb(232 226 218 / 0.48);
+  --color-border: rgb(255 255 255 / 0.08);
+  --color-border-strong: rgb(255 255 255 / 0.13);
+  --color-surface-muted: rgb(255 255 255 / 0.06);
+  --color-header: rgb(28 24 22 / 0.95);
+  color-scheme: dark;
+}
+
 [data-theme='light'] {
   --color-bar-950: #f4ede6;
   --color-bar-900: #fffcf9;

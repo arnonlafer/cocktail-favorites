@@ -77,21 +77,33 @@ export function DraftPage({ draft, onSave }: Props) {
     'w-full min-h-[60vh] resize-y rounded-2xl border border-app bg-bar-800 px-4 py-3 font-mono text-sm leading-relaxed text-foreground outline-none focus:border-amber-accent/60'
 
   return (
-    <div className="safe-bottom pb-28">
-      <div className="sticky top-0 z-10 flex items-center justify-between gap-3 border-b border-app bg-app px-4 py-3 backdrop-blur">
+    <div className="safe-bottom pb-8">
+      <div className="sticky top-0 z-10 flex items-center gap-2 border-b border-app bg-app px-4 py-3 backdrop-blur">
         <Link to="/" className="shrink-0 text-amber-accent">
           ← Back
         </Link>
-        <h1 className="font-display text-lg font-bold text-foreground">Draft</h1>
-        {editing ? (
-          <button type="button" onClick={finishEdit} className="shrink-0 text-sm font-semibold text-amber-accent">
-            Done
-          </button>
-        ) : (
-          <button type="button" onClick={startEdit} className="shrink-0 text-sm font-semibold text-amber-accent">
-            Edit
-          </button>
-        )}
+        <h1 className="min-w-0 flex-1 font-display text-lg font-bold text-foreground">Draft</h1>
+        <div className="flex shrink-0 items-center gap-2">
+          {selection && (
+            <button
+              type="button"
+              onClick={convertToRecipe}
+              title="Create recipe from selection"
+              className="rounded-lg border border-amber-accent/50 bg-amber-accent/15 px-2.5 py-1.5 text-xs font-semibold text-amber-light"
+            >
+              → Recipe
+            </button>
+          )}
+          {editing ? (
+            <button type="button" onClick={finishEdit} className="text-sm font-semibold text-amber-accent">
+              Done
+            </button>
+          ) : (
+            <button type="button" onClick={startEdit} className="text-sm font-semibold text-amber-accent">
+              Edit
+            </button>
+          )}
+        </div>
       </div>
 
       <div className="px-4 pt-4" ref={containerRef}>
@@ -113,21 +125,6 @@ export function DraftPage({ draft, onSave }: Props) {
           </p>
         )}
       </div>
-
-      {selection && (
-        <div className="fixed inset-x-0 bottom-0 z-20 mx-auto max-w-lg border-t border-app bg-bar-900/95 px-4 py-3 backdrop-blur safe-bottom">
-          <p className="mb-2 truncate text-xs text-subtle">
-            Selected: {selection.length > 48 ? `${selection.slice(0, 48)}…` : selection}
-          </p>
-          <button
-            type="button"
-            onClick={convertToRecipe}
-            className="w-full rounded-2xl bg-amber-accent py-3 text-sm font-semibold text-bar-950"
-          >
-            Create recipe from selection
-          </button>
-        </div>
-      )}
     </div>
   )
 }

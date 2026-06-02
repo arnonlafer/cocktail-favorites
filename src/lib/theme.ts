@@ -1,5 +1,19 @@
 import type { FontSize, Theme } from '../types'
 
+export const THEME_ORDER: Theme[] = ['dark', 'dim', 'light']
+
+export const THEME_LABELS: Record<Theme, string> = {
+  dark: 'Dark',
+  dim: 'Dim',
+  light: 'Light',
+}
+
+const THEME_COLOR_META: Record<Theme, string> = {
+  dark: '#1a1210',
+  dim: '#262220',
+  light: '#f4ede6',
+}
+
 const FONT_SCALE: Record<FontSize, number> = {
   sm: 0.9,
   md: 1,
@@ -7,14 +21,20 @@ const FONT_SCALE: Record<FontSize, number> = {
   xl: 1.25,
 }
 
+export function normalizeTheme(theme: string | undefined): Theme {
+  if (theme === 'dark' || theme === 'dim' || theme === 'light') return theme
+  return 'dark'
+}
+
 export function applyAppearance(theme: Theme, fontSize: FontSize) {
+  const resolved = normalizeTheme(theme)
   const root = document.documentElement
-  root.dataset.theme = theme
+  root.dataset.theme = resolved
   root.style.setProperty('--font-scale', String(FONT_SCALE[fontSize]))
 
   const meta = document.querySelector('meta[name="theme-color"]')
   if (meta) {
-    meta.setAttribute('content', theme === 'dark' ? '#1a1210' : '#f4ede6')
+    meta.setAttribute('content', THEME_COLOR_META[resolved])
   }
 }
 

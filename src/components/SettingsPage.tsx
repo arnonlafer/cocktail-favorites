@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import type { FontSize, Theme } from '../types'
-import { FONT_SIZE_LABELS, stepFontSize } from '../lib/theme'
+import { FONT_SIZE_LABELS, THEME_LABELS, THEME_ORDER, stepFontSize } from '../lib/theme'
 import { logout } from '../lib/auth'
 import { checkSyncServer, formatSyncTime, syncNow, type SyncStatus } from '../lib/sync'
 
@@ -166,18 +166,18 @@ export function SettingsPage({
 
         <section className="rounded-2xl border border-app bg-bar-900/60 p-4">
           <h2 className="mb-1 text-base font-semibold text-foreground">Theme</h2>
-          <p className="mb-4 text-sm text-muted">Switch between dark and light appearance.</p>
+          <p className="mb-4 text-sm text-muted">Dark, dim, or light appearance.</p>
           <div className="inline-flex w-full rounded-xl border border-app bg-bar-800 p-1">
-            {(['dark', 'light'] as const).map((option) => (
+            {THEME_ORDER.map((option) => (
               <button
                 key={option}
                 type="button"
                 onClick={() => onThemeChange(option)}
-                className={`flex-1 rounded-lg py-2.5 text-sm font-medium capitalize transition ${
+                className={`flex-1 rounded-lg py-2.5 text-sm font-medium transition ${
                   theme === option ? 'bg-amber-accent text-bar-950' : 'text-muted'
                 }`}
               >
-                {option}
+                {THEME_LABELS[option]}
               </button>
             ))}
           </div>

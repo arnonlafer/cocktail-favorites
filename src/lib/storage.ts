@@ -180,7 +180,7 @@ function profileToPrefs(profile: UserProfile, shared: SharedSettings): AppPrefer
     recentlyViewed: profile.recentlyViewed,
     unit: profile.unit,
     multiplier: profile.multiplier,
-    theme: profile.theme,
+    theme: profile.theme === 'dim' || profile.theme === 'light' ? profile.theme : 'dark',
     fontSize: profile.fontSize,
     collapsedGroups: profile.collapsedGroups,
     listView: profile.listView,

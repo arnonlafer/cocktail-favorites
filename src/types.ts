@@ -28,7 +28,7 @@ export interface Cocktail {
 }
 
 export type UnitSystem = 'oz' | 'ml'
-export type Theme = 'dark' | 'light'
+export type Theme = 'dark' | 'dim' | 'light'
 export type FontSize = 'sm' | 'md' | 'lg' | 'xl'
 export type ListView = 'list' | 'grid'
 
