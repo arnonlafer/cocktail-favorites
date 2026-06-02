@@ -50,6 +50,7 @@ function legacyPrefsToProfiles(prefs: AppPreferences): Record<string, UserProfil
       collapsedGroups: prefs.collapsedGroups ?? null,
       listView: prefs.listView ?? 'list',
       collections: prefs.collections ?? [],
+      recipeDraft: '',
       updatedAt: prefs.syncUpdatedAt ?? Date.now(),
     },
   }

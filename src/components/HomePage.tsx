@@ -216,9 +216,16 @@ export function HomePage({
             <Link
               to="/settings"
               aria-label="Settings"
-              className="rounded-xl border border-app px-3 py-2 text-sm font-medium text-muted"
+              className="flex h-10 w-10 items-center justify-center rounded-xl border border-app text-lg text-muted"
             >
               ⚙
+            </Link>
+            <Link
+              to="/draft"
+              aria-label="Recipe draft"
+              className="flex h-10 w-10 items-center justify-center rounded-xl border border-app text-lg text-muted"
+            >
+              📝
             </Link>
             <Link
               to="/add"

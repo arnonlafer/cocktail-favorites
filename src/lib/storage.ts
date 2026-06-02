@@ -73,6 +73,7 @@ function defaultProfile(userName: string): UserProfile {
     collapsedGroups: null,
     listView: 'list',
     collections: [],
+    recipeDraft: '',
     updatedAt: Date.now(),
   }
 }
@@ -128,6 +129,7 @@ function migrateLegacyPrefs(): Record<string, UserProfile> {
       collapsedGroups: parsed.collapsedGroups ?? legacyCollapsed,
       listView: parsed.listView ?? 'list',
       collections: parsed.collections ?? [],
+      recipeDraft: '',
       updatedAt: parsed.syncUpdatedAt ?? Date.now(),
     }
 
@@ -183,6 +185,7 @@ function profileToPrefs(profile: UserProfile, shared: SharedSettings): AppPrefer
     collapsedGroups: profile.collapsedGroups,
     listView: profile.listView,
     collections: profile.collections,
+    recipeDraft: profile.recipeDraft ?? '',
     syncCode: shared.syncCode,
     syncUpdatedAt: shared.syncUpdatedAt,
     lastSyncedAt: shared.lastSyncedAt,
@@ -223,6 +226,7 @@ export function savePrefs(prefs: AppPreferences) {
     collapsedGroups: prefs.collapsedGroups,
     listView: prefs.listView,
     collections: prefs.collections ?? [],
+    recipeDraft: prefs.recipeDraft ?? '',
     updatedAt: Date.now(),
   }
   saveUserProfiles(profiles)

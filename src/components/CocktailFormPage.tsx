@@ -1,5 +1,6 @@
-import { useEffect, useState } from 'react'
-import { useNavigate, useParams } from 'react-router-dom'
+import { useEffect, useRef, useState } from 'react'
+import { useLocation, useNavigate, useParams } from 'react-router-dom'
+import { parseDraftSelection } from '../lib/draftPrefill'
 import type { Cocktail, Ingredient } from '../types'
 import {
   GLASS_OPTIONS,
@@ -55,6 +56,8 @@ function ingredientsToText(ingredients: Ingredient[]): string {
 export function CocktailFormPage({ cocktails, onSave, onDelete, mode }: Props) {
   const { id } = useParams()
   const navigate = useNavigate()
+  const location = useLocation()
+  const draftPrefillApplied = useRef(false)
   const existing = mode === 'edit' ? cocktails.find((c) => c.id === id) : undefined
 
   const [name, setName] = useState('')
@@ -66,6 +69,18 @@ export function CocktailFormPage({ cocktails, onSave, onDelete, mode }: Props) {
   const [ingredientsText, setIngredientsText] = useState('')
   const [instructionsText, setInstructionsText] = useState('')
   const [imageUrl, setImageUrl] = useState('')
+
+  useEffect(() => {
+    if (mode !== 'add' || draftPrefillApplied.current) return
+    const fromDraft = (location.state as { fromDraft?: string } | null)?.fromDraft
+    if (!fromDraft?.trim()) return
+    draftPrefillApplied.current = true
+    const prefill = parseDraftSelection(fromDraft)
+    if (prefill.name) setName(prefill.name)
+    if (prefill.ingredientsText) setIngredientsText(prefill.ingredientsText)
+    if (prefill.instructionsText) setInstructionsText(prefill.instructionsText)
+    navigate(location.pathname, { replace: true, state: null })
+  }, [mode, location.pathname, location.state, navigate])
 
   useEffect(() => {
     if (!existing) return

@@ -12,6 +12,7 @@ import { CollectionsPage } from './components/CollectionsPage'
 import { IngredientsPage } from './components/IngredientsPage'
 import { LoginPage } from './components/LoginPage'
 import { SettingsPage } from './components/SettingsPage'
+import { DraftPage } from './components/DraftPage'
 
 export default function App() {
   const [authReady, setAuthReady] = useState(false)
@@ -133,6 +134,15 @@ export default function App() {
           />
           <Route path="/settings/ingredients" element={<IngredientsPage onChanged={refreshPrefs} />} />
           <Route path="/settings/collections" element={<CollectionsPage onChanged={refreshPrefs} />} />
+          <Route
+            path="/draft"
+            element={
+              <DraftPage
+                draft={prefs.recipeDraft ?? ''}
+                onSave={(recipeDraft) => updatePrefs({ recipeDraft })}
+              />
+            }
+          />
           <Route
             path="/cocktail/:id"
             element={

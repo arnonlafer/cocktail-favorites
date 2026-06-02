@@ -50,6 +50,8 @@ export interface UserProfile {
   collapsedGroups: string[] | null
   listView: ListView
   collections: Collection[]
+  /** Free-form recipe notes, one continuous draft per user. */
+  recipeDraft: string
   updatedAt: number
 }
 
@@ -68,6 +70,7 @@ export interface AppPreferences {
   lastSyncedAt: number | null
   listView: ListView
   collections: Collection[]
+  recipeDraft: string
 }
 
 export interface SyncPayload {
