@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
+import { IconClose, IconSearch } from './icons'
 
 interface Props {
   value: string
@@ -49,7 +50,9 @@ export function SearchBar({ value, onChange, placeholder = 'Search cocktails or 
 
   return (
     <div className="relative">
-      <span className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-subtle">🔍</span>
+      <span className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-subtle">
+        <IconSearch size={18} />
+      </span>
       {hasQuery && (
         <button
           type="button"
@@ -57,7 +60,7 @@ export function SearchBar({ value, onChange, placeholder = 'Search cocktails or 
           onClick={clear}
           className="absolute right-2 top-1/2 flex h-8 w-8 -translate-y-1/2 items-center justify-center rounded-full text-muted transition hover:bg-bar-700 hover:text-foreground"
         >
-          ×
+          <IconClose size={16} />
         </button>
       )}
       <input

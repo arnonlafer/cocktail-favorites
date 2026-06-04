@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import type { Collection } from '../types'
 import {
   createCollection,
@@ -13,7 +13,6 @@ interface Props {
 }
 
 export function CollectionsPage({ onChanged }: Props) {
-  const navigate = useNavigate()
   const [collections, setCollections] = useState<Collection[]>(() => loadCollections())
   const [newName, setNewName] = useState('')
   const [editingId, setEditingId] = useState<string | null>(null)
@@ -46,12 +45,9 @@ export function CollectionsPage({ onChanged }: Props) {
   }
 
   return (
-    <div className="safe-bottom pb-8">
-      <div className="sticky top-0 z-10 flex items-center gap-3 border-b border-app bg-app/95 px-4 py-3 backdrop-blur">
-        <button type="button" onClick={() => navigate(-1)} className="text-amber-accent">
-          ← Back
-        </button>
-        <h1 className="font-display text-lg font-bold text-foreground">Collections</h1>
+    <div className="safe-bottom pb-[3.5rem]">
+      <div className="sticky top-0 z-10 border-b border-app bg-app px-4 py-4 backdrop-blur">
+        <h1 className="font-display text-xl font-bold text-foreground">Collections</h1>
       </div>
 
       <div className="space-y-4 px-4 pt-4">
@@ -148,10 +144,6 @@ export function CollectionsPage({ onChanged }: Props) {
         {collections.length === 0 && (
           <p className="py-8 text-center text-sm text-muted">No collections yet.</p>
         )}
-
-        <Link to="/settings" className="block text-center text-sm text-amber-accent">
-          Back to settings
-        </Link>
       </div>
     </div>
   )

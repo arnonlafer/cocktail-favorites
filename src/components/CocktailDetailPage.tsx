@@ -6,7 +6,10 @@ import { scrollToTop } from '../lib/scroll'
 import { calculateCocktailNutrition } from '../lib/nutrition'
 import { cocktailInitials, spiritGradient, subtitle } from '../lib/cocktailUtils'
 import { markRecentlyViewed, toggleFavorite } from '../lib/storage'
+import { resolveSimilarCocktails } from '../lib/similar'
 import { CollectionPicker } from './CollectionPicker'
+import { SimilarRecipesSection } from './SimilarRecipesSection'
+import { IconArrowLeft, IconChevronLeft, IconChevronRight, IconCollections, IconEdit, IconHeart } from './icons'
 import { UnitControls } from './UnitControls'
 import { IngredientList } from './IngredientList'
 import { InstructionList } from './InstructionList'
@@ -28,6 +31,9 @@ interface Props {
 }
 
 const SWIPE_THRESHOLD = 60
+
+const iconBtnClass =
+  'flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-app-strong text-muted transition disabled:opacity-30'
 
 export function CocktailDetailPage({
   cocktails,
@@ -107,12 +113,17 @@ export function CocktailDetailPage({
     [cocktail, multiplier],
   )
 
+  const similar = useMemo(
+    () => (cocktail ? resolveSimilarCocktails(cocktail, cocktails) : []),
+    [cocktail, cocktails],
+  )
+
   if (!cocktail) {
     return (
       <div className="px-4 py-8 text-center">
         <p className="text-muted">Cocktail not found.</p>
-        <button type="button" onClick={goBack} className="mt-4 inline-block text-amber-accent">
-          Back to list
+        <button type="button" onClick={goBack} aria-label="Back" className={`${iconBtnClass} text-amber-accent`}>
+          <IconArrowLeft size={20} />
         </button>
       </div>
     )
@@ -139,60 +150,64 @@ export function CocktailDetailPage({
       }}
     >
       <div className="sticky top-0 z-10 border-b border-app bg-app px-4 py-3 backdrop-blur">
-        <div className="flex items-center justify-between">
-          <button type="button" onClick={goBack} className="text-amber-accent">
-            ← Back
+        <div className="flex items-center justify-between gap-2">
+          <button type="button" onClick={goBack} aria-label="Back" className={iconBtnClass}>
+            <IconArrowLeft size={20} />
           </button>
           <div className="flex items-center gap-2">
+            {showBrowse && (
+              <>
+                <button
+                  type="button"
+                  disabled={!prevId}
+                  aria-label="Previous recipe"
+                  onClick={() => prevId && goToCocktail(prevId)}
+                  className={iconBtnClass}
+                >
+                  <IconChevronLeft size={20} />
+                </button>
+                <span className="min-w-[3rem] text-center text-xs text-subtle">
+                  {index + 1}/{total}
+                </span>
+                <button
+                  type="button"
+                  disabled={!nextId}
+                  aria-label="Next recipe"
+                  onClick={() => nextId && goToCocktail(nextId)}
+                  className={iconBtnClass}
+                >
+                  <IconChevronRight size={20} />
+                </button>
+              </>
+            )}
             <button
               type="button"
+              aria-label="Add to collection"
               onClick={() => setShowCollections(true)}
-              className="rounded-lg border border-app-strong px-3 py-1.5 text-xs font-medium text-muted"
+              className={iconBtnClass}
             >
-              Collection
+              <IconCollections size={20} />
             </button>
             <Link
               to={`/cocktail/${cocktail.id}/edit`}
-              className="rounded-lg border border-app-strong px-3 py-1.5 text-xs font-medium text-muted"
+              aria-label="Edit recipe"
+              className={iconBtnClass}
             >
-              Edit
+              <IconEdit size={20} />
             </Link>
             <button
               type="button"
               aria-label={isFavorite ? 'Remove favorite' : 'Add favorite'}
-              className="text-2xl"
+              className={iconBtnClass}
               onClick={() => {
                 toggleFavorite(cocktail.id)
                 onFavoriteChange()
               }}
             >
-              {isFavorite ? '❤️' : '🤍'}
+              <IconHeart filled={isFavorite} size={20} className={isFavorite ? 'text-amber-accent' : undefined} />
             </button>
           </div>
         </div>
-        {showBrowse && (
-          <div className="mt-2 flex items-center justify-between gap-2">
-            <button
-              type="button"
-              disabled={!prevId}
-              onClick={() => prevId && goToCocktail(prevId)}
-              className="rounded-lg border border-app px-3 py-1 text-xs font-medium text-muted disabled:opacity-30"
-            >
-              ← Prev
-            </button>
-            <span className="text-xs text-subtle">
-              {index + 1} of {total}
-            </span>
-            <button
-              type="button"
-              disabled={!nextId}
-              onClick={() => nextId && goToCocktail(nextId)}
-              className="rounded-lg border border-app px-3 py-1 text-xs font-medium text-muted disabled:opacity-30"
-            >
-              Next →
-            </button>
-          </div>
-        )}
       </div>
 
       <div className={`mx-4 mt-4 aspect-[4/3] overflow-hidden rounded-2xl bg-linear-to-br ${gradient}`}>
@@ -257,6 +272,8 @@ export function CocktailDetailPage({
           <h2 className="mb-3 text-lg font-semibold text-foreground">Instructions</h2>
           <InstructionList steps={cocktail.instructions} />
         </section>
+
+        <SimilarRecipesSection cocktails={similar} />
       </div>
 
       {showCollections && id && (

@@ -1,6 +1,7 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import { parseDraftSelection } from '../lib/draftPrefill'
+import { rankSimilarCocktails } from '../lib/similar'
 import type { Cocktail, Ingredient } from '../types'
 import {
   GLASS_OPTIONS,
@@ -8,6 +9,7 @@ import {
   METHOD_OPTIONS,
   SPIRIT_OPTIONS,
 } from '../types'
+import { IconArrowLeft } from './icons'
 
 interface Props {
   cocktails: Cocktail[]
@@ -69,6 +71,18 @@ export function CocktailFormPage({ cocktails, onSave, onDelete, mode }: Props) {
   const [ingredientsText, setIngredientsText] = useState('')
   const [instructionsText, setInstructionsText] = useState('')
   const [imageUrl, setImageUrl] = useState('')
+  const [similarIds, setSimilarIds] = useState<string[]>([])
+
+  const suggestedSimilar = useMemo(() => {
+    if (mode !== 'edit' || !existing) return []
+    const suggested = rankSimilarCocktails(existing, cocktails, 16)
+    const byId = new Map(cocktails.map((c) => [c.id, c]))
+    const extra = similarIds
+      .filter((id) => !suggested.some((s) => s.id === id))
+      .map((id) => byId.get(id))
+      .filter((c): c is Cocktail => !!c)
+    return [...suggested, ...extra]
+  }, [mode, existing, cocktails, similarIds])
 
   useEffect(() => {
     if (mode !== 'add' || draftPrefillApplied.current) return
@@ -93,7 +107,12 @@ export function CocktailFormPage({ cocktails, onSave, onDelete, mode }: Props) {
     setIngredientsText(ingredientsToText(existing.ingredients))
     setInstructionsText(existing.instructions.join('\n'))
     setImageUrl(existing.imageUrl ?? '')
+    setSimilarIds(existing.similarIds ?? [])
   }, [existing])
+
+  const toggleSimilar = (id: string) => {
+    setSimilarIds((prev) => (prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]))
+  }
 
   const toggleSpirit = (spirit: string) => {
     setSpirits((prev) => {
@@ -130,6 +149,7 @@ export function CocktailFormPage({ cocktails, onSave, onDelete, mode }: Props) {
       instructions: instructions.length ? instructions : ['Combine and serve.'],
       imageUrl: imageUrl.trim() || null,
       custom: existing?.custom ?? mode === 'add',
+      similarIds: mode === 'edit' ? similarIds : undefined,
     }
 
     onSave(cocktail)
@@ -146,8 +166,13 @@ export function CocktailFormPage({ cocktails, onSave, onDelete, mode }: Props) {
   return (
     <div className="safe-bottom pb-8">
       <div className="sticky top-0 z-10 flex items-center gap-3 border-b border-app bg-app px-4 py-3 backdrop-blur">
-        <button type="button" onClick={() => navigate(-1)} className="text-amber-accent">
-          ← Cancel
+        <button
+          type="button"
+          onClick={() => navigate(-1)}
+          aria-label="Cancel"
+          className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-app-strong text-muted"
+        >
+          <IconArrowLeft size={20} />
         </button>
         <h1 className="font-display text-lg font-bold text-foreground">
           {mode === 'edit' ? 'Edit Cocktail' : 'Add Cocktail'}
@@ -253,6 +278,34 @@ export function CocktailFormPage({ cocktails, onSave, onDelete, mode }: Props) {
             placeholder={'Combine all ingredients in a shaker with ice.\nShake until well chilled.\nStrain into a chilled coupe.'}
           />
         </label>
+
+        {mode === 'edit' && suggestedSimilar.length > 0 && (
+          <div>
+            <span className="mb-1 block text-sm text-muted">Similar recipes</span>
+            <p className="mb-3 text-xs text-subtle">
+              Choose which recipes to show at the bottom of this cocktail&apos;s page.
+            </p>
+            <div className="flex flex-wrap gap-2">
+              {suggestedSimilar.map((c) => {
+                const selected = similarIds.includes(c.id)
+                return (
+                  <button
+                    key={c.id}
+                    type="button"
+                    onClick={() => toggleSimilar(c.id)}
+                    className={`rounded-full border px-3 py-1.5 text-xs font-medium transition ${
+                      selected
+                        ? 'border-amber-accent bg-amber-accent/20 text-amber-light'
+                        : 'border-app-strong text-muted'
+                    }`}
+                  >
+                    {c.name}
+                  </button>
+                )
+              })}
+            </div>
+          </div>
+        )}
 
         <button
           type="submit"

@@ -74,6 +74,7 @@ function defaultProfile(userName: string): UserProfile {
     listView: 'list',
     collections: [],
     recipeDraft: '',
+    randomFavoritesOnly: true,
     updatedAt: Date.now(),
   }
 }
@@ -130,6 +131,7 @@ function migrateLegacyPrefs(): Record<string, UserProfile> {
       listView: parsed.listView ?? 'list',
       collections: parsed.collections ?? [],
       recipeDraft: '',
+      randomFavoritesOnly: true,
       updatedAt: parsed.syncUpdatedAt ?? Date.now(),
     }
 
@@ -186,6 +188,7 @@ function profileToPrefs(profile: UserProfile, shared: SharedSettings): AppPrefer
     listView: profile.listView,
     collections: profile.collections,
     recipeDraft: profile.recipeDraft ?? '',
+    randomFavoritesOnly: profile.randomFavoritesOnly ?? true,
     syncCode: shared.syncCode,
     syncUpdatedAt: shared.syncUpdatedAt,
     lastSyncedAt: shared.lastSyncedAt,
@@ -227,6 +230,7 @@ export function savePrefs(prefs: AppPreferences) {
     listView: prefs.listView,
     collections: prefs.collections ?? [],
     recipeDraft: prefs.recipeDraft ?? '',
+    randomFavoritesOnly: prefs.randomFavoritesOnly ?? true,
     updatedAt: Date.now(),
   }
   saveUserProfiles(profiles)

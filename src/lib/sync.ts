@@ -51,6 +51,7 @@ function legacyPrefsToProfiles(prefs: AppPreferences): Record<string, UserProfil
       listView: prefs.listView ?? 'list',
       collections: prefs.collections ?? [],
       recipeDraft: '',
+      randomFavoritesOnly: true,
       updatedAt: prefs.syncUpdatedAt ?? Date.now(),
     },
   }

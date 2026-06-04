@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo } from 'react'
 import { Link, useNavigate, useSearchParams } from 'react-router-dom'
 import type { AppPreferences, Cocktail, ListView } from '../types'
 import { SPIRIT_ORDER } from '../types'
@@ -8,8 +8,9 @@ import { restoreHomeScroll, saveHomeScroll } from '../lib/scroll'
 import { toggleFavorite } from '../lib/storage'
 import { CocktailCard } from './CocktailCard'
 import { CocktailGridCard } from './CocktailGridCard'
-import { CollectionFilterPicker } from './CollectionFilterPicker'
 import { SearchBar } from './SearchBar'
+import { ViewToggle } from './ViewToggle'
+import { IconHeart, IconPlus, IconShuffle } from './icons'
 import type Fuse from 'fuse.js'
 
 interface IconToggleProps {
@@ -26,9 +27,9 @@ function IconToggle({ active, onClick, ariaLabel, children }: IconToggleProps) {
       aria-label={ariaLabel}
       aria-pressed={active}
       onClick={onClick}
-      className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border text-lg transition ${
+      className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border transition ${
         active
-          ? 'border-amber-accent bg-amber-accent/15 text-amber-light'
+          ? 'border-amber-accent bg-amber-accent/15 text-amber-accent'
           : 'border-app-strong text-muted'
       }`}
     >
@@ -61,7 +62,6 @@ export function HomePage({
   const [searchParams, setSearchParams] = useSearchParams()
   const navigate = useNavigate()
   const listView = prefs.listView ?? 'list'
-  const [showCollectionPicker, setShowCollectionPicker] = useState(false)
 
   useEffect(() => {
     restoreHomeScroll()
@@ -74,22 +74,6 @@ export function HomePage({
   const activeCollection = useMemo(
     () => prefs.collections.find((c) => c.id === collectionId) ?? null,
     [prefs.collections, collectionId],
-  )
-
-  const selectCollection = useCallback(
-    (id: string | null) => {
-      setSearchParams(
-        (prev) => {
-          const next = new URLSearchParams(prev)
-          if (id) next.set('collection', id)
-          else next.delete('collection')
-          return next
-        },
-        { replace: true },
-      )
-      setShowCollectionPicker(false)
-    },
-    [setSearchParams],
   )
 
   const setQuery = useCallback(
@@ -203,45 +187,44 @@ export function HomePage({
       <div className="space-y-2">{items.map((cocktail) => renderCard(cocktail, browseIds))}</div>
     )
 
+  const openRandom = useCallback(() => {
+    const favoritesOnly = prefs.randomFavoritesOnly ?? true
+    let pool = favoritesOnly ? cocktails.filter((c) => favorites.includes(c.id)) : cocktails
+    if (pool.length === 0) pool = cocktails
+    if (pool.length === 0) return
+    const pick = pool[Math.floor(Math.random() * pool.length)]!
+    const browseIds = pool.map((c) => c.id)
+    openCocktail(pick, browseIds)
+  }, [cocktails, favorites, prefs.randomFavoritesOnly, openCocktail])
+
   const flatBrowseIds = useMemo(() => filtered.map((c) => c.id), [filtered])
 
   return (
-    <div className="safe-bottom pb-24">
+    <div className="safe-bottom pb-[3.5rem]">
       <header className="sticky top-0 z-10 border-b border-app bg-app px-4 py-4 backdrop-blur">
-        <div className="mb-1 flex items-center justify-between">
-          <h1 className="font-display text-2xl font-bold text-foreground">
+        <div className="mb-4 flex items-center gap-3">
+          <Link to="/" className="shrink-0">
+            <img src="/icon-512.png" alt="" className="h-10 w-10 rounded-xl object-cover" />
+          </Link>
+          <h1 className="min-w-0 flex-1 font-display text-xl font-bold text-foreground">
             Hi {prefs.userName.trim() || 'there'}
           </h1>
-          <div className="flex items-center gap-2">
-            <Link
-              to="/settings"
-              aria-label="Settings"
-              className="flex h-10 w-10 items-center justify-center rounded-xl border border-app text-lg text-muted"
-            >
-              ⚙
-            </Link>
-            <Link
-              to="/draft"
-              aria-label="Recipe draft"
-              className="flex h-10 w-10 items-center justify-center rounded-xl border border-app text-lg text-muted"
-            >
-              📝
-            </Link>
-            <Link
-              to="/add"
-              className="rounded-xl bg-amber-accent px-3 py-2 text-sm font-semibold text-bar-950"
-            >
-              + Add
-            </Link>
-          </div>
+          <button
+            type="button"
+            aria-label="Open random recipe"
+            onClick={openRandom}
+            className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-app-strong text-muted"
+          >
+            <IconShuffle size={20} />
+          </button>
+          <Link
+            to="/add"
+            aria-label="Add cocktail"
+            className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-amber-accent text-bar-950"
+          >
+            <IconPlus size={20} />
+          </Link>
         </div>
-        <p className="mb-4 text-xs text-subtle">
-          {activeCollection
-            ? `${activeCollection.name} · ${filtered.length} recipe${filtered.length === 1 ? '' : 's'}`
-            : filtered.length === cocktails.length
-              ? `${cocktails.length} recipes · sorted by recently opened`
-              : `${filtered.length} of ${cocktails.length} recipes`}
-        </p>
         <SearchBar value={query} onChange={setQuery} />
         <div className="mt-3 flex items-center gap-2">
           <IconToggle
@@ -249,33 +232,16 @@ export function HomePage({
             onClick={() => setFavoritesOnly(!favoritesOnly)}
             ariaLabel={favoritesOnly ? 'Showing favorites only' : 'Show favorites only'}
           >
-            {favoritesOnly ? '❤️' : '🤍'}
+            <IconHeart filled={favoritesOnly} size={20} />
           </IconToggle>
-          <IconToggle
-            active={!!activeCollection}
-            onClick={() => setShowCollectionPicker(true)}
-            ariaLabel={
-              activeCollection ? `Collection: ${activeCollection.name}` : 'Filter by collection'
-            }
-          >
-            📁
-          </IconToggle>
-          <div className="ml-auto flex items-center gap-2">
-            <IconToggle
-              active={listView === 'list'}
-              onClick={() => onListViewChange('list')}
-              ariaLabel="List view"
-            >
-              ☰
-            </IconToggle>
-            <IconToggle
-              active={listView === 'grid'}
-              onClick={() => onListViewChange('grid')}
-              ariaLabel="Thumbnail view"
-            >
-              ⊞
-            </IconToggle>
-          </div>
+          <ViewToggle value={listView} onChange={onListViewChange} />
+          <p className="ml-auto text-xs text-subtle">
+            {activeCollection
+              ? `${activeCollection.name} · ${filtered.length}`
+              : filtered.length === cocktails.length
+                ? `${cocktails.length} recipes`
+                : `${filtered.length} of ${cocktails.length}`}
+          </p>
         </div>
       </header>
 
@@ -319,15 +285,6 @@ export function HomePage({
           renderList(filtered, flatBrowseIds)
         )}
       </main>
-
-      {showCollectionPicker && (
-        <CollectionFilterPicker
-          collections={prefs.collections}
-          activeCollectionId={collectionId}
-          onSelect={selectCollection}
-          onClose={() => setShowCollectionPicker(false)}
-        />
-      )}
     </div>
   )
 }

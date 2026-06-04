@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 
 interface Props {
   draft: string
@@ -77,12 +77,9 @@ export function DraftPage({ draft, onSave }: Props) {
     'w-full min-h-[60vh] resize-y rounded-2xl border border-app bg-bar-800 px-4 py-3 font-mono text-sm leading-relaxed text-foreground outline-none focus:border-amber-accent/60'
 
   return (
-    <div className="safe-bottom pb-8">
-      <div className="sticky top-0 z-10 flex items-center gap-2 border-b border-app bg-app px-4 py-3 backdrop-blur">
-        <Link to="/" className="shrink-0 text-amber-accent">
-          ← Back
-        </Link>
-        <h1 className="min-w-0 flex-1 font-display text-lg font-bold text-foreground">Draft</h1>
+    <div className="safe-bottom pb-[3.5rem]">
+      <div className="sticky top-0 z-10 flex items-center gap-2 border-b border-app bg-app px-4 py-4 backdrop-blur">
+        <h1 className="min-w-0 flex-1 font-display text-xl font-bold text-foreground">Draft</h1>
         <div className="flex shrink-0 items-center gap-2">
           {selection && (
             <button

@@ -5,6 +5,7 @@ import { validateSession } from './lib/auth'
 import { applyAppearance } from './lib/theme'
 import { loadPrefs } from './lib/storage'
 import { pullSync, subscribeSyncApplied } from './lib/sync'
+import { AppShell } from './components/AppShell'
 import { HomePage } from './components/HomePage'
 import { CocktailDetailPage } from './components/CocktailDetailPage'
 import { CocktailFormPage } from './components/CocktailFormPage'
@@ -99,8 +100,9 @@ export default function App() {
 
   return (
     <BrowserRouter>
-      <div className="mx-auto min-h-dvh max-w-lg bg-bar-950">
-        <Routes>
+      <AppShell>
+        <div className="mx-auto min-h-dvh max-w-lg bg-bar-950">
+          <Routes>
           <Route
             path="/"
             element={
@@ -124,15 +126,20 @@ export default function App() {
                 fontSize={prefs.fontSize}
                 syncCode={prefs.syncCode}
                 lastSyncedAt={prefs.lastSyncedAt}
+                randomFavoritesOnly={prefs.randomFavoritesOnly ?? true}
                 onThemeChange={(theme) => updatePrefs({ theme })}
                 onFontSizeChange={(fontSize) => updatePrefs({ fontSize })}
                 onSyncCodeChange={(syncCode) => updatePrefs({ syncCode })}
+                onRandomFavoritesOnlyChange={(randomFavoritesOnly) =>
+                  updatePrefs({ randomFavoritesOnly })
+                }
                 onSynced={refreshPrefs}
                 onLogout={() => setAuthenticated(false)}
               />
             }
           />
           <Route path="/settings/ingredients" element={<IngredientsPage onChanged={refreshPrefs} />} />
+          <Route path="/collections" element={<CollectionsPage onChanged={refreshPrefs} />} />
           <Route path="/settings/collections" element={<CollectionsPage onChanged={refreshPrefs} />} />
           <Route
             path="/draft"
@@ -171,8 +178,9 @@ export default function App() {
               />
             }
           />
-        </Routes>
-      </div>
+          </Routes>
+        </div>
+      </AppShell>
     </BrowserRouter>
   )
 }

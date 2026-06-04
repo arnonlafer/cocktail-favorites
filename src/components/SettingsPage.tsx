@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import type { FontSize, Theme } from '../types'
 import { FONT_SIZE_LABELS, THEME_LABELS, THEME_ORDER, stepFontSize } from '../lib/theme'
 import { logout } from '../lib/auth'
@@ -10,9 +10,11 @@ interface Props {
   fontSize: FontSize
   syncCode: string
   lastSyncedAt: number | null
+  randomFavoritesOnly: boolean
   onThemeChange: (theme: Theme) => void
   onFontSizeChange: (fontSize: FontSize) => void
   onSyncCodeChange: (syncCode: string) => void
+  onRandomFavoritesOnlyChange: (value: boolean) => void
   onSynced: () => void
   onLogout: () => void
 }
@@ -22,13 +24,14 @@ export function SettingsPage({
   fontSize,
   syncCode,
   lastSyncedAt,
+  randomFavoritesOnly,
   onThemeChange,
   onFontSizeChange,
   onSyncCodeChange,
+  onRandomFavoritesOnlyChange,
   onSynced,
   onLogout,
 }: Props) {
-  const navigate = useNavigate()
   const [draftCode, setDraftCode] = useState(syncCode)
   const [syncStatus, setSyncStatus] = useState<SyncStatus>('idle')
   const [serverReady, setServerReady] = useState<'checking' | 'ready' | 'not-configured' | 'error'>('checking')
@@ -65,12 +68,9 @@ export function SettingsPage({
   const showServerWarning = serverReady === 'not-configured' || syncStatus === 'not-configured'
 
   return (
-    <div className="safe-bottom pb-8">
-      <div className="sticky top-0 z-10 flex items-center gap-3 border-b border-app bg-app/95 px-4 py-3 backdrop-blur">
-        <button type="button" onClick={() => navigate(-1)} className="text-amber-accent">
-          ← Back
-        </button>
-        <h1 className="font-display text-lg font-bold text-foreground">Settings</h1>
+    <div className="safe-bottom pb-[3.5rem]">
+      <div className="sticky top-0 z-10 border-b border-app bg-app px-4 py-4 backdrop-blur">
+        <h1 className="font-display text-xl font-bold text-foreground">Settings</h1>
       </div>
 
       <div className="space-y-4 px-4 pt-4">
@@ -184,10 +184,26 @@ export function SettingsPage({
         </section>
 
         <section className="rounded-2xl border border-app bg-bar-900/60 p-4">
+          <h2 className="mb-1 text-base font-semibold text-foreground">Random recipe</h2>
+          <p className="mb-3 text-sm text-muted">
+            Tap the shuffle icon on the home screen to jump to a random cocktail.
+          </p>
+          <label className="flex cursor-pointer items-start gap-3">
+            <input
+              type="checkbox"
+              checked={randomFavoritesOnly}
+              onChange={(e) => onRandomFavoritesOnlyChange(e.target.checked)}
+              className="mt-1 h-4 w-4 rounded border-app accent-amber-accent"
+            />
+            <span className="text-sm text-foreground">Pick from favorites only</span>
+          </label>
+        </section>
+
+        <section className="rounded-2xl border border-app bg-bar-900/60 p-4">
           <h2 className="mb-1 text-base font-semibold text-foreground">Collections</h2>
           <p className="mb-3 text-sm text-muted">Create and manage recipe collections.</p>
           <Link
-            to="/settings/collections"
+            to="/collections"
             className="inline-flex rounded-xl border border-app bg-bar-800 px-4 py-2 text-sm font-medium text-foreground"
           >
             Manage collections →

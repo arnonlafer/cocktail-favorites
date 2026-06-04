@@ -25,6 +25,8 @@ export interface Cocktail {
   instructions: string[]
   imageUrl: string | null
   custom?: boolean
+  /** Manually curated similar recipes; falls back to auto-match when empty. */
+  similarIds?: string[]
 }
 
 export type UnitSystem = 'oz' | 'ml'
@@ -52,6 +54,8 @@ export interface UserProfile {
   collections: Collection[]
   /** Free-form recipe notes, one continuous draft per user. */
   recipeDraft: string
+  /** When true, the random recipe button only picks from favorites. */
+  randomFavoritesOnly: boolean
   updatedAt: number
 }
 
@@ -71,6 +75,7 @@ export interface AppPreferences {
   listView: ListView
   collections: Collection[]
   recipeDraft: string
+  randomFavoritesOnly: boolean
 }
 
 export interface SyncPayload {

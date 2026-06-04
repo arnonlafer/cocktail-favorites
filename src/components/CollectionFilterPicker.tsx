@@ -74,7 +74,7 @@ export function CollectionFilterPicker({
         {collections.length === 0 && (
           <p className="mb-4 text-sm text-muted">
             No collections yet.{' '}
-            <Link to="/settings/collections" className="text-amber-accent" onClick={onClose}>
+            <Link to="/collections" className="text-amber-accent" onClick={onClose}>
               Create one in Settings
             </Link>
           </p>

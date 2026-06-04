@@ -1,5 +1,6 @@
 import type { Cocktail } from '../types'
 import { cocktailInitials, primarySpirit, spiritGradient } from '../lib/cocktailUtils'
+import { IconHeart } from './icons'
 
 interface Props {
   cocktail: Cocktail
@@ -30,15 +31,12 @@ export function CocktailCard({ cocktail, isFavorite, onToggleFavorite, onClick }
               {cocktailInitials(cocktail.name)}
             </div>
           )}
-          <span className="absolute bottom-1 left-1 rounded bg-black/40 px-1 text-[10px] uppercase tracking-wide text-amber-light/90">
-            {spirit.slice(0, 3)}
-          </span>
         </div>
 
         <div className="min-w-0 flex-1">
           <h3 className="truncate text-base font-semibold text-foreground">{cocktail.name}</h3>
           <p className="truncate text-xs text-muted">
-            {cocktail.method} · {cocktail.glass}
+            {spirit} · {cocktail.method} · {cocktail.glass}
           </p>
         </div>
       </button>
@@ -47,9 +45,9 @@ export function CocktailCard({ cocktail, isFavorite, onToggleFavorite, onClick }
         type="button"
         aria-label={isFavorite ? 'Remove from favorites' : 'Add to favorites'}
         onClick={onToggleFavorite}
-        className="shrink-0 rounded-full p-2 text-xl leading-none transition hover:bg-surface-muted"
+        className="shrink-0 rounded-full p-2 transition hover:bg-surface-muted"
       >
-        {isFavorite ? '❤️' : '🤍'}
+        <IconHeart filled={isFavorite} size={20} className={isFavorite ? 'text-amber-accent' : 'text-muted'} />
       </button>
     </div>
   )

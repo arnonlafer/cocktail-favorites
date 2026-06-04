@@ -1,6 +1,7 @@
 import type { Cocktail } from '../types'
 import { calculateCocktailNutrition } from '../lib/nutrition'
 import { cocktailInitials, primarySpirit, spiritGradient } from '../lib/cocktailUtils'
+import { IconHeart } from './icons'
 
 interface Props {
   cocktail: Cocktail
@@ -36,16 +37,13 @@ export function CocktailGridCard({ cocktail, isFavorite, onToggleFavorite, onCli
                 </span>
               </div>
             )}
-            <span className="absolute bottom-2 left-2 rounded bg-black/50 px-1.5 py-0.5 text-[10px] uppercase tracking-wide text-amber-light/90">
-              {spirit.slice(0, 3)}
-            </span>
           </div>
           <div className="p-3">
             <h3 className="line-clamp-2 text-sm font-semibold leading-snug text-foreground">
               {cocktail.name}
             </h3>
             <p className="mt-1 text-[11px] text-muted">
-              {cocktail.method} · {cocktail.glass}
+              {spirit} · {cocktail.method} · {cocktail.glass}
             </p>
             <p className="mt-1 text-[11px] text-subtle">
               {nutrition.calories} cal · {nutrition.carbs}g carbs
@@ -56,9 +54,9 @@ export function CocktailGridCard({ cocktail, isFavorite, onToggleFavorite, onCli
           type="button"
           aria-label={isFavorite ? 'Remove from favorites' : 'Add to favorites'}
           onClick={onToggleFavorite}
-          className="absolute right-2 top-2 rounded-full bg-black/50 p-2 text-lg leading-none backdrop-blur-sm"
+          className="absolute right-2 top-2 rounded-full bg-black/50 p-2 backdrop-blur-sm"
         >
-          {isFavorite ? '❤️' : '🤍'}
+          <IconHeart filled={isFavorite} size={18} className={isFavorite ? 'text-amber-accent' : 'text-foreground'} />
         </button>
       </div>
     </div>
