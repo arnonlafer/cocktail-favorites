@@ -273,7 +273,7 @@ export function CocktailDetailPage({
           <InstructionList steps={cocktail.instructions} />
         </section>
 
-        <SimilarRecipesSection cocktails={similar} resetKey={cocktail.id} />
+        <SimilarRecipesSection key={cocktail.id} cocktails={similar} resetKey={cocktail.id} />
       </div>
 
       {showCollections && id && (
