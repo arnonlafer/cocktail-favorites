@@ -8,7 +8,7 @@
   --color-bar-600: #5c4538;
   --color-amber-accent: #d4a574;
   --color-amber-light: #e8c9a0;
-  --font-display: 'Georgia', 'Times New Roman', serif;
+  --font-display: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 }
 
 :root,
