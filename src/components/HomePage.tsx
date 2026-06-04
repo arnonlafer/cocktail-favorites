@@ -204,7 +204,7 @@ export function HomePage({
       <header className="sticky top-0 z-10 border-b border-app bg-app px-4 py-4 backdrop-blur">
         <div className="mb-4 flex items-center gap-3">
           <Link to="/" className="shrink-0">
-            <img src="/icon-512.png" alt="" className="h-10 w-10 rounded-xl object-cover" />
+            <img src="/icon-header.png" alt="" className="h-10 w-10" />
           </Link>
           <h1 className="min-w-0 flex-1 font-display text-xl font-bold text-foreground">
             Hi {prefs.userName.trim() || 'there'}
