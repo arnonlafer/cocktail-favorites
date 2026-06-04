@@ -1,4 +1,4 @@
-import { useCallback, useLayoutEffect, useRef } from 'react'
+import { useLayoutEffect, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import type { Cocktail } from '../types'
 import { cocktailInitials, spiritGradient } from '../lib/cocktailUtils'
@@ -10,63 +10,40 @@ interface Props {
   resetKey?: string
 }
 
-const MOVE_THRESHOLD = 8
-const SCROLL_SUPPRESS_MS = 400
+const MOVE_THRESHOLD = 10
+const SCROLL_THRESHOLD = 2
+const SCROLL_TAP_COOLDOWN_MS = 450
 
-interface CardProps {
+function SimilarRecipeCard({
+  cocktail,
+  onKeyOpen,
+}: {
   cocktail: Cocktail
-  suppressTapUntil: React.RefObject<number>
-  onOpen: (id: string) => void
-}
-
-function SimilarRecipeCard({ cocktail, suppressTapUntil, onOpen }: CardProps) {
-  const pointerRef = useRef({ id: -1, x: 0, y: 0, moved: false })
+  onKeyOpen: (id: string) => void
+}) {
   const gradient = spiritGradient(cocktail)
-
-  const tryOpen = useCallback(() => {
-    if (pointerRef.current.moved) return
-    if (Date.now() < suppressTapUntil.current) return
-    onOpen(cocktail.id)
-  }, [cocktail.id, onOpen, suppressTapUntil])
 
   return (
     <div
       role="button"
       tabIndex={0}
-      onPointerDown={(e) => {
-        pointerRef.current = {
-          id: e.pointerId,
-          x: e.clientX,
-          y: e.clientY,
-          moved: false,
-        }
-      }}
-      onPointerMove={(e) => {
-        if (e.pointerId !== pointerRef.current.id) return
-        const dx = e.clientX - pointerRef.current.x
-        const dy = e.clientY - pointerRef.current.y
-        if (Math.hypot(dx, dy) > MOVE_THRESHOLD) pointerRef.current.moved = true
-      }}
-      onPointerUp={(e) => {
-        if (e.pointerId !== pointerRef.current.id) return
-        tryOpen()
-        pointerRef.current.moved = false
-      }}
-      onPointerCancel={() => {
-        pointerRef.current.moved = false
-      }}
-      onClick={(e) => e.preventDefault()}
+      data-cocktail-id={cocktail.id}
       onKeyDown={(e) => {
         if (e.key === 'Enter' || e.key === ' ') {
           e.preventDefault()
-          onOpen(cocktail.id)
+          onKeyOpen(cocktail.id)
         }
       }}
-      className="w-36 shrink-0 cursor-pointer overflow-hidden rounded-2xl border border-app bg-bar-900/80 text-left touch-pan-x"
+      className="w-36 shrink-0 cursor-pointer overflow-hidden rounded-2xl border border-app bg-bar-900/80 text-left select-none"
     >
       <div className={`aspect-square bg-linear-to-br ${gradient}`}>
         {cocktail.imageUrl ? (
-          <img src={cocktail.imageUrl} alt="" className="pointer-events-none h-full w-full object-cover" />
+          <img
+            src={cocktail.imageUrl}
+            alt=""
+            draggable={false}
+            className="pointer-events-none h-full w-full object-cover"
+          />
         ) : (
           <div className="flex h-full items-center justify-center font-display text-2xl font-bold text-foreground/90">
             {cocktailInitials(cocktail.name)}
@@ -86,9 +63,10 @@ export function SimilarRecipesSection({
   resetKey,
 }: Props) {
   const navigate = useNavigate()
+  const navigateRef = useRef(navigate)
+  navigateRef.current = navigate
+
   const scrollerRef = useRef<HTMLDivElement>(null)
-  const suppressTapUntil = useRef(0)
-  const scrollEndTimer = useRef<number | undefined>(undefined)
 
   useLayoutEffect(() => {
     const el = scrollerRef.current
@@ -96,44 +74,98 @@ export function SimilarRecipesSection({
 
     el.scrollLeft = 0
 
-    const markScrolling = () => {
-      suppressTapUntil.current = Date.now() + SCROLL_SUPPRESS_MS
-      window.clearTimeout(scrollEndTimer.current)
-      scrollEndTimer.current = window.setTimeout(() => {
-        suppressTapUntil.current = Date.now() + SCROLL_SUPPRESS_MS
-      }, 120)
+    const gesture = { startScrollLeft: 0, moved: false }
+    let lastScrollAt = 0
+    let touchStartX = 0
+    let touchStartY = 0
+
+    const scrollMoved = (startScrollLeft: number) =>
+      Math.abs(el.scrollLeft - startScrollLeft) > SCROLL_THRESHOLD
+
+    const blockTap = () => Date.now() - lastScrollAt < SCROLL_TAP_COOLDOWN_MS || gesture.moved
+
+    const stopBubble = (e: TouchEvent) => e.stopPropagation()
+
+    const onTouchStart = (e: TouchEvent) => {
+      stopBubble(e)
+      if (e.touches.length !== 1) return
+      const t = e.touches[0]!
+      touchStartX = t.clientX
+      touchStartY = t.clientY
+      gesture.moved = false
+      gesture.startScrollLeft = el.scrollLeft
     }
 
-    el.addEventListener('scroll', markScrolling, { passive: true })
+    const onTouchMove = (e: TouchEvent) => {
+      stopBubble(e)
+      if (e.touches.length !== 1) return
+      const t = e.touches[0]!
+      if (
+        Math.abs(t.clientX - touchStartX) > MOVE_THRESHOLD ||
+        Math.abs(t.clientY - touchStartY) > MOVE_THRESHOLD ||
+        scrollMoved(gesture.startScrollLeft)
+      ) {
+        gesture.moved = true
+      }
+    }
+
+    const onTouchEnd = (e: TouchEvent) => {
+      stopBubble(e)
+      if (scrollMoved(gesture.startScrollLeft)) gesture.moved = true
+    }
+
+    const onScroll = () => {
+      lastScrollAt = Date.now()
+      gesture.moved = true
+    }
+
+    const onClick = (e: MouseEvent) => {
+      e.stopPropagation()
+      if (blockTap()) {
+        e.preventDefault()
+        return
+      }
+      const card = (e.target as Element | null)?.closest('[data-cocktail-id]')
+      const id = card?.getAttribute('data-cocktail-id')
+      if (id) navigateRef.current(`/cocktail/${id}`)
+    }
+
+    el.addEventListener('touchstart', onTouchStart, { passive: true })
+    el.addEventListener('touchmove', onTouchMove, { passive: true })
+    el.addEventListener('touchend', onTouchEnd, { passive: true })
+    el.addEventListener('touchcancel', onTouchEnd, { passive: true })
+    el.addEventListener('scroll', onScroll, { passive: true })
+    el.addEventListener('click', onClick, { capture: true })
+
     return () => {
-      el.removeEventListener('scroll', markScrolling)
-      window.clearTimeout(scrollEndTimer.current)
+      el.removeEventListener('touchstart', onTouchStart)
+      el.removeEventListener('touchmove', onTouchMove)
+      el.removeEventListener('touchend', onTouchEnd)
+      el.removeEventListener('touchcancel', onTouchEnd)
+      el.removeEventListener('scroll', onScroll)
+      el.removeEventListener('click', onClick, { capture: true })
     }
   }, [resetKey])
-
-  const openRecipe = useCallback(
-    (cocktailId: string) => {
-      navigate(`/cocktail/${cocktailId}`)
-    },
-    [navigate],
-  )
 
   if (cocktails.length === 0) return null
 
   return (
-    <section>
+    <section data-similar-section>
       <h2 className="mb-3 text-lg font-semibold text-foreground">{title}</h2>
       <div
         key={resetKey}
         ref={scrollerRef}
+        data-similar-scroller
+        onTouchStart={(e) => e.stopPropagation()}
+        onTouchMove={(e) => e.stopPropagation()}
+        onTouchEnd={(e) => e.stopPropagation()}
         className="-mx-4 flex gap-3 overflow-x-auto px-4 pb-1 [overflow-anchor:none] touch-pan-x"
       >
         {cocktails.map((cocktail) => (
           <SimilarRecipeCard
             key={cocktail.id}
             cocktail={cocktail}
-            suppressTapUntil={suppressTapUntil}
-            onOpen={openRecipe}
+            onKeyOpen={(id) => navigateRef.current(`/cocktail/${id}`)}
           />
         ))}
       </div>

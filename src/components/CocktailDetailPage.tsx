@@ -32,6 +32,10 @@ interface Props {
 
 const SWIPE_THRESHOLD = 60
 
+function isSwipeExcluded(target: EventTarget | null): boolean {
+  return target instanceof Element && !!target.closest('[data-similar-scroller], [data-similar-section]')
+}
+
 const iconBtnClass =
   'flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-app-strong text-muted transition disabled:opacity-30'
 
@@ -51,6 +55,8 @@ export function CocktailDetailPage({
   const location = useLocation()
   const [searchParams] = useSearchParams()
   const touchStartX = useRef<number | null>(null)
+  const touchStartY = useRef<number | null>(null)
+  const pageSwipeActive = useRef(false)
   const [showCollections, setShowCollections] = useState(false)
 
   const cocktail = cocktails.find((c) => c.id === id)
@@ -136,17 +142,29 @@ export function CocktailDetailPage({
     <div
       className="safe-bottom pb-24"
       onTouchStart={(e) => {
+        if (isSwipeExcluded(e.target)) {
+          pageSwipeActive.current = false
+          return
+        }
+        pageSwipeActive.current = true
         touchStartX.current = e.touches[0]?.clientX ?? null
+        touchStartY.current = e.touches[0]?.clientY ?? null
       }}
       onTouchEnd={(e) => {
-        if (touchStartX.current == null) return
+        if (!pageSwipeActive.current) return
+        pageSwipeActive.current = false
+        if (touchStartX.current == null || touchStartY.current == null) return
         const endX = e.changedTouches[0]?.clientX
-        if (endX == null) return
-        const delta = endX - touchStartX.current
+        const endY = e.changedTouches[0]?.clientY
+        if (endX == null || endY == null) return
+        const deltaX = endX - touchStartX.current
+        const deltaY = endY - touchStartY.current
         touchStartX.current = null
-        if (Math.abs(delta) < SWIPE_THRESHOLD) return
-        if (delta < 0 && nextId) goToCocktail(nextId)
-        if (delta > 0 && prevId) goToCocktail(prevId)
+        touchStartY.current = null
+        if (Math.abs(deltaX) < SWIPE_THRESHOLD) return
+        if (Math.abs(deltaX) < Math.abs(deltaY)) return
+        if (deltaX < 0 && nextId) goToCocktail(nextId)
+        if (deltaX > 0 && prevId) goToCocktail(prevId)
       }}
     >
       <div className="sticky top-0 z-10 border-b border-app bg-app px-4 py-3 backdrop-blur">
