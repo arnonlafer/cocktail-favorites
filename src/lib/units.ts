@@ -1,6 +1,7 @@
 import type { Ingredient, UnitSystem } from '../types'
 
-const OZ_TO_ML = 29.5735
+/** Bar-standard conversion (1 oz = 30 ml), rounded for display. */
+const BAR_OZ_TO_ML = 30
 
 const VOLUME_UNITS = new Set(['oz', 'ounce', 'ounces', 'ml', 'fl'])
 
@@ -35,6 +36,16 @@ export function formatAmount(value: number): string {
   return String(Number(rounded.toFixed(2)))
 }
 
+function roundBarMl(ml: number): number {
+  return Math.round(ml * 2) / 2
+}
+
+function formatMl(value: number): string {
+  const rounded = roundBarMl(value)
+  if (Number.isInteger(rounded)) return String(rounded)
+  return rounded.toFixed(1).replace(/\.0$/, '')
+}
+
 export interface FormattedIngredient {
   amount: string
   name: string
@@ -53,10 +64,12 @@ export function formatIngredientParts(
 
   if (VOLUME_UNITS.has(ingUnit)) {
     let ozAmount = amount
-    if (ingUnit === 'ml') ozAmount = amount / OZ_TO_ML
+    if (ingUnit === 'ml') ozAmount = amount / BAR_OZ_TO_ML
     const scaledOz = ozAmount * multiplier
-    const display = unit === 'oz' ? scaledOz : scaledOz * OZ_TO_ML
-    return { amount: formatAmount(display), name }
+    if (unit === 'oz') {
+      return { amount: formatAmount(scaledOz), name }
+    }
+    return { amount: formatMl(scaledOz * BAR_OZ_TO_ML), name }
   }
 
   const scaled = amount * multiplier
