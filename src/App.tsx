@@ -82,12 +82,12 @@ export default function App() {
   }, [authenticated, refreshPrefs])
 
   if (!authReady) {
-    return <div className="mx-auto min-h-dvh max-w-lg bg-bar-950" />
+    return <div className="app-shell mx-auto min-h-dvh bg-bar-950" />
   }
 
   if (!authenticated) {
     return (
-      <div className="mx-auto min-h-dvh max-w-lg bg-bar-950">
+      <div className="app-shell mx-auto min-h-dvh bg-bar-950">
         <LoginPage
           onSuccess={() => {
             refreshPrefs()
@@ -103,7 +103,7 @@ export default function App() {
   return (
     <BrowserRouter>
       <AppShell>
-        <div className="mx-auto min-h-dvh max-w-lg bg-bar-950">
+        <div className="app-shell mx-auto min-h-dvh bg-bar-950">
           <Routes>
           <Route
             path="/"

@@ -124,6 +124,17 @@ button {
   padding-bottom: max(1rem, env(safe-area-inset-bottom));
 }
 
+.app-shell {
+  width: 100%;
+  max-width: 32rem;
+}
+
+@media (min-width: 1024px) {
+  .app-shell {
+    max-width: 72rem;
+  }
+}
+
 /* Fixed bottom tab bar (~3.25rem) + home indicator */
 .pb-bottom-nav {
   padding-bottom: calc(3.25rem + env(safe-area-inset-bottom, 0px));

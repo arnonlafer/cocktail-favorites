@@ -180,7 +180,7 @@ export function HomePage({
 
   const renderList = (items: Cocktail[], browseIds: string[]) =>
     listView === 'grid' ? (
-      <div className="grid grid-cols-2 gap-3">
+      <div className="grid grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
         {items.map((cocktail) => renderCard(cocktail, browseIds))}
       </div>
     ) : (
@@ -249,12 +249,23 @@ export function HomePage({
         {filtered.length === 0 ? (
           <p className="py-12 text-center text-muted">No cocktails match your search.</p>
         ) : grouped ? (
-          <div className="space-y-4">
+          <div
+            className={
+              listView === 'list'
+                ? 'space-y-4 lg:flex lg:flex-wrap lg:items-start lg:gap-4 lg:space-y-0'
+                : 'space-y-4'
+            }
+          >
             {grouped.map(({ spirit, cocktails: groupCocktails }) => {
               const isCollapsed = collapsedGroups.has(spirit)
               const groupBrowseIds = groupCocktails.map((c) => c.id)
               return (
-                <section key={spirit} className="rounded-2xl border border-app bg-bar-900/40">
+                <section
+                  key={spirit}
+                  className={`rounded-2xl border border-app bg-bar-900/40 ${
+                    listView === 'list' ? 'lg:min-w-[min(100%,17rem)] lg:flex-1 lg:basis-72' : ''
+                  }`}
+                >
                   <button
                     type="button"
                     onClick={() => toggleGroup(spirit)}
