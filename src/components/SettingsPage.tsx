@@ -89,65 +89,22 @@ export function SettingsPage({
 
       <div className="space-y-4 px-4 pt-4">
         <section className="rounded-2xl border border-app bg-bar-900/60 p-4">
-          <h2 className="mb-1 text-base font-semibold text-foreground">Sync across devices</h2>
-          <p className="mb-3 text-sm text-muted">
-            The sync code links your devices together, but your edits only travel between them after they are
-            saved to Cloudflare storage on the server.
-          </p>
-          <ol className="mb-4 list-decimal space-y-1 pl-4 text-xs text-subtle">
-            <li>Finish the one-time Cloudflare setup (bind SYNC_KV — see README)</li>
-            <li>Enter the same sync code on every device</li>
-            <li>After editing a recipe, tap Sync now on that device</li>
-            <li>On the other device, tap Sync now to download the change</li>
-          </ol>
-          {showServerWarning && (
-            <p className="mb-4 rounded-xl border border-red-900/50 bg-red-950/40 px-3 py-2 text-sm text-red-200">
-              Cloud storage is not connected yet. Sync will not work until you bind the SYNC_KV namespace to the
-              cocktail-favorites worker in Cloudflare (Step 3 in the README).
-            </p>
-          )}
-          {serverReady === 'ready' && !showServerWarning && (
-            <p className="mb-4 rounded-xl border border-emerald-900/40 bg-emerald-950/30 px-3 py-2 text-xs text-emerald-200">
-              Cloud storage is connected. Sync should work between devices.
-            </p>
-          )}
-          <label className="mb-2 block text-sm font-medium text-foreground" htmlFor="sync-code">
-            Sync code
-          </label>
-          <input
-            id="sync-code"
-            type="text"
-            autoComplete="off"
-            autoCapitalize="none"
-            spellCheck={false}
-            value={draftCode}
-            onChange={(e) => setDraftCode(e.target.value)}
-            placeholder="e.g. my-bar-2026"
-            className="mb-3 w-full rounded-xl border border-app bg-bar-800 px-3 py-2.5 text-sm text-foreground placeholder:text-subtle"
-          />
-          <div className="flex gap-2">
-            <button
-              type="button"
-              onClick={() => void saveSyncCode()}
-              className="flex-1 rounded-xl bg-amber-accent py-2.5 text-sm font-semibold text-bar-950"
-            >
-              Save code
-            </button>
-            <button
-              type="button"
-              onClick={() => void handleSyncNow()}
-              className="flex-1 rounded-xl border border-app bg-bar-800 py-2.5 text-sm font-medium text-foreground"
-            >
-              Sync now
-            </button>
+          <h2 className="mb-1 text-base font-semibold text-foreground">Theme</h2>
+          <p className="mb-4 text-sm text-muted">Dark, dim, or light appearance.</p>
+          <div className="inline-flex w-full rounded-xl border border-app bg-bar-800 p-1">
+            {THEME_ORDER.map((option) => (
+              <button
+                key={option}
+                type="button"
+                onClick={() => onThemeChange(option)}
+                className={`flex-1 rounded-lg py-2.5 text-sm font-medium transition ${
+                  theme === option ? 'bg-amber-accent text-bar-950' : 'text-muted'
+                }`}
+              >
+                {THEME_LABELS[option]}
+              </button>
+            ))}
           </div>
-          <p className="mt-3 text-xs text-subtle">
-            Last synced: {formatSyncTime(lastSyncedAt)}
-            {syncStatus === 'syncing' ? ' · Syncing…' : ''}
-            {syncStatus === 'synced' ? ' · Synced just now' : ''}
-            {syncStatus === 'error' ? ' · Sync failed — check connection and sign-in' : ''}
-            {syncStatus === 'not-configured' ? ' · Server storage not set up' : ''}
-          </p>
         </section>
 
         <section className="rounded-2xl border border-app bg-bar-900/60 p-4">
@@ -179,22 +136,27 @@ export function SettingsPage({
         </section>
 
         <section className="rounded-2xl border border-app bg-bar-900/60 p-4">
-          <h2 className="mb-1 text-base font-semibold text-foreground">Theme</h2>
-          <p className="mb-4 text-sm text-muted">Dark, dim, or light appearance.</p>
-          <div className="inline-flex w-full rounded-xl border border-app bg-bar-800 p-1">
-            {THEME_ORDER.map((option) => (
-              <button
-                key={option}
-                type="button"
-                onClick={() => onThemeChange(option)}
-                className={`flex-1 rounded-lg py-2.5 text-sm font-medium transition ${
-                  theme === option ? 'bg-amber-accent text-bar-950' : 'text-muted'
-                }`}
-              >
-                {THEME_LABELS[option]}
-              </button>
-            ))}
-          </div>
+          <h2 className="mb-1 text-base font-semibold text-foreground">Lists</h2>
+          <p className="mb-3 text-sm text-muted">Create and manage recipe lists.</p>
+          <Link
+            to="/collections"
+            className="inline-flex rounded-xl border border-app bg-bar-800 px-4 py-2 text-sm font-medium text-foreground"
+          >
+            Manage lists →
+          </Link>
+        </section>
+
+        <section className="rounded-2xl border border-app bg-bar-900/60 p-4">
+          <h2 className="mb-1 text-base font-semibold text-foreground">Ingredient nutrition</h2>
+          <p className="mb-3 text-sm text-muted">
+            Manage calories and carbs per ounce for spirits, juices, and syrups.
+          </p>
+          <Link
+            to="/settings/ingredients"
+            className="inline-flex rounded-xl border border-app bg-bar-800 px-4 py-2 text-sm font-medium text-foreground"
+          >
+            Edit ingredient nutrition →
+          </Link>
         </section>
 
         <section className="rounded-2xl border border-app bg-bar-900/60 p-4">
@@ -257,33 +219,66 @@ export function SettingsPage({
         <AiSettingsSection />
 
         <section className="rounded-2xl border border-app bg-bar-900/60 p-4">
-          <h2 className="mb-1 text-base font-semibold text-foreground">Lists</h2>
-          <p className="mb-3 text-sm text-muted">Create and manage recipe lists.</p>
-          <Link
-            to="/collections"
-            className="inline-flex rounded-xl border border-app bg-bar-800 px-4 py-2 text-sm font-medium text-foreground"
-          >
-            Manage lists →
-          </Link>
-        </section>
-
-        <section className="rounded-2xl border border-app bg-bar-900/60 p-4">
-          <h2 className="mb-1 text-base font-semibold text-foreground">Ingredient nutrition</h2>
+          <h2 className="mb-1 text-base font-semibold text-foreground">Sync across devices</h2>
           <p className="mb-3 text-sm text-muted">
-            Manage calories and carbs per ounce for spirits, juices, and syrups.
+            The sync code links your devices together, but your edits only travel between them after they are
+            saved to Cloudflare storage on the server.
           </p>
-          <Link
-            to="/settings/ingredients"
-            className="inline-flex rounded-xl border border-app bg-bar-800 px-4 py-2 text-sm font-medium text-foreground"
-          >
-            Edit ingredient nutrition →
-          </Link>
+          <ol className="mb-4 list-decimal space-y-1 pl-4 text-xs text-subtle">
+            <li>Finish the one-time Cloudflare setup (bind SYNC_KV — see README)</li>
+            <li>Enter the same sync code on every device</li>
+            <li>After editing a recipe, tap Sync now on that device</li>
+            <li>On the other device, tap Sync now to download the change</li>
+          </ol>
+          {showServerWarning && (
+            <p className="mb-4 rounded-xl border border-red-900/50 bg-red-950/40 px-3 py-2 text-sm text-red-200">
+              Cloud storage is not connected yet. Sync will not work until you bind the SYNC_KV namespace to the
+              cocktail-favorites worker in Cloudflare (Step 3 in the README).
+            </p>
+          )}
+          {serverReady === 'ready' && !showServerWarning && (
+            <p className="mb-4 rounded-xl border border-emerald-900/40 bg-emerald-950/30 px-3 py-2 text-xs text-emerald-200">
+              Cloud storage is connected. Sync should work between devices.
+            </p>
+          )}
+          <label className="mb-2 block text-sm font-medium text-foreground" htmlFor="sync-code">
+            Sync code
+          </label>
+          <input
+            id="sync-code"
+            type="text"
+            autoComplete="off"
+            autoCapitalize="none"
+            spellCheck={false}
+            value={draftCode}
+            onChange={(e) => setDraftCode(e.target.value)}
+            placeholder="e.g. my-bar-2026"
+            className="mb-3 w-full rounded-xl border border-app bg-bar-800 px-3 py-2.5 text-sm text-foreground placeholder:text-subtle"
+          />
+          <div className="flex gap-2">
+            <button
+              type="button"
+              onClick={() => void saveSyncCode()}
+              className="flex-1 rounded-xl bg-amber-accent py-2.5 text-sm font-semibold text-bar-950"
+            >
+              Save code
+            </button>
+            <button
+              type="button"
+              onClick={() => void handleSyncNow()}
+              className="flex-1 rounded-xl border border-app bg-bar-800 py-2.5 text-sm font-medium text-foreground"
+            >
+              Sync now
+            </button>
+          </div>
+          <p className="mt-3 text-xs text-subtle">
+            Last synced: {formatSyncTime(lastSyncedAt)}
+            {syncStatus === 'syncing' ? ' · Syncing…' : ''}
+            {syncStatus === 'synced' ? ' · Synced just now' : ''}
+            {syncStatus === 'error' ? ' · Sync failed — check connection and sign-in' : ''}
+            {syncStatus === 'not-configured' ? ' · Server storage not set up' : ''}
+          </p>
         </section>
-
-        <p className="px-1 text-xs text-subtle">
-          Spirit groups collapse by default except the category of your last opened cocktail. Expand or collapse
-          groups manually — your layout resets when you open a new recipe.
-        </p>
 
         <section className="rounded-2xl border border-app bg-bar-900/60 p-4">
           <h2 className="mb-1 text-base font-semibold text-foreground">Account</h2>
