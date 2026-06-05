@@ -28,7 +28,7 @@ export function CollectionFilterPicker({
         onClick={(e) => e.stopPropagation()}
       >
         <h2 id="collection-filter-title" className="mb-3 text-base font-semibold text-foreground">
-          Collections
+          Lists
         </h2>
 
         <ul className="mb-4 space-y-2">
@@ -73,7 +73,7 @@ export function CollectionFilterPicker({
 
         {collections.length === 0 && (
           <p className="mb-4 text-sm text-muted">
-            No collections yet.{' '}
+            No lists yet.{' '}
             <Link to="/collections" className="text-amber-accent" onClick={onClose}>
               Create one in Settings
             </Link>

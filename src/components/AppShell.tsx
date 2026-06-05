@@ -10,6 +10,7 @@ export function AppShell({ children }: Props) {
   const showNav =
     pathname === '/' ||
     pathname === '/draft' ||
+    pathname === '/cart' ||
     pathname.startsWith('/collections') ||
     pathname.startsWith('/settings')
 

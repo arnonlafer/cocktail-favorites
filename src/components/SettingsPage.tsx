@@ -4,6 +4,7 @@ import type { FontSize, Theme } from '../types'
 import { FONT_SIZE_LABELS, THEME_LABELS, THEME_ORDER, stepFontSize } from '../lib/theme'
 import { logout } from '../lib/auth'
 import { checkSyncServer, formatSyncTime, syncNow, type SyncStatus } from '../lib/sync'
+import { PageHeader } from './PageHeader'
 
 interface Props {
   theme: Theme
@@ -69,9 +70,7 @@ export function SettingsPage({
 
   return (
     <div className="safe-bottom pb-[3.5rem]">
-      <div className="sticky top-0 z-10 border-b border-app bg-app px-4 py-4 backdrop-blur">
-        <h1 className="font-display text-xl font-bold text-foreground">Settings</h1>
-      </div>
+      <PageHeader title="Settings" />
 
       <div className="space-y-4 px-4 pt-4">
         <section className="rounded-2xl border border-app bg-bar-900/60 p-4">
@@ -200,13 +199,13 @@ export function SettingsPage({
         </section>
 
         <section className="rounded-2xl border border-app bg-bar-900/60 p-4">
-          <h2 className="mb-1 text-base font-semibold text-foreground">Collections</h2>
-          <p className="mb-3 text-sm text-muted">Create and manage recipe collections.</p>
+          <h2 className="mb-1 text-base font-semibold text-foreground">Lists</h2>
+          <p className="mb-3 text-sm text-muted">Create and manage recipe lists.</p>
           <Link
             to="/collections"
             className="inline-flex rounded-xl border border-app bg-bar-800 px-4 py-2 text-sm font-medium text-foreground"
           >
-            Manage collections →
+            Manage lists →
           </Link>
         </section>
 

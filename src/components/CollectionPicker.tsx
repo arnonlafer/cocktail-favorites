@@ -52,14 +52,14 @@ export function CollectionPicker({ cocktailId, collections, onClose, onChanged }
         className="max-h-[70dvh] w-full max-w-lg overflow-y-auto rounded-2xl border border-app bg-bar-900 p-4 shadow-xl"
         onClick={(e) => e.stopPropagation()}
       >
-        <h2 className="mb-3 text-base font-semibold text-foreground">Add to collection</h2>
+        <h2 className="mb-3 text-base font-semibold text-foreground">Add to list</h2>
 
         <div className="mb-4 flex gap-2">
           <input
             type="text"
             value={newName}
             onChange={(e) => setNewName(e.target.value)}
-            placeholder="New collection name…"
+            placeholder="New list name…"
             className="min-w-0 flex-1 rounded-xl border border-app bg-bar-800 px-3 py-2 text-sm text-foreground placeholder:text-subtle"
           />
           <button
@@ -73,7 +73,7 @@ export function CollectionPicker({ cocktailId, collections, onClose, onChanged }
         </div>
 
         {items.length === 0 ? (
-          <p className="mb-4 text-sm text-muted">No collections yet — create one above.</p>
+          <p className="mb-4 text-sm text-muted">No lists yet — create one above.</p>
         ) : (
           <ul className="mb-4 space-y-2">
             {items.map((collection) => {

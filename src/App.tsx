@@ -14,6 +14,7 @@ import { IngredientsPage } from './components/IngredientsPage'
 import { LoginPage } from './components/LoginPage'
 import { SettingsPage } from './components/SettingsPage'
 import { DraftPage } from './components/DraftPage'
+import { CartPage } from './components/CartPage'
 
 export default function App() {
   const [authReady, setAuthReady] = useState(false)
@@ -147,6 +148,15 @@ export default function App() {
               <DraftPage
                 draft={prefs.recipeDraft ?? ''}
                 onSave={(recipeDraft) => updatePrefs({ recipeDraft })}
+              />
+            }
+          />
+          <Route
+            path="/cart"
+            element={
+              <CartPage
+                items={prefs.cart ?? []}
+                onSave={(cart) => updatePrefs({ cart })}
               />
             }
           />

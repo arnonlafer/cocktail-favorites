@@ -203,7 +203,7 @@ export function CocktailDetailPage({
             )}
             <button
               type="button"
-              aria-label="Add to collection"
+              aria-label="Add to list"
               onClick={() => setShowCollections(true)}
               className={iconBtnClass}
             >

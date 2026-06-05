@@ -107,6 +107,16 @@ export function IconDraft({ className, size }: IconProps) {
   )
 }
 
+export function IconCart({ className, size }: IconProps) {
+  return (
+    <Icon className={className} size={size}>
+      <circle cx="9" cy="20" r="1.5" fill="currentColor" stroke="none" />
+      <circle cx="18" cy="20" r="1.5" fill="currentColor" stroke="none" />
+      <path d="M2 3h2l2.4 12.4a1 1 0 0 0 1 .8h9.7a1 1 0 0 0 1-.8L21 8H6" />
+    </Icon>
+  )
+}
+
 export function IconSettings({ className, size }: IconProps) {
   return (
     <Icon className={className} size={size}>

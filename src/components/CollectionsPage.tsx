@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import type { Collection } from '../types'
 import {
   createCollection,
@@ -7,12 +7,15 @@ import {
   loadCollections,
   renameCollection,
 } from '../lib/storage'
+import { PageHeader } from './PageHeader'
 
 interface Props {
   onChanged: () => void
 }
 
 export function CollectionsPage({ onChanged }: Props) {
+  const location = useLocation()
+  const backTo = location.pathname.startsWith('/settings') ? '/settings' : '/'
   const [collections, setCollections] = useState<Collection[]>(() => loadCollections())
   const [newName, setNewName] = useState('')
   const [editingId, setEditingId] = useState<string | null>(null)
@@ -46,13 +49,11 @@ export function CollectionsPage({ onChanged }: Props) {
 
   return (
     <div className="safe-bottom pb-[3.5rem]">
-      <div className="sticky top-0 z-10 border-b border-app bg-app px-4 py-4 backdrop-blur">
-        <h1 className="font-display text-xl font-bold text-foreground">Collections</h1>
-      </div>
+      <PageHeader title="Lists" backTo={backTo} />
 
       <div className="space-y-4 px-4 pt-4">
         <p className="text-sm text-muted">
-          Group recipes into collections. Add cocktails from any recipe page.
+          Group recipes into lists. Add cocktails from any recipe page.
         </p>
 
         <div className="flex gap-2">
@@ -60,7 +61,7 @@ export function CollectionsPage({ onChanged }: Props) {
             type="text"
             value={newName}
             onChange={(e) => setNewName(e.target.value)}
-            placeholder="New collection name…"
+            placeholder="New list name…"
             className="min-w-0 flex-1 rounded-xl border border-app bg-bar-800 px-3 py-2.5 text-sm text-foreground"
           />
           <button
@@ -142,7 +143,7 @@ export function CollectionsPage({ onChanged }: Props) {
         </div>
 
         {collections.length === 0 && (
-          <p className="py-8 text-center text-sm text-muted">No collections yet.</p>
+          <p className="py-8 text-center text-sm text-muted">No lists yet.</p>
         )}
       </div>
     </div>

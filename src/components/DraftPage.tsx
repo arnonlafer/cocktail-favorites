@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { PageHeader } from './PageHeader'
 
 interface Props {
   draft: string
@@ -78,8 +79,7 @@ export function DraftPage({ draft, onSave }: Props) {
 
   return (
     <div className="safe-bottom pb-[3.5rem]">
-      <div className="sticky top-0 z-10 flex items-center gap-2 border-b border-app bg-app px-4 py-4 backdrop-blur">
-        <h1 className="min-w-0 flex-1 font-display text-xl font-bold text-foreground">Draft</h1>
+      <PageHeader title="Draft">
         <div className="flex shrink-0 items-center gap-2">
           {selection && (
             <button
@@ -101,7 +101,7 @@ export function DraftPage({ draft, onSave }: Props) {
             </button>
           )}
         </div>
-      </div>
+      </PageHeader>
 
       <div className="px-4 pt-4" ref={containerRef}>
         {editing ? (

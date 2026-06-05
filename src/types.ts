@@ -51,6 +51,11 @@ export interface Collection {
   cocktailIds: string[]
 }
 
+export interface CartItem {
+  id: string
+  name: string
+}
+
 /** Per-user settings synced by username key. */
 export interface UserProfile {
   userName: string
@@ -65,6 +70,8 @@ export interface UserProfile {
   collections: Collection[]
   /** Free-form recipe notes, one continuous draft per user. */
   recipeDraft: string
+  /** Shopping list for spirits, syrups, bitters, etc. */
+  cart: CartItem[]
   /** When true, the random recipe button only picks from favorites. */
   randomFavoritesOnly: boolean
   updatedAt: number
@@ -86,6 +93,7 @@ export interface AppPreferences {
   listView: ListView
   collections: Collection[]
   recipeDraft: string
+  cart: CartItem[]
   randomFavoritesOnly: boolean
 }
 
