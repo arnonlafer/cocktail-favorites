@@ -103,13 +103,19 @@
         "name": "Lemon Juice"
       }
     ],
-    "garnish": "Lemon Twist, A Lemon Twist",
+    "garnish": "A Lemon Twist",
     "instructions": [
       "Combine all ingredients in a shaker with ice.",
       "Shake until well chilled.",
       "Strain into a chilled coupe glass."
     ],
-    "imageUrl": "https://www.liquor.com/thmb/aE-GxxqWvA3Ch7XxuNzNONOvsDY=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/monte-cassino-720x720-primary-b8fe0f7a9f5646b695653ccc96141b1d.jpg"
+    "imageUrl": "https://www.liquor.com/thmb/aE-GxxqWvA3Ch7XxuNzNONOvsDY=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/monte-cassino-720x720-primary-b8fe0f7a9f5646b695653ccc96141b1d.jpg",
+    "similarIds": [],
+    "origin": {
+      "classification": "modern-classic",
+      "year": "2010",
+      "creator": "Damon Dyer"
+    }
   },
   {
     "id": "9th-wonder",
@@ -142,13 +148,19 @@
         "name": "Lime Juice"
       }
     ],
-    "garnish": null,
+    "garnish": "A Lime twist",
     "instructions": [
       "Combine all ingredients in a shaker with ice.",
       "Shake until well chilled.",
       "Strain into a chilled coupe glass."
     ],
-    "imageUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTK0WX5FOrry2Oz0llsNzYLJUBofaY8H9i5SA&s"
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTK0WX5FOrry2Oz0llsNzYLJUBofaY8H9i5SA&s",
+    "similarIds": [],
+    "origin": {
+      "classification": "modern-classic",
+      "year": "2018",
+      "creator": "Erick Castro"
+    }
   },
   {
     "id": "midnight-flight-new-year-s-eve",
@@ -171,9 +183,9 @@
         "name": "½ Oz Amaro Nonino"
       },
       {
-        "amount": 3,
-        "unit": "oz",
-        "name": "Dry Sparkling Wine"
+        "amount": null,
+        "unit": null,
+        "name": "¾ Oz St-Germain"
       },
       {
         "amount": null,
@@ -186,9 +198,9 @@
         "name": "Orange Bitters"
       },
       {
-        "amount": null,
-        "unit": null,
-        "name": "¾ Oz St-Germain"
+        "amount": 3,
+        "unit": "oz",
+        "name": "Dry Sparkling Wine"
       }
     ],
     "garnish": "Grapefruit Twist or Pomegranate Seeds, And Serve Immediately",
@@ -211,39 +223,24 @@
     ],
     "ingredients": [
       {
-        "amount": 1,
+        "amount": 1.5,
         "unit": "oz",
         "name": "Blanco Tequila"
       },
       {
-        "amount": 1,
+        "amount": 1.5,
         "unit": "oz",
         "name": "Mezcal"
       },
       {
-        "amount": null,
-        "unit": null,
-        "name": "Bourbon Option"
-      },
-      {
-        "amount": 2,
+        "amount": 1,
         "unit": "oz",
-        "name": "Bourbon"
-      },
-      {
-        "amount": null,
-        "unit": null,
         "name": "Banana Liqueur"
       },
       {
-        "amount": 0.5,
+        "amount": 0.75,
         "unit": "oz",
-        "name": "Coffee Liqueur (Cantera Negra Cafe)"
-      },
-      {
-        "amount": 0.5,
-        "unit": "oz",
-        "name": "Coffee Liqueur (Mr. Black)"
+        "name": "Coffee Liqueur"
       },
       {
         "amount": 2,
@@ -267,7 +264,12 @@
       "Shake until well chilled.",
       "Strain into a chilled coupe glass."
     ],
-    "imageUrl": "https://www.foodandwine.com/thmb/8pDU1bsiqbWVCF-VNf2sE7y6FdQ=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/banana-bread-carajillo-FT-RECIPE0925-b3c38bf8352149cc935b204c9501ebed.jpg"
+    "imageUrl": "https://www.foodandwine.com/thmb/8pDU1bsiqbWVCF-VNf2sE7y6FdQ=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/banana-bread-carajillo-FT-RECIPE0925-b3c38bf8352149cc935b204c9501ebed.jpg",
+    "similarIds": [],
+    "origin": {
+      "classification": "contemporary",
+      "note": "Riff on the Spanish carajillo (19th century)."
+    }
   },
   {
     "id": "royal-sovereign",
@@ -280,9 +282,14 @@
     ],
     "ingredients": [
       {
-        "amount": 1.5,
+        "amount": 0.75,
         "unit": "oz",
-        "name": "Bourbon"
+        "name": "Lemon Juice"
+      },
+      {
+        "amount": 0.25,
+        "unit": "oz",
+        "name": "Simple Syrup"
       },
       {
         "amount": 0.5,
@@ -295,14 +302,9 @@
         "name": "Aperol"
       },
       {
-        "amount": 0.75,
+        "amount": 1.5,
         "unit": "oz",
-        "name": "Lemon Juice"
-      },
-      {
-        "amount": 0.25,
-        "unit": "oz",
-        "name": "Simple Syrup"
+        "name": "Bourbon"
       }
     ],
     "garnish": null,
@@ -356,16 +358,21 @@
       {
         "amount": 2,
         "unit": "dash",
-        "name": "Saline Solution (1/5 Salt/Water)"
+        "name": "Saline Solution"
       }
     ],
-    "garnish": null,
+    "garnish": "Nutmeg dust",
     "instructions": [
       "Combine all ingredients and dry shake without ice.",
       "Add ice and shake until well chilled.",
       "Strain into a rocks glass over cubed ice."
     ],
-    "imageUrl": "https://preview.redd.it/baby-turtle-v0-zfayuhqjy1hd1.jpeg?auto=webp&s=339cde17bcfe50c8f70ffa40c7afd692fb2f58e4"
+    "imageUrl": "https://preview.redd.it/baby-turtle-v0-zfayuhqjy1hd1.jpeg?auto=webp&s=339cde17bcfe50c8f70ffa40c7afd692fb2f58e4",
+    "similarIds": [],
+    "origin": {
+      "classification": "contemporary",
+      "note": "No widely documented origin found."
+    }
   },
   {
     "id": "ruby-cocktail",
@@ -429,57 +436,58 @@
       {
         "amount": 2,
         "unit": "oz",
-        "name": "Gin"
+        "name": "gin"
       },
       {
         "amount": 1,
         "unit": "oz",
-        "name": "Fresh Lime Juice"
+        "name": "fresh lime juice"
       },
       {
         "amount": 0.75,
         "unit": "oz",
-        "name": "Simple Syrup"
+        "name": "simple syrup"
+      },
+      {
+        "amount": 3,
+        "unit": "pc",
+        "name": "drops Angustora bitters"
+      },
+      {
+        "amount": 3,
+        "unit": "pc",
+        "name": "slices fresh cucumber"
+      },
+      {
+        "amount": 3,
+        "unit": "pc",
+        "name": "sprigs fresh mint"
       },
       {
         "amount": null,
         "unit": null,
-        "name": "Drops Angustora Bitters"
+        "name": "Pinch of salt"
       },
       {
-        "amount": null,
-        "unit": null,
-        "name": "Slices Fresh Cucumber"
-      },
-      {
-        "amount": null,
-        "unit": null,
-        "name": "Sprigs Fresh Mint"
-      },
-      {
-        "amount": null,
-        "unit": null,
-        "name": "Pinch of Salt"
-      },
-      {
-        "amount": null,
-        "unit": null,
-        "name": "Drops of Rose Water"
-      },
-      {
-        "amount": null,
-        "unit": null,
-        "name": "Mint Leaf, Additional Rose Water, and Bitters, For Garnish If Desired"
+        "amount": 3,
+        "unit": "pc",
+        "name": "drops of rose water"
       }
     ],
-    "garnish": "A Mint Leaf - Place One Drop of Rosewater On the Mint Leaf and Three Drops of Bitters On the Surface of the Drink If Desired",
+    "garnish": "Place One Drop of Rosewater On the Mint Leaf and Three Drops of Bitters On the Surface",
     "instructions": [
       "Muddle fresh ingredients in the shaker.",
       "Combine all ingredients in a shaker with ice.",
       "Shake until well chilled.",
       "Strain into a chilled coupe glass."
     ],
-    "imageUrl": "https://www.charlotteandchocolate.com/wp-content/uploads/2023/05/Juliet-Romeo-cocktail-1.jpg"
+    "imageUrl": "https://www.charlotteandchocolate.com/wp-content/uploads/2023/05/Juliet-Romeo-cocktail-1.jpg",
+    "similarIds": [],
+    "origin": {
+      "classification": "modern-classic",
+      "year": "2007",
+      "creator": "Toby Maloney"
+    }
   },
   {
     "id": "french-blonde",
@@ -492,9 +500,9 @@
     ],
     "ingredients": [
       {
-        "amount": 1,
+        "amount": 2,
         "unit": "oz",
-        "name": "London Dry Gin"
+        "name": "Grapefruit Juice"
       },
       {
         "amount": 2,
@@ -502,14 +510,14 @@
         "name": "Lillet Blanc"
       },
       {
+        "amount": 1,
+        "unit": "oz",
+        "name": "London Dry Gin"
+      },
+      {
         "amount": 0.5,
         "unit": "oz",
         "name": "St. Germain"
-      },
-      {
-        "amount": 2,
-        "unit": "oz",
-        "name": "Grapefruit Juice"
       },
       {
         "amount": 3,
@@ -538,41 +546,42 @@
       {
         "amount": 1.5,
         "unit": "oz",
-        "name": "(45 Ml) Bourbon"
+        "name": "Bourbon"
       },
       {
         "amount": 0.5,
         "unit": "oz",
-        "name": "(15 Ml) Allspice Dram"
+        "name": "Allspice Dram"
       },
       {
         "amount": 0.75,
         "unit": "oz",
-        "name": "(22.5 Ml) Fresh Lime Juice"
+        "name": "Fresh Lime Juice"
       },
       {
         "amount": 0.25,
         "unit": "oz",
-        "name": "(7.5 Ml) Rich Demerara Syrup"
+        "name": "Rich Demerara Syrup"
       },
       {
         "amount": 2,
         "unit": "dash",
         "name": "Angostura Bitters"
-      },
-      {
-        "amount": null,
-        "unit": null,
-        "name": "Lime Twist For Garnish"
       }
     ],
-    "garnish": null,
+    "garnish": "Lime Twist",
     "instructions": [
       "Combine all ingredients in a shaker with ice.",
       "Shake until well chilled.",
       "Strain into a chilled coupe glass."
     ],
-    "imageUrl": "https://www.jaylynnlittle.com/wp-content/uploads/2022/10/Lions-tail-5562-1024x1024.jpg"
+    "imageUrl": "https://www.jaylynnlittle.com/wp-content/uploads/2022/10/Lions-tail-5562-1024x1024.jpg",
+    "similarIds": [],
+    "origin": {
+      "classification": "classic",
+      "year": "1937",
+      "creator": "L.A. Clarke"
+    }
   },
   {
     "id": "paper-plane",
@@ -605,13 +614,19 @@
         "name": "Lemon Juice"
       }
     ],
-    "garnish": null,
+    "garnish": "A paper plane",
     "instructions": [
       "Combine all ingredients in a shaker with ice.",
       "Shake until well chilled.",
       "Strain into a chilled coupe glass."
     ],
-    "imageUrl": "https://robbreport.com/wp-content/uploads/2022/02/Paper_plane_cocktail_adobe_stock.jpg"
+    "imageUrl": "https://robbreport.com/wp-content/uploads/2022/02/Paper_plane_cocktail_adobe_stock.jpg",
+    "similarIds": [],
+    "origin": {
+      "classification": "modern-classic",
+      "year": "2008",
+      "creator": "Sam Ross"
+    }
   },
   {
     "id": "arnon-s-ultima-palabra",
@@ -657,11 +672,6 @@
         "amount": 0.25,
         "unit": "oz",
         "name": "Simple Syrup"
-      },
-      {
-        "amount": null,
-        "unit": null,
-        "name": "Thyme Sprig As Garnish"
       }
     ],
     "garnish": "Thyme Sprig",
@@ -670,7 +680,12 @@
       "Shake until well chilled.",
       "Strain into a chilled coupe glass."
     ],
-    "imageUrl": "https://cdn.diffordsguide.com/cocktail/rN4n5R/square/0/512x512.webp?v=1737701594"
+    "imageUrl": "https://cdn.diffordsguide.com/cocktail/rN4n5R/square/0/512x512.webp?v=1737701594",
+    "similarIds": [],
+    "origin": {
+      "classification": "contemporary",
+      "note": "Personal Last Word riff."
+    }
   },
   {
     "id": "old-fashioned",
@@ -685,36 +700,32 @@
       {
         "amount": 2,
         "unit": "oz",
-        "name": "(60 Ml) Bourbon"
+        "name": "Bourbon"
       },
       {
         "amount": 0.25,
         "unit": "oz",
-        "name": "(7.5 Ml) Rich Demerara Syrup"
+        "name": "Rich Demerara Syrup"
       },
       {
         "amount": 4,
         "unit": "dash",
-        "name": "Of Angostura Bitters"
-      },
-      {
-        "amount": null,
-        "unit": null,
-        "name": "Small Piece of Orange Orange"
-      },
-      {
-        "amount": null,
-        "unit": null,
-        "name": "Cocktail Cherry For Garnish"
+        "name": "Angostura Bitters"
       }
     ],
-    "garnish": "A Zest of Orange and a Cocktail Cherry",
+    "garnish": "Orange peel and a Cocktail Cherry",
     "instructions": [
       "Combine all ingredients in a mixing glass with ice.",
       "Stir until well chilled and properly diluted.",
       "Strain into a chilled coupe glass."
     ],
-    "imageUrl": "https://cdn.twistandtoast.com/uploads/2025/07/a-italian_old_fashioned-feature-1.jpeg"
+    "imageUrl": "https://cdn.twistandtoast.com/uploads/2025/07/a-italian_old_fashioned-feature-1.jpeg",
+    "similarIds": [],
+    "origin": {
+      "classification": "classic",
+      "year": "1880s",
+      "creator": "Documented as Old Fashioned"
+    }
   },
   {
     "id": "my-boy-blue",
@@ -747,18 +758,23 @@
         "name": "Fresh Lime Juice"
       },
       {
-        "amount": null,
-        "unit": null,
+        "amount": 1,
+        "unit": "pc",
         "name": "Egg White"
       }
     ],
-    "garnish": "Of Dehydrated Lime Wheel Slice, Lime Wheel",
+    "garnish": "Of Dehydrated Lime Wheel Slice",
     "instructions": [
       "Combine all ingredients and dry shake without ice.",
       "Add ice and shake until well chilled.",
       "Strain into a rocks glass over cubed ice."
     ],
-    "imageUrl": "https://stevethebartender.com.au/wp-content/uploads/2024/06/my-boy-blue-cocktail-2.jpg"
+    "imageUrl": "https://stevethebartender.com.au/wp-content/uploads/2024/06/my-boy-blue-cocktail-2.jpg",
+    "similarIds": [],
+    "origin": {
+      "classification": "contemporary",
+      "note": "No widely documented origin found."
+    }
   },
   {
     "id": "blackberry-mint-julep",
@@ -776,28 +792,33 @@
         "name": "Bourbon"
       },
       {
-        "amount": 1,
-        "unit": null,
-        "name": "tablespoon Sugar"
+        "amount": 0.5,
+        "unit": "oz",
+        "name": "rich syrup"
       },
       {
-        "amount": 0.25,
-        "unit": null,
-        "name": "cup Blackberries, Plus 1 Blackberry For Garnish"
+        "amount": 5,
+        "unit": "pc",
+        "name": "Blackberries"
       },
       {
-        "amount": 2,
-        "unit": null,
-        "name": "tablespoon S Mint Leaves, Plus 1 Mint Sprig For Garnish"
+        "amount": 6,
+        "unit": "pc",
+        "name": "Mint Leaves"
       }
     ],
-    "garnish": "The Blackberry and Mint Sprig",
+    "garnish": "1 Blackberry and 1 Mint Sprig",
     "instructions": [
       "Combine all ingredients in a shaker with ice.",
       "Shake until well chilled.",
       "Strain into a chilled rocks glass."
     ],
-    "imageUrl": "https://hips.hearstapps.com/hmg-prod/images/blackberry-mint-julep-lead-66268358a3be7.jpg"
+    "imageUrl": "https://hips.hearstapps.com/hmg-prod/images/blackberry-mint-julep-lead-66268358a3be7.jpg",
+    "similarIds": [],
+    "origin": {
+      "classification": "contemporary",
+      "note": "Variation on the Mint Julep (classic, 1800s)."
+    }
   },
   {
     "id": "enzoni",
@@ -812,7 +833,7 @@
       {
         "amount": 1,
         "unit": "oz",
-        "name": "Hayman'S London Dry Gin"
+        "name": "London Dry Gin"
       },
       {
         "amount": 1,
@@ -822,32 +843,33 @@
       {
         "amount": 0.6666666666666666,
         "unit": "oz",
-        "name": "Lemon Juice (Freshly Squeezed)"
+        "name": "Lemon juice"
       },
       {
         "amount": 0.5,
         "unit": "oz",
-        "name": "Sugar Syrup 'Rich'"
+        "name": "rich simple syrup"
       },
       {
-        "amount": null,
-        "unit": null,
-        "name": "Fresh Green Grapes (Seedless)"
-      },
-      {
-        "amount": null,
-        "unit": null,
-        "name": "Grapes and Lemon Peel For Garnish"
+        "amount": 5,
+        "unit": "pc",
+        "name": "fresh\tGreen grapes"
       }
     ],
-    "garnish": null,
+    "garnish": "Grapes and Lemon peel",
     "instructions": [
       "Muddle fresh ingredients in the shaker.",
       "Combine all ingredients in a shaker with ice.",
       "Shake until well chilled.",
       "Strain into a chilled coupe glass."
     ],
-    "imageUrl": "https://data.thefeedfeed.com/static/2020/10/19/16031272305f8dc7be15259.png"
+    "imageUrl": "https://data.thefeedfeed.com/static/2020/10/19/16031272305f8dc7be15259.png",
+    "similarIds": [],
+    "origin": {
+      "classification": "modern-classic",
+      "year": "2001",
+      "creator": "Vincenzo Errico"
+    }
   },
   {
     "id": "whiskey-sour",
@@ -880,13 +902,18 @@
         "name": "Egg White (Optional)"
       }
     ],
-    "garnish": "Angostura Bitters, 3–4 Drops of Angostura Bitters",
+    "garnish": "3–4 Drops of Angostura Bitters",
     "instructions": [
       "Combine all ingredients and dry shake without ice.",
       "Add ice and shake until well chilled.",
       "Strain into a rocks glass over cubed ice."
     ],
-    "imageUrl": "https://www.thecocktaildb.com/images/media/drink/hbkfsh1589574990.jpg"
+    "imageUrl": "https://www.liquor.com/thmb/jS6tetULiZ09eJDoPlY6wM4Ft1I=/750x0/filters:no_upscale():max_bytes(150000):strip_icc():format(webp)/whiskey-sour-1500x1500-hero-c9df509bb1d141f1a8424051c3d78445.jpg",
+    "similarIds": [],
+    "origin": {
+      "classification": "classic",
+      "year": "1860s"
+    }
   },
   {
     "id": "espresso-martini",
@@ -909,14 +936,14 @@
         "name": "Coffee Liqueur Usually Kahlúa"
       },
       {
-        "amount": 0.5,
-        "unit": "oz",
-        "name": "Simple Syrup"
-      },
-      {
         "amount": 1,
         "unit": "oz",
         "name": "Espresso Freshly Brewed (or Cold Brew Concentrate)"
+      },
+      {
+        "amount": 0.5,
+        "unit": "oz",
+        "name": "Simple Syrup"
       }
     ],
     "garnish": "Coffee Beans",
@@ -979,12 +1006,12 @@
       {
         "amount": 1.5,
         "unit": "oz",
-        "name": "Reposado Tequila (Preferably El Tesoro)"
+        "name": "Reposado Tequila"
       },
       {
         "amount": 0.5,
         "unit": "oz",
-        "name": "Mezcal (Preferably Del Maguey San Luis Del Rio)"
+        "name": "Mezcal"
       },
       {
         "amount": 0.25,
@@ -994,16 +1021,22 @@
       {
         "amount": 2,
         "unit": "dash",
-        "name": "Angostura Bitters (or Chocolate Bitters)"
+        "name": "Chocolate Bitters"
       }
     ],
-    "garnish": "Flamed Orange Peel, The Peel",
+    "garnish": "Flamed Orange Peel",
     "instructions": [
       "Combine all ingredients in a mixing glass with ice.",
       "Stir until well chilled and properly diluted.",
       "Strain into a rocks glass over a large ice cube."
     ],
-    "imageUrl": "https://www.liquor.com/thmb/dw4RGVVgwjORvW3EBBcgFPyYTns=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/oaxacan-old-fashioned-720x720-primary-06201e25c3094324b4b97449628b4eef.jpg"
+    "imageUrl": "https://www.liquor.com/thmb/dw4RGVVgwjORvW3EBBcgFPyYTns=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/oaxacan-old-fashioned-720x720-primary-06201e25c3094324b4b97449628b4eef.jpg",
+    "similarIds": [],
+    "origin": {
+      "classification": "modern-classic",
+      "year": "2007",
+      "creator": "Phil Ward"
+    }
   },
   {
     "id": "beericano",
@@ -1016,14 +1049,9 @@
     ],
     "ingredients": [
       {
-        "amount": 2,
+        "amount": 4,
         "unit": "oz",
-        "name": "Lager Beer"
-      },
-      {
-        "amount": 1,
-        "unit": "oz",
-        "name": "Of Beer"
+        "name": "crisp Italian lager or Pilsner"
       },
       {
         "amount": 1,
@@ -1031,23 +1059,28 @@
         "name": "Campari"
       },
       {
-        "amount": null,
-        "unit": null,
-        "name": "Os Sweet Vermouth"
+        "amount": 1,
+        "unit": "pc",
+        "name": "os Sweet Vermouth"
       },
       {
         "amount": null,
         "unit": null,
-        "name": "Pinch of Salt"
+        "name": "Pinch of salt"
       }
     ],
-    "garnish": null,
+    "garnish": "Orange or lemon wedge",
     "instructions": [
       "Combine all ingredients in a mixing glass with ice.",
       "Stir until well chilled and properly diluted.",
       "Strain into a chilled coupe glass."
     ],
-    "imageUrl": "https://punchdrink.com/wp-content/uploads/2014/07/Article-Americano-Perfecto.jpg?w=800"
+    "imageUrl": "https://punchdrink.com/wp-content/uploads/2014/07/Article-Americano-Perfecto.jpg?w=800",
+    "similarIds": [],
+    "origin": {
+      "classification": "contemporary",
+      "note": "Beer and americano riff."
+    }
   },
   {
     "id": "upgraded-bourbon-carajillo",
@@ -1075,8 +1108,8 @@
         "name": "Liqueur 43"
       },
       {
-        "amount": null,
-        "unit": null,
+        "amount": 0.5,
+        "unit": "oz",
         "name": "Averna Amaro"
       },
       {
@@ -1095,13 +1128,18 @@
         "name": "Espresso"
       }
     ],
-    "garnish": "An Orange Slice and Espresso Beans, and Enjoy",
+    "garnish": "An Orange Slice and Espresso Beans",
     "instructions": [
       "Combine all ingredients in a shaker with ice.",
       "Shake until well chilled.",
       "Strain into a chilled coupe glass."
     ],
-    "imageUrl": "https://thegandmkitchen.com/wp-content/uploads/2024/07/Bourbon-carajillo-7.jpg"
+    "imageUrl": "https://thegandmkitchen.com/wp-content/uploads/2024/07/Bourbon-carajillo-7.jpg",
+    "similarIds": [],
+    "origin": {
+      "classification": "contemporary",
+      "note": "Riff on the Spanish carajillo."
+    }
   },
   {
     "id": "mexican-carajillo",
@@ -1149,13 +1187,18 @@
         "name": "Espresso"
       }
     ],
-    "garnish": "An Orange Slice and Espresso Beans, and Enjoy",
+    "garnish": "An Orange Slice and Espresso Beans",
     "instructions": [
       "Combine all ingredients in a shaker with ice.",
       "Shake until well chilled.",
       "Strain into a chilled coupe glass."
     ],
-    "imageUrl": "https://cdn.apartmenttherapy.info/image/upload/v1724087144/k/Photo/Recipes/2024-08-Carajillo/Carajillo-2915.jpg"
+    "imageUrl": "https://cdn.apartmenttherapy.info/image/upload/v1724087144/k/Photo/Recipes/2024-08-Carajillo/Carajillo-2915.jpg",
+    "similarIds": [],
+    "origin": {
+      "classification": "contemporary",
+      "note": "Riff on the Spanish carajillo."
+    }
   },
   {
     "id": "paloma-v2",
@@ -1196,20 +1239,20 @@
         "amount": 1,
         "unit": "oz",
         "name": "Club Soda"
-      },
-      {
-        "amount": null,
-        "unit": null,
-        "name": "Lime Wedge"
       }
     ],
-    "garnish": null,
+    "garnish": "Lime Wedge",
     "instructions": [
       "Combine all ingredients in a mixing glass with ice.",
       "Stir until well chilled and properly diluted.",
       "Strain into a highball glass."
     ],
-    "imageUrl": "https://evergreenkitchen.ca/wp-content/uploads/2023/06/Grapefruit-Paloma-Evergreen-Kitchen-1.jpg"
+    "imageUrl": "https://evergreenkitchen.ca/wp-content/uploads/2023/06/Grapefruit-Paloma-Evergreen-Kitchen-1.jpg",
+    "similarIds": [],
+    "origin": {
+      "classification": "contemporary",
+      "note": "Riff on the Paloma (classic, Mexico, 1950s)."
+    }
   },
   {
     "id": "arnon-s-sunset-passion",
@@ -1247,13 +1290,18 @@
         "name": "Lime"
       }
     ],
-    "garnish": null,
+    "garnish": "A Lime wheel",
     "instructions": [
       "Combine all ingredients in a shaker with ice.",
       "Shake until well chilled.",
       "Strain into a chilled coupe glass."
     ],
-    "imageUrl": "https://imbibemagazine.com/wp-content/uploads/2024/04/lilikoi-sunset-crdt-sarah-king-photography.jpg"
+    "imageUrl": "https://imbibemagazine.com/wp-content/uploads/2024/04/lilikoi-sunset-crdt-sarah-king-photography.jpg",
+    "similarIds": [],
+    "origin": {
+      "classification": "contemporary",
+      "note": "Personal recipe."
+    }
   },
   {
     "id": "the-pisco-sour",
@@ -1281,18 +1329,24 @@
         "name": "Simple Syrup"
       },
       {
-        "amount": null,
-        "unit": null,
+        "amount": 1,
+        "unit": "pc",
         "name": "Egg White"
       }
     ],
-    "garnish": "Angostura Bitters, 3 To 5 Drops of Angostura Bitters",
+    "garnish": "3 To 5 Drops of Angostura Bitters",
     "instructions": [
       "Combine all ingredients and dry shake without ice.",
       "Add ice and shake until well chilled.",
       "Strain into a rocks glass over cubed ice."
     ],
-    "imageUrl": "https://www.liquor.com/thmb/ohTOhWrDCBdEScPNwFDmM6mrwbQ=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/__opt__aboutcom__coeus__resources__content_migration__liquor__2019__02__08143927__pisco-sour-720x720-recipe-9c46d52151e5445fa90bcf0394493060.jpg"
+    "imageUrl": "https://www.liquor.com/thmb/ohTOhWrDCBdEScPNwFDmM6mrwbQ=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/__opt__aboutcom__coeus__resources__content_migration__liquor__2019__02__08143927__pisco-sour-720x720-recipe-9c46d52151e5445fa90bcf0394493060.jpg",
+    "similarIds": [],
+    "origin": {
+      "classification": "classic",
+      "year": "1920s",
+      "creator": "Victor Morris"
+    }
   },
   {
     "id": "maximillian-affair",
@@ -1325,13 +1379,19 @@
         "name": "Fresh Lemon Juice"
       }
     ],
-    "garnish": null,
+    "garnish": "An Orange twist",
     "instructions": [
       "Combine all ingredients in a shaker with ice.",
       "Shake until well chilled.",
       "Strain into a chilled coupe glass."
     ],
-    "imageUrl": "https://vinepair.com/wp-content/uploads/2023/05/maximilian-affair-google-1000x1000.jpg"
+    "imageUrl": "https://vinepair.com/wp-content/uploads/2023/05/maximilian-affair-google-1000x1000.jpg",
+    "similarIds": [],
+    "origin": {
+      "classification": "modern-classic",
+      "year": "2008",
+      "creator": "Misty Kalkofen"
+    }
   },
   {
     "id": "elske-shaken",
@@ -1374,13 +1434,18 @@
         "name": "Saline"
       }
     ],
-    "garnish": "Lemon Twist or Peach Slice, A Lemon Twist or a Slice of Peach",
+    "garnish": "A Lemon Twist or a Slice of Peach",
     "instructions": [
       "Combine all ingredients in a shaker with ice.",
       "Shake until well chilled.",
       "Strain into a rocks glass over cubed ice."
     ],
-    "imageUrl": "https://images.squarespace-cdn.com/content/v1/5f063187ead18a2e98ba7f9b/1713698405464-OF44IXO5U55UYFE62V7B/Elske-4.jpg"
+    "imageUrl": "https://images.squarespace-cdn.com/content/v1/5f063187ead18a2e98ba7f9b/1713698405464-OF44IXO5U55UYFE62V7B/Elske-4.jpg",
+    "similarIds": [],
+    "origin": {
+      "classification": "contemporary",
+      "note": "No widely documented origin found."
+    }
   },
   {
     "id": "firecracker",
@@ -1424,13 +1489,18 @@
         "name": "Agave Syrup"
       }
     ],
-    "garnish": "Of Cinnamon Sugar Rim",
+    "garnish": "Cinnamon Sugar Rim and a Lime twist",
     "instructions": [
       "Combine all ingredients in a shaker with ice.",
       "Shake until well chilled.",
       "Strain into a chilled coupe glass."
     ],
-    "imageUrl": "https://www.liquor.com/thmb/K7d8PSDSczYjVwlX6uyTlCCaHv0=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/firecracker-720x720-primary-1e48da8ea4214982a6fbbdf152edbcd3.jpg"
+    "imageUrl": "https://www.liquor.com/thmb/K7d8PSDSczYjVwlX6uyTlCCaHv0=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/firecracker-720x720-primary-1e48da8ea4214982a6fbbdf152edbcd3.jpg",
+    "similarIds": [],
+    "origin": {
+      "classification": "contemporary",
+      "note": "No widely documented origin found."
+    }
   },
   {
     "id": "tomatini",
@@ -1445,12 +1515,12 @@
       {
         "amount": 2,
         "unit": "oz",
-        "name": "Ketel One Vodka"
+        "name": "Vodka"
       },
       {
         "amount": 0.5,
         "unit": "oz",
-        "name": "Lemon Juice (Freshly Squeezed)"
+        "name": "Lemon Juice"
       },
       {
         "amount": 0.5,
@@ -1458,9 +1528,9 @@
         "name": "Simple Rich Syrup"
       },
       {
-        "amount": null,
-        "unit": null,
-        "name": "Fresh Cherry Tomatoes (Fresh)"
+        "amount": 5,
+        "unit": "pc",
+        "name": "Cherry Tomatoes"
       },
       {
         "amount": 0.08,
@@ -1480,7 +1550,12 @@
       "Shake until well chilled.",
       "Strain into a chilled coupe glass."
     ],
-    "imageUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS-vo-GH5IPKfCSMTCQo_ifjM7avauVneeG1A&s"
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS-vo-GH5IPKfCSMTCQo_ifjM7avauVneeG1A&s",
+    "similarIds": [],
+    "origin": {
+      "classification": "contemporary",
+      "note": "No widely documented origin found."
+    }
   },
   {
     "id": "left-hand",
@@ -1513,13 +1588,19 @@
         "name": "Of Chocolate Bitters"
       }
     ],
-    "garnish": "Brandied Cherry, A Brandied Cherry",
+    "garnish": "A Brandied Cherry",
     "instructions": [
       "Combine all ingredients in a mixing glass with ice.",
       "Stir until well chilled and properly diluted.",
       "Strain into a chilled coupe glass."
     ],
-    "imageUrl": "https://imbibemagazine.com/wp-content/uploads/2020/09/left-hand-cocktail-sam-ross-crdt-andy-sewell-scaled.jpg"
+    "imageUrl": "https://imbibemagazine.com/wp-content/uploads/2020/09/left-hand-cocktail-sam-ross-crdt-andy-sewell-scaled.jpg",
+    "similarIds": [],
+    "origin": {
+      "classification": "modern-classic",
+      "year": "2005",
+      "creator": "Sam Ross"
+    }
   },
   {
     "id": "gin-basil-smash",
@@ -1544,7 +1625,7 @@
       {
         "amount": 0.75,
         "unit": "oz",
-        "name": "(Simple Syrup"
+        "name": "Simple Syrup"
       },
       {
         "amount": 2,
@@ -1552,24 +1633,25 @@
         "name": "Celery Bitters"
       },
       {
-        "amount": null,
-        "unit": null,
-        "name": "-6 Basil Leaves or To Taste"
-      },
-      {
-        "amount": null,
-        "unit": null,
-        "name": "Basil Sprig Garnish"
+        "amount": 6,
+        "unit": "pc",
+        "name": "Basil Leaves"
       }
     ],
-    "garnish": "Of Three Basil Sprigs, Basil Sprig Bouquet",
+    "garnish": "Basil Sprig Bouquet",
     "instructions": [
       "Muddle fresh ingredients in the shaker.",
       "Combine all ingredients in a shaker with ice.",
       "Shake until well chilled.",
       "Strain into a rocks glass over cubed ice."
     ],
-    "imageUrl": "https://punchdrink.com/wp-content/uploads/2021/06/Social-Modern-Classic-Gin-Basil-Smash-Cocktail-Recipe.jpg"
+    "imageUrl": "https://punchdrink.com/wp-content/uploads/2021/06/Social-Modern-Classic-Gin-Basil-Smash-Cocktail-Recipe.jpg",
+    "similarIds": [],
+    "origin": {
+      "classification": "modern-classic",
+      "year": "2008",
+      "creator": "Jörg Meyer"
+    }
   },
   {
     "id": "the-ninth-ward",
@@ -1589,7 +1671,7 @@
       {
         "amount": 0.75,
         "unit": "oz",
-        "name": "St. Germain (Elderflower Liqueur)"
+        "name": "St. Germain"
       },
       {
         "amount": 0.75,
@@ -1607,13 +1689,19 @@
         "name": "Peychaud'S Bitters"
       }
     ],
-    "garnish": "Of Lime Zest Twist",
+    "garnish": "Lime Twist",
     "instructions": [
       "Combine all ingredients in a shaker with ice.",
       "Shake until well chilled.",
       "Strain into a chilled coupe glass."
     ],
-    "imageUrl": "https://www.drinkhacker.com/wp-content/uploads/2021/03/Ninth-Ward-e1615931373999.jpg"
+    "imageUrl": "https://www.drinkhacker.com/wp-content/uploads/2021/03/Ninth-Ward-e1615931373999.jpg",
+    "similarIds": [],
+    "origin": {
+      "classification": "modern-classic",
+      "year": "2008",
+      "creator": "Robert \"Brother Cleve\" Toomey"
+    }
   },
   {
     "id": "international-incident",
@@ -1651,13 +1739,18 @@
         "name": "Odka"
       }
     ],
-    "garnish": "Of Grated Nutmeg, A Dusting of Nutmeg Grated Over a Cocktail",
+    "garnish": "Grated Nutmeg",
     "instructions": [
       "Combine all ingredients in a shaker with ice.",
       "Shake until well chilled.",
       "Strain into a chilled coupe glass."
     ],
-    "imageUrl": "https://recipesjust4u.com/wp-content/uploads/2017/02/international-incident-main-480x360.jpg"
+    "imageUrl": "https://recipesjust4u.com/wp-content/uploads/2017/02/international-incident-main-480x360.jpg",
+    "similarIds": [],
+    "origin": {
+      "classification": "contemporary",
+      "note": "No widely documented origin found."
+    }
   },
   {
     "id": "brown-derby",
@@ -1711,17 +1804,17 @@
       {
         "amount": 0.125,
         "unit": "oz",
-        "name": "St. Elizabeth Allspice Liqueur"
+        "name": "Allspice Liqueur"
       },
       {
         "amount": 0.25,
         "unit": "oz",
-        "name": "Palo Santo-Smoked Cinnamon Syrup"
+        "name": "Smoked Cinnamon Syrup"
       },
       {
-        "amount": null,
-        "unit": null,
-        "name": "-3 Dashes Chocolate Bitters"
+        "amount": 3,
+        "unit": "dash",
+        "name": "Chocolate Bitters"
       }
     ],
     "garnish": "An Orange Peel",
@@ -1730,7 +1823,12 @@
       "Stir until well chilled and properly diluted.",
       "Strain into a rocks glass over cubed ice."
     ],
-    "imageUrl": "https://www.barconvent.com/content/dam/sitebuilder/rxde/barconvent/images/newsletter/m%C3%A4rz-2023/Palo%20Santo%20Negroni%20-%20teaser.jpg/_jcr_content/renditions/original.image_file.2400.1380.file/Palo%20Santo%20Negroni%20-%20teaser.jpg"
+    "imageUrl": "https://www.barconvent.com/content/dam/sitebuilder/rxde/barconvent/images/newsletter/m%C3%A4rz-2023/Palo%20Santo%20Negroni%20-%20teaser.jpg/_jcr_content/renditions/original.image_file.2400.1380.file/Palo%20Santo%20Negroni%20-%20teaser.jpg",
+    "similarIds": [],
+    "origin": {
+      "classification": "contemporary",
+      "note": "Old Fashioned variation."
+    }
   },
   {
     "id": "yesterday-today-and-amaro",
@@ -1745,7 +1843,7 @@
       {
         "amount": 2,
         "unit": "oz",
-        "name": "Rye, Preferably Wild Turkey 101"
+        "name": "Rye"
       },
       {
         "amount": 0.5,
@@ -1763,13 +1861,18 @@
         "name": "Benedictine"
       }
     ],
-    "garnish": null,
+    "garnish": "A Lemon twist",
     "instructions": [
       "Combine all ingredients in a mixing glass with ice.",
       "Stir until well chilled and properly diluted.",
       "Strain into a chilled martini glass."
     ],
-    "imageUrl": "https://cdn.diffordsguide.com/cocktail/RExZ0O/square/0/512x512.webp?v=1737701605"
+    "imageUrl": "https://cdn.diffordsguide.com/cocktail/RExZ0O/square/0/512x512.webp?v=1737701605",
+    "similarIds": [],
+    "origin": {
+      "classification": "contemporary",
+      "note": "No widely documented origin found."
+    }
   },
   {
     "id": "giny-germain",
@@ -1802,19 +1905,14 @@
         "name": "Simple Syrup"
       },
       {
-        "amount": null,
-        "unit": null,
-        "name": "Inches Cucumber Diced"
+        "amount": 0.5,
+        "unit": "pc",
+        "name": "small Cucumber Diced"
       },
       {
         "amount": 1,
-        "unit": null,
-        "name": "pc Egg White"
-      },
-      {
-        "amount": null,
-        "unit": null,
-        "name": "Thin Sliced Cucumber"
+        "unit": "pc",
+        "name": "Egg White"
       }
     ],
     "garnish": "Thin Sliced Cucumber",
@@ -1823,7 +1921,12 @@
       "Shake until well chilled.",
       "Strain into a chilled coupe glass."
     ],
-    "imageUrl": "https://spiritedcocktails.se/wp-content/uploads/2025/03/Giny-Germain.webp"
+    "imageUrl": "https://spiritedcocktails.se/wp-content/uploads/2025/03/Giny-Germain.webp",
+    "similarIds": [],
+    "origin": {
+      "classification": "contemporary",
+      "note": "St-Germain gin sour; no widely documented origin."
+    }
   },
   {
     "id": "the-bamboozled-angel",
@@ -1856,13 +1959,18 @@
         "name": "Cinnamon Syrup"
       }
     ],
-    "garnish": null,
+    "garnish": "Angostura bitters and grapefruit peel",
     "instructions": [
       "Combine all ingredients in a shaker with ice.",
       "Shake until well chilled.",
       "Strain into a rocks glass over cubed ice."
     ],
-    "imageUrl": "https://punchdrink.com/wp-content/uploads/2016/01/Recipe-Cocktail-Drink-Recipe-Toby-Maloney-Lorenzos-Bushwick-Brooklyn.jpg?w=1024"
+    "imageUrl": "https://punchdrink.com/wp-content/uploads/2016/01/Recipe-Cocktail-Drink-Recipe-Toby-Maloney-Lorenzos-Bushwick-Brooklyn.jpg?w=1024",
+    "similarIds": [],
+    "origin": {
+      "classification": "contemporary",
+      "note": "No widely documented origin found."
+    }
   },
   {
     "id": "daily-rituals",
@@ -1905,18 +2013,23 @@
         "name": "Cold Brew Concentrate"
       },
       {
-        "amount": null,
-        "unit": null,
+        "amount": 1,
+        "unit": "pc",
         "name": "Egg White"
       }
     ],
-    "garnish": null,
+    "garnish": "Grated Chocolate",
     "instructions": [
       "Combine all ingredients and dry shake without ice.",
       "Add ice and shake until well chilled.",
       "Strain into a chilled coupe glass."
     ],
-    "imageUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS3aTJL5OUeUz9hJXoDRN7YG80Pmy8NKHYAbw&s"
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS3aTJL5OUeUz9hJXoDRN7YG80Pmy8NKHYAbw&s",
+    "similarIds": [],
+    "origin": {
+      "classification": "contemporary",
+      "note": "No widely documented origin found."
+    }
   },
   {
     "id": "debbie-don-t",
@@ -1983,24 +2096,30 @@
         "name": "Simple Syrup"
       },
       {
-        "amount": null,
-        "unit": null,
+        "amount": 6,
+        "unit": "pc",
         "name": "Mint Leaves"
       },
       {
-        "amount": null,
-        "unit": null,
-        "name": "Thin Cucumber Slices"
+        "amount": 4,
+        "unit": "pc",
+        "name": "Cucumber Slices"
       }
     ],
-    "garnish": "Mint Sprig Skewed Through a Cucumber Slice, The Mint Sprig Skewered Through a Cucumber Wheel",
+    "garnish": "Mint Sprig Skewed Through a Cucumber Slice",
     "instructions": [
       "Muddle fresh ingredients in the shaker.",
       "Combine all ingredients in a shaker with ice.",
       "Shake until well chilled.",
       "Strain into a rocks glass over a large ice cube."
     ],
-    "imageUrl": "https://www.drinklab.org/wp-content/uploads/Kentucky-Maid-500x500.jpg"
+    "imageUrl": "https://www.drinklab.org/wp-content/uploads/Kentucky-Maid-500x500.jpg",
+    "similarIds": [],
+    "origin": {
+      "classification": "modern-classic",
+      "year": "2005",
+      "creator": "Sam Ross"
+    }
   },
   {
     "id": "brandy-alexander",
@@ -2028,13 +2147,18 @@
         "name": "Heavy Cream"
       }
     ],
-    "garnish": "Grated Nutmeg, Freshly Grated Nutmeg",
+    "garnish": "Freshly Grated Nutmeg",
     "instructions": [
       "Combine all ingredients in a shaker with ice.",
       "Shake until well chilled.",
       "Strain into a chilled coupe glass."
     ],
-    "imageUrl": "https://www.liquor.com/thmb/TnDE_Hiu-kLyMwMTEs6DHa25iZ8=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/brandy-alexander-4000x4000-primary-ig-76ee3d932fd24b7db207e4eaefb5ac08.jpg"
+    "imageUrl": "https://www.liquor.com/thmb/TnDE_Hiu-kLyMwMTEs6DHa25iZ8=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/brandy-alexander-4000x4000-primary-ig-76ee3d932fd24b7db207e4eaefb5ac08.jpg",
+    "similarIds": [],
+    "origin": {
+      "classification": "classic",
+      "year": "1910s"
+    }
   },
   {
     "id": "white-negroni",
@@ -2062,13 +2186,19 @@
         "name": "Suze Gentian Liqueur"
       }
     ],
-    "garnish": "Lemon Twist, A Lemon Twist",
+    "garnish": "A Lemon Twist",
     "instructions": [
       "Combine all ingredients in a mixing glass with ice.",
       "Stir until well chilled and properly diluted.",
       "Strain into a rocks glass over cubed ice."
     ],
-    "imageUrl": "https://www.liquor.com/thmb/8l5MXC4hkdrCzymve7ZbZiYOonc=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/__opt__aboutcom__coeus__resources__content_migration__liquor__2016__03__16174655__WHite-negroni-720square-ca5ebe6e609341cba6ecb4e90c3353fe.jpg"
+    "imageUrl": "https://www.liquor.com/thmb/8l5MXC4hkdrCzymve7ZbZiYOonc=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/__opt__aboutcom__coeus__resources__content_migration__liquor__2016__03__16174655__WHite-negroni-720square-ca5ebe6e609341cba6ecb4e90c3353fe.jpg",
+    "similarIds": [],
+    "origin": {
+      "classification": "modern-classic",
+      "year": "2001",
+      "creator": "Wayne Collins"
+    }
   },
   {
     "id": "johann-goes-to-mexico",
@@ -2101,13 +2231,18 @@
         "name": "Angostura Bitters"
       }
     ],
-    "garnish": null,
+    "garnish": "Dried Lime wheel",
     "instructions": [
       "Combine all ingredients in a shaker with ice.",
       "Shake until well chilled.",
       "Strain into a chilled coupe glass."
     ],
-    "imageUrl": "https://preview.redd.it/johann-goes-to-mexico-v0-s4vyu096cvma1.jpg?width=1080&crop=smart&auto=webp&s=9873619f1b285a6c0f7fe8e781d5193295cc5236"
+    "imageUrl": "https://preview.redd.it/johann-goes-to-mexico-v0-s4vyu096cvma1.jpg?width=1080&crop=smart&auto=webp&s=9873619f1b285a6c0f7fe8e781d5193295cc5236",
+    "similarIds": [],
+    "origin": {
+      "classification": "contemporary",
+      "note": "No widely documented origin found."
+    }
   },
   {
     "id": "pink-squirrel",
@@ -2154,11 +2289,6 @@
     ],
     "ingredients": [
       {
-        "amount": 0.5,
-        "unit": "oz",
-        "name": "Bourbon"
-      },
-      {
         "amount": 1.5,
         "unit": "oz",
         "name": "Bourbon Cream"
@@ -2172,6 +2302,11 @@
         "amount": 0.75,
         "unit": "oz",
         "name": "Coffee Liquor"
+      },
+      {
+        "amount": 0.5,
+        "unit": "oz",
+        "name": "Bourbon"
       }
     ],
     "garnish": null,
@@ -2216,11 +2351,6 @@
         "amount": 0.75,
         "unit": "oz",
         "name": "Pineapple Juice"
-      },
-      {
-        "amount": null,
-        "unit": null,
-        "name": "Thyme Sprig As Garnish"
       }
     ],
     "garnish": "Thyme Sprig",
@@ -2229,7 +2359,12 @@
       "Shake until well chilled.",
       "Strain into a chilled coupe glass."
     ],
-    "imageUrl": "https://media.cocktaillove.com/media/recipes/bccac9dd-9ed6-42f9-a46c-adce24a62ff7/ultima-palabra-RhCTQ97W-1080w.jpg"
+    "imageUrl": "https://media.cocktaillove.com/media/recipes/bccac9dd-9ed6-42f9-a46c-adce24a62ff7/ultima-palabra-RhCTQ97W-1080w.jpg",
+    "similarIds": [],
+    "origin": {
+      "classification": "modern-classic",
+      "creator": "Simone De Luca"
+    }
   },
   {
     "id": "paloma-margarita",
@@ -2249,12 +2384,12 @@
       {
         "amount": 0.5,
         "unit": "oz",
-        "name": "Fresh Lime Juice"
+        "name": "Lime Juice"
       },
       {
         "amount": 0.25,
         "unit": "oz",
-        "name": "Agave Nectar or Simple Syrup, or To Taste"
+        "name": "Agave Syrup"
       },
       {
         "amount": 2,
@@ -2264,16 +2399,21 @@
       {
         "amount": 2,
         "unit": "oz",
-        "name": "Fresh Grapefruit Juice, Plus Wedges For Garnish"
+        "name": "Fresh Grapefruit Juice"
       }
     ],
-    "garnish": null,
+    "garnish": "Grapefruit Wedge",
     "instructions": [
       "Combine all ingredients in a shaker with ice.",
       "Shake until well chilled.",
       "Strain into a chilled coupe glass."
     ],
-    "imageUrl": "https://www.thecocktaildb.com/images/media/drink/samm5j1513706393.jpg"
+    "imageUrl": "https://www.thecocktaildb.com/images/media/drink/samm5j1513706393.jpg",
+    "similarIds": [],
+    "origin": {
+      "classification": "contemporary",
+      "note": "Hybrid of Paloma and Margarita."
+    }
   },
   {
     "id": "bourbon-renewal",
@@ -2301,7 +2441,7 @@
         "name": "Fresh Lemon Juice"
       },
       {
-        "amount": 0.5,
+        "amount": 0.25,
         "unit": "oz",
         "name": "Simple Syrup"
       },
@@ -2317,7 +2457,13 @@
       "Shake until well chilled.",
       "Strain into a rocks glass over cubed ice."
     ],
-    "imageUrl": "https://images.squarespace-cdn.com/content/v1/62503525c8ea875b7ae0638e/1681120220036-F4YZITW68E53EGZF2P50/Bourbon+Renewal.jpg"
+    "imageUrl": "https://images.squarespace-cdn.com/content/v1/62503525c8ea875b7ae0638e/1681120220036-F4YZITW68E53EGZF2P50/Bourbon+Renewal.jpg",
+    "similarIds": [],
+    "origin": {
+      "classification": "modern-classic",
+      "year": "2001",
+      "creator": "Jeffrey Morgenthaler"
+    }
   },
   {
     "id": "napoleon",
@@ -2340,9 +2486,9 @@
         "name": "Blanc Vermouth"
       },
       {
-        "amount": 1,
-        "unit": "tsp",
-        "name": ". Campari (or 0.25 Oz Aperol)"
+        "amount": 0.25,
+        "unit": "oz",
+        "name": "Campari Aperol"
       },
       {
         "amount": 0.75,
@@ -2355,19 +2501,14 @@
         "name": "Simple Syrup"
       },
       {
-        "amount": null,
+        "amount": 5,
         "unit": null,
         "name": "Fresh Raspberries"
       },
       {
-        "amount": null,
+        "amount": 1,
         "unit": null,
         "name": "Egg White"
-      },
-      {
-        "amount": null,
-        "unit": null,
-        "name": "Fresh Raspberries For Garnish"
       }
     ],
     "garnish": "3 Raspberries On a Pick",
@@ -2377,7 +2518,12 @@
       "Shake until well chilled.",
       "Strain into a chilled coupe glass."
     ],
-    "imageUrl": "https://robbreport.com/wp-content/uploads/2024/05/Napoleon.jpg"
+    "imageUrl": "https://robbreport.com/wp-content/uploads/2024/05/Napoleon.jpg",
+    "similarIds": [],
+    "origin": {
+      "classification": "contemporary",
+      "note": "Not the historic Napoleon cocktail; no documented origin."
+    }
   },
   {
     "id": "whiskey-smash",
@@ -2397,22 +2543,17 @@
       {
         "amount": 0.5,
         "unit": "oz",
-        "name": "Rich Demerara Syrup"
+        "name": "rich Demerara syrup"
       },
       {
-        "amount": null,
-        "unit": null,
-        "name": "Lemon Slices (Remove Any Seeds)"
+        "amount": 4,
+        "unit": "pc",
+        "name": "lemon slices (remove any seeds)"
       },
       {
-        "amount": null,
-        "unit": null,
-        "name": "-8 Mint Leaves"
-      },
-      {
-        "amount": null,
-        "unit": null,
-        "name": "Lemon Wheel & Mint Sprig For Garnish"
+        "amount": 6,
+        "unit": "pc",
+        "name": "mint leaves"
       }
     ],
     "garnish": "A Lemon Wheel and a Mint Leaf",
@@ -2422,7 +2563,12 @@
       "Shake until well chilled.",
       "Strain into a rocks glass over a large ice cube."
     ],
-    "imageUrl": "https://www.liquor.com/thmb/aSjX6oWZWiRaW105m2fZgwNotRQ=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/bulldog-smash-720x720-primary-135610e15a82414b9fa992d11bed1519.jpg"
+    "imageUrl": "https://www.liquor.com/thmb/aSjX6oWZWiRaW105m2fZgwNotRQ=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/bulldog-smash-720x720-primary-135610e15a82414b9fa992d11bed1519.jpg",
+    "similarIds": [],
+    "origin": {
+      "classification": "classic",
+      "year": "1860s"
+    }
   },
   {
     "id": "vodka-apricot-cacao",
@@ -2452,22 +2598,22 @@
       {
         "amount": 0.5,
         "unit": "oz",
-        "name": "Giffard Abricot Du Roussillon"
-      },
-      {
-        "amount": null,
-        "unit": null,
-        "name": "Sugared Rim For Garnish"
+        "name": "Abricot Du Roussillon"
       }
     ],
-    "garnish": "The Lemon Peel and Maraschino Cherry, If Using and Serve Immediately",
+    "garnish": "Sugared Rim, Lemon Peel and Maraschino Cherry",
     "instructions": [
       "Rinse the Rim with Lemon and Sugar the Rim and Freeze.",
       "Combine all ingredients in a shaker with ice.",
       "Shake until well chilled.",
       "Strain into a chilled martini glass."
     ],
-    "imageUrl": "https://mybartender.com/wp-content/uploads/2025/03/Apricot-Vodka-Sour.png"
+    "imageUrl": "https://mybartender.com/wp-content/uploads/2025/03/Apricot-Vodka-Sour.png",
+    "similarIds": [],
+    "origin": {
+      "classification": "contemporary",
+      "note": "No widely documented origin found."
+    }
   },
   {
     "id": "classic-margarita",
@@ -2482,31 +2628,36 @@
       {
         "amount": 1,
         "unit": "oz",
-        "name": "Blanco/Silver Tequila"
+        "name": "Blanco Tequila"
       },
       {
         "amount": 1,
         "unit": "oz",
-        "name": "Orange Liqueur, Cointreau or Grand Marnier"
+        "name": "Orange Liqueur"
       },
       {
-        "amount": null,
-        "unit": null,
-        "name": "½ Oz Agave Nectar or Simple Syrup, Plus More To Taste"
+        "amount": 0.5,
+        "unit": "oz",
+        "name": "Agave Nectar"
       },
       {
         "amount": 1,
         "unit": "oz",
-        "name": "Fresh Lime Juice, Plus Lime Slices For Garnish"
+        "name": "Fresh Lime Juice"
       }
     ],
-    "garnish": null,
+    "garnish": "A Lime wheel or a wedge",
     "instructions": [
       "Combine all ingredients in a shaker with ice.",
       "Shake until well chilled.",
       "Strain into a chilled coupe glass."
     ],
-    "imageUrl": "https://punchdrink.com/wp-content/uploads/2021/06/Social-Modern-Classic-Cocktail-Recipe-Tommys-Margarita.jpg"
+    "imageUrl": "https://punchdrink.com/wp-content/uploads/2021/06/Social-Modern-Classic-Cocktail-Recipe-Tommys-Margarita.jpg",
+    "similarIds": [],
+    "origin": {
+      "classification": "classic",
+      "year": "1930s–40s"
+    }
   },
   {
     "id": "devil-s-margarita",
@@ -2539,13 +2690,18 @@
         "name": "Simple Syrup"
       }
     ],
-    "garnish": "Lime Wheel, A Lime Wheel",
+    "garnish": "A Lime Wheel",
     "instructions": [
       "Combine all ingredients in a shaker with ice.",
       "Shake until well chilled.",
       "Strain into a chilled coupe glass."
     ],
-    "imageUrl": "https://www.liquor.com/thmb/Gx4XoELskXLBa7YKEWFxIKvu0TU=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/__opt__aboutcom__coeus__resources__content_migration__liquor__2018__10__09083454__devils-margarita-720x720-article-0d722dab9a8a478a85313eac4068588c.jpg"
+    "imageUrl": "https://www.liquor.com/thmb/Gx4XoELskXLBa7YKEWFxIKvu0TU=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/__opt__aboutcom__coeus__resources__content_migration__liquor__2018__10__09083454__devils-margarita-720x720-article-0d722dab9a8a478a85313eac4068588c.jpg",
+    "similarIds": [],
+    "origin": {
+      "classification": "contemporary",
+      "note": "Margarita variation."
+    }
   },
   {
     "id": "bourbon-carajillo",
@@ -2558,7 +2714,7 @@
     ],
     "ingredients": [
       {
-        "amount": 1,
+        "amount": 1.5,
         "unit": "oz",
         "name": "Bourbon"
       },
@@ -2576,20 +2732,20 @@
         "amount": 1.5,
         "unit": "oz",
         "name": "Espresso"
-      },
-      {
-        "amount": null,
-        "unit": null,
-        "name": "Orange Slice"
       }
     ],
-    "garnish": "An Orange Slice and Espresso Beans, and Enjoy",
+    "garnish": "An Orange Slice and Espresso Beans",
     "instructions": [
       "Combine all ingredients in a shaker with ice.",
       "Shake until well chilled.",
       "Strain into a chilled coupe glass."
     ],
-    "imageUrl": "https://thegandmkitchen.com/wp-content/uploads/2024/07/Bourbon-carajillo-7.jpg"
+    "imageUrl": "https://thegandmkitchen.com/wp-content/uploads/2024/07/Bourbon-carajillo-7.jpg",
+    "similarIds": [],
+    "origin": {
+      "classification": "contemporary",
+      "note": "Riff on the Spanish carajillo."
+    }
   },
   {
     "id": "negroni",
@@ -2617,13 +2773,19 @@
         "name": "Sweet Vermouth"
       }
     ],
-    "garnish": "Orange Peel, An Orange Peel",
+    "garnish": "An Orange Peel",
     "instructions": [
       "Combine all ingredients in a mixing glass with ice.",
       "Stir until well chilled and properly diluted.",
       "Strain into a rocks glass over a large ice cube."
     ],
-    "imageUrl": "https://punchdrink.com/wp-content/uploads/2021/07/Social-Kingston-Negroni-Rum-Cocktail-Recipe.jpg"
+    "imageUrl": "https://punchdrink.com/wp-content/uploads/2021/07/Social-Kingston-Negroni-Rum-Cocktail-Recipe.jpg",
+    "similarIds": [],
+    "origin": {
+      "classification": "classic",
+      "year": "1919",
+      "creator": "Count Camillo Negroni"
+    }
   },
   {
     "id": "carajillo",
@@ -2644,20 +2806,21 @@
         "amount": 2,
         "unit": "oz",
         "name": "Espresso Coffee"
-      },
-      {
-        "amount": null,
-        "unit": null,
-        "name": "Coffee Beans For Garnish"
       }
     ],
-    "garnish": "Coffee Beans, If Desired",
+    "garnish": "3 Coffee Beans",
     "instructions": [
       "Combine all ingredients in a shaker with ice.",
       "Shake until well chilled.",
       "Strain into a rocks glass over a large ice cube."
     ],
-    "imageUrl": "https://res.cloudinary.com/htt8g4cd/image/upload/w_1920,c_limit,f_auto,q_auto/wp/02_24_carajillo_hero_stocksy_1838700_1920x1280"
+    "imageUrl": "https://res.cloudinary.com/htt8g4cd/image/upload/w_1920,c_limit,f_auto,q_auto/wp/02_24_carajillo_hero_stocksy_1838700_1920x1280",
+    "similarIds": [],
+    "origin": {
+      "classification": "classic",
+      "year": "19th century",
+      "creator": "Spain"
+    }
   },
   {
     "id": "watermelon-margarita",
@@ -2690,19 +2853,24 @@
         "name": "Light Agave Nectar"
       },
       {
-        "amount": null,
-        "unit": null,
+        "amount": 6,
+        "unit": "pc",
         "name": "Mint Leaves"
       }
     ],
-    "garnish": "Mint Sprig, Watermelon Slice, A Fresh Mint Sprig and a Watermelon Slice",
+    "garnish": "A Fresh Mint Sprig and a Watermelon Slice",
     "instructions": [
       "Muddle fresh ingredients in the shaker.",
       "Combine all ingredients in a shaker with ice.",
       "Shake until well chilled.",
       "Strain into a rocks glass over cubed ice."
     ],
-    "imageUrl": "https://www.erinliveswhole.com/wp-content/uploads/2019/05/watermelon-margarita.jpg"
+    "imageUrl": "https://www.erinliveswhole.com/wp-content/uploads/2019/05/watermelon-margarita.jpg",
+    "similarIds": [],
+    "origin": {
+      "classification": "contemporary",
+      "note": "Margarita variation."
+    }
   },
   {
     "id": "smoke-on-the-water",
@@ -2717,7 +2885,7 @@
       {
         "amount": 1.5,
         "unit": "oz",
-        "name": "Banhez Mezcal Artesanal"
+        "name": "Mezcal"
       },
       {
         "amount": 0.75,
@@ -2727,7 +2895,7 @@
       {
         "amount": 1,
         "unit": "oz",
-        "name": "Watermelon Juice, Freshly Pressed"
+        "name": "Watermelon Juice"
       },
       {
         "amount": 0.5,
@@ -2737,26 +2905,21 @@
       {
         "amount": 0.5,
         "unit": "oz",
-        "name": "Hibiscus Simple Syrup*"
-      },
-      {
-        "amount": null,
-        "unit": null,
-        "name": "Rosemary Sprig"
-      },
-      {
-        "amount": null,
-        "unit": null,
-        "name": "-Proof Alcohol, For Soaking"
+        "name": "Hibiscus Simple Syrup"
       }
     ],
-    "garnish": null,
+    "garnish": "Rosemary Sprig",
     "instructions": [
       "Combine all ingredients in a shaker with ice.",
       "Shake until well chilled.",
       "Strain into a rocks glass over cubed ice."
     ],
-    "imageUrl": "https://www.liquor.com/thmb/0je0XSZ3X5jwbrhttWTFcKG14m0=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/smoke-on-the-water-720x720-primary-a7c6b92874914d2ab2c34972cf2a013e.jpg"
+    "imageUrl": "https://www.liquor.com/thmb/0je0XSZ3X5jwbrhttWTFcKG14m0=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/smoke-on-the-water-720x720-primary-a7c6b92874914d2ab2c34972cf2a013e.jpg",
+    "similarIds": [],
+    "origin": {
+      "classification": "contemporary",
+      "note": "No widely documented origin found."
+    }
   },
   {
     "id": "chi-chi",
@@ -2784,13 +2947,19 @@
         "name": "Cream of Coconut (Such As Coco Lopez)"
       }
     ],
-    "garnish": "Pineapple Slice, A Pineapple Slice",
+    "garnish": "A Pineapple Slice",
     "instructions": [
       "Combine all ingredients in a shaker with ice.",
       "Shake until well chilled.",
       "Strain into a tiki glass."
     ],
-    "imageUrl": "https://www.liquor.com/thmb/m4eLsu7ZnRS7xJkFwOOXFgUvyvo=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/chi-chi-720x720-primary-23042911f5e94389b52cf359606f043e.jpg"
+    "imageUrl": "https://www.liquor.com/thmb/m4eLsu7ZnRS7xJkFwOOXFgUvyvo=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/chi-chi-720x720-primary-23042911f5e94389b52cf359606f043e.jpg",
+    "similarIds": [],
+    "origin": {
+      "classification": "classic",
+      "year": "1950s–70s",
+      "creator": "Hawaii"
+    }
   },
   {
     "id": "lemon-elderflower-sour-with-vodka",
@@ -2820,26 +2989,26 @@
       {
         "amount": 0.5,
         "unit": "oz",
-        "name": "Simple Syrup (Optional)"
+        "name": "Simple Syrup"
       },
       {
-        "amount": null,
-        "unit": null,
+        "amount": 1,
+        "unit": "pc",
         "name": "Egg White"
-      },
-      {
-        "amount": null,
-        "unit": null,
-        "name": "Lemon Slices and/or Edible Flower For Garnish Optional"
       }
     ],
-    "garnish": null,
+    "garnish": "Lemon Slices and/or Edible Flower",
     "instructions": [
       "Combine all ingredients in a shaker with ice.",
       "Shake until well chilled.",
       "Strain into a chilled coupe glass."
     ],
-    "imageUrl": "https://agratefulmeal.com/wp-content/uploads/2023/02/elderflower-sour-cocktail-recipe-featured.jpg"
+    "imageUrl": "https://agratefulmeal.com/wp-content/uploads/2023/02/elderflower-sour-cocktail-recipe-featured.jpg",
+    "similarIds": [],
+    "origin": {
+      "classification": "contemporary",
+      "note": "St-Germain-era sour."
+    }
   },
   {
     "id": "pornstar-martini",
@@ -2852,11 +3021,6 @@
     ],
     "ingredients": [
       {
-        "amount": 1.5,
-        "unit": "oz",
-        "name": "Vanilla Vodka"
-      },
-      {
         "amount": 1,
         "unit": "oz",
         "name": "Chinola Passion Fruit Liqueur"
@@ -2864,7 +3028,7 @@
       {
         "amount": 1.5,
         "unit": "oz",
-        "name": "Sparkling Wine (Sidecar)"
+        "name": "Vanilla Vodka"
       },
       {
         "amount": 0.75,
@@ -2875,6 +3039,11 @@
         "amount": 0.5,
         "unit": "oz",
         "name": "Simple Syrup"
+      },
+      {
+        "amount": 1.5,
+        "unit": "oz",
+        "name": "Sparkling Wine (Sidecar)"
       }
     ],
     "garnish": "Half Passion Fruit or Lime Wheel",
@@ -2906,11 +3075,6 @@
         "name": "St. Germain"
       },
       {
-        "amount": 0.5,
-        "unit": "oz",
-        "name": "Creme De MûRe"
-      },
-      {
         "amount": 0.75,
         "unit": "oz",
         "name": "Lime Juice"
@@ -2919,6 +3083,11 @@
         "amount": 0.5,
         "unit": "oz",
         "name": "Agave"
+      },
+      {
+        "amount": 0.5,
+        "unit": "oz",
+        "name": "Creme De MûRe"
       },
       {
         "amount": 2,
@@ -2960,18 +3129,23 @@
         "name": "Rucolino Amaro"
       },
       {
-        "amount": 1,
+        "amount": 2,
         "unit": "dash",
         "name": "Angostura Bitters"
       }
     ],
-    "garnish": "Orange Twist and Cherry, An Orange Twist and Cherry",
+    "garnish": "An Orange Twist and Cherry",
     "instructions": [
       "Combine all ingredients in a mixing glass with ice.",
       "Stir until well chilled and properly diluted.",
       "Strain into a rocks glass over a large ice cube."
     ],
-    "imageUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRRxFElO2ByIFM4zbNnRm7VOhUN97gRBMDbTQ&s"
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRRxFElO2ByIFM4zbNnRm7VOhUN97gRBMDbTQ&s",
+    "similarIds": [],
+    "origin": {
+      "classification": "contemporary",
+      "note": "Inspired by Chicago's Avec; no documented classic origin."
+    }
   },
   {
     "id": "mezcal-espresso-martini",
@@ -3009,13 +3183,18 @@
         "name": "Espresso"
       }
     ],
-    "garnish": null,
+    "garnish": "3 Coffee beans",
     "instructions": [
       "Combine all ingredients in a shaker with ice.",
       "Shake until well chilled.",
       "Strain into a chilled coupe glass."
     ],
-    "imageUrl": "https://images.squarespace-cdn.com/content/v1/62503525c8ea875b7ae0638e/1658939547941-1CP4VW0K4K1GCEON39MR/Mezcal+Espresso+Martini.jpg"
+    "imageUrl": "https://images.squarespace-cdn.com/content/v1/62503525c8ea875b7ae0638e/1658939547941-1CP4VW0K4K1GCEON39MR/Mezcal+Espresso+Martini.jpg",
+    "similarIds": [],
+    "origin": {
+      "classification": "contemporary",
+      "note": "Riff on the Espresso Martini (1983, Dick Bradsell)."
+    }
   },
   {
     "id": "green-negroni",
@@ -3040,17 +3219,17 @@
       {
         "amount": 0.75,
         "unit": "oz",
-        "name": "Green Chartreuse"
-      },
-      {
-        "amount": null,
-        "unit": null,
-        "name": "Melon Liqueur"
+        "name": "Cochi Americao or Lilet Blanc"
       },
       {
         "amount": 0.75,
         "unit": "oz",
-        "name": "Cochi Americao or Lilet Blanc"
+        "name": "Green Chartreuse"
+      },
+      {
+        "amount": 0.5,
+        "unit": "oz",
+        "name": "Melon Liqueur"
       }
     ],
     "garnish": "Melon or Dried Grapefruit Slice",
@@ -3059,7 +3238,12 @@
       "Stir until well chilled and properly diluted.",
       "Strain into a chilled coupe glass."
     ],
-    "imageUrl": "https://preview.redd.it/green-negroni-v0-ftqdeamxo0i51.jpg?width=1400&format=pjpg&auto=webp&s=2d511a22cec38a348ee1cba0f27adfd1affcd252"
+    "imageUrl": "https://preview.redd.it/green-negroni-v0-ftqdeamxo0i51.jpg?width=1400&format=pjpg&auto=webp&s=2d511a22cec38a348ee1cba0f27adfd1affcd252",
+    "similarIds": [],
+    "origin": {
+      "classification": "contemporary",
+      "note": "Negroni variation; no single documented creator."
+    }
   },
   {
     "id": "tiger-dwl-valle-cocktail",
@@ -3094,11 +3278,11 @@
       {
         "amount": 0.5,
         "unit": "oz",
-        "name": "Turmeric Honey Syrup*"
+        "name": "Turmeric Honey Syrup"
       },
       {
-        "amount": null,
-        "unit": null,
+        "amount": 6,
+        "unit": "pc",
         "name": "Mint or Sage Leaves"
       }
     ],
@@ -3108,7 +3292,12 @@
       "Shake until well chilled.",
       "Strain into a rocks glass over cubed ice."
     ],
-    "imageUrl": "https://imbibemagazine.com/wp-content/uploads/2024/12/imbibe75-gillys-Tigers-Claw-crdt-Gary-Allard-e1734544015367.jpg"
+    "imageUrl": "https://imbibemagazine.com/wp-content/uploads/2024/12/imbibe75-gillys-Tigers-Claw-crdt-Gary-Allard-e1734544015367.jpg",
+    "similarIds": [],
+    "origin": {
+      "classification": "contemporary",
+      "note": "No widely documented origin found."
+    }
   },
   {
     "id": "mexican-firing-squad",
@@ -3191,13 +3380,18 @@
         "name": "Simple Syrup"
       }
     ],
-    "garnish": null,
+    "garnish": "3 drops of Angostura bitters",
     "instructions": [
       "Combine all ingredients in a shaker with ice.",
       "Shake until well chilled.",
       "Strain into a chilled coupe glass."
     ],
-    "imageUrl": "https://cdn.diffordsguide.com/cocktail/rLzkJR/square/0/512x512.webp?v=1757000397"
+    "imageUrl": "https://cdn.diffordsguide.com/cocktail/rLzkJR/square/0/512x512.webp?v=1757000397",
+    "similarIds": [],
+    "origin": {
+      "classification": "contemporary",
+      "note": "No widely documented origin found."
+    }
   },
   {
     "id": "blackberry-sage-margarite",
@@ -3212,47 +3406,47 @@
       {
         "amount": 2,
         "unit": "oz",
-        "name": "Tequila"
+        "name": "Tequila blanco or reposado"
       },
       {
         "amount": 1,
         "unit": "oz",
-        "name": "Triple Sec"
+        "name": "Orange liqueur"
       },
       {
         "amount": 1,
-        "unit": null,
-        "name": "tablespoon Sugar"
-      },
-      {
-        "amount": 0.5,
         "unit": "oz",
-        "name": "Simple Syrup‌"
+        "name": "Fresh lime juice"
       },
       {
         "amount": null,
         "unit": null,
-        "name": "Lime, Squeezed"
+        "name": "½ Simple syrup or agave nectar"
       },
       {
-        "amount": null,
-        "unit": null,
-        "name": "Blackberries"
+        "amount": 6,
+        "unit": "pc",
+        "name": "Fresh blackberries"
       },
       {
-        "amount": null,
-        "unit": null,
-        "name": "Sage Leaves"
+        "amount": 3,
+        "unit": "pc",
+        "name": "Fresh sage leaves"
       }
     ],
-    "garnish": "Sage Leaves and Blackberries Before Serving",
+    "garnish": "Sage Leaves and Blackberries",
     "instructions": [
       "Muddle fresh ingredients in the shaker.",
       "Combine all ingredients in a shaker with ice.",
       "Shake until well chilled.",
       "Strain into a chilled coupe glass."
     ],
-    "imageUrl": "https://www.tastingtable.com/img/gallery/botanical-blackberry-sage-margarita-recipe/intro-1708717350.jpg"
+    "imageUrl": "https://www.tastingtable.com/img/gallery/botanical-blackberry-sage-margarita-recipe/intro-1708717350.jpg",
+    "similarIds": [],
+    "origin": {
+      "classification": "contemporary",
+      "note": "Margarita variation."
+    }
   },
   {
     "id": "arnon-s-siesta",
@@ -3290,18 +3484,23 @@
         "name": "Lime Juice"
       },
       {
-        "amount": 0.75,
+        "amount": 0.5,
         "unit": "oz",
         "name": "Agave Syrup"
       }
     ],
-    "garnish": "Grapefruit Peel, A Grapefruit Peel",
+    "garnish": "A Grapefruit Peel",
     "instructions": [
       "Combine all ingredients in a shaker with ice.",
       "Shake until well chilled.",
       "Strain into a chilled coupe glass."
     ],
-    "imageUrl": "https://www.foodandwine.com/thmb/uDhNk0oUZGhcjyA980ErQFFtq0c=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/siesta-FT-RECIPE0925-a5e1996b03c74e16904295366ea50c5a.jpg"
+    "imageUrl": "https://www.foodandwine.com/thmb/uDhNk0oUZGhcjyA980ErQFFtq0c=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/siesta-FT-RECIPE0925-a5e1996b03c74e16904295366ea50c5a.jpg",
+    "similarIds": [],
+    "origin": {
+      "classification": "contemporary",
+      "note": "Personal riff on the Siesta (Phil Ward, 2007)."
+    }
   },
   {
     "id": "silk-stocking",
@@ -3315,23 +3514,23 @@
     "ingredients": [
       {
         "amount": 2,
-        "unit": null,
-        "name": "fl Blanco Tequila"
+        "unit": "pc",
+        "name": "Blanco Tequila"
       },
       {
         "amount": 0.75,
-        "unit": null,
-        "name": "fl White CrèMe De Cacao"
+        "unit": "pc",
+        "name": "White CrèMe De Cacao"
       },
       {
         "amount": 0.25,
-        "unit": null,
-        "name": "fl Grenadine Syrup"
+        "unit": "pc",
+        "name": "Grenadine Syrup"
       },
       {
         "amount": 0.75,
-        "unit": null,
-        "name": "fl Single Cream/Half-and-Half"
+        "unit": "pc",
+        "name": "Heavy Cream"
       }
     ],
     "garnish": "Nutmeg or Chocolate",
@@ -3340,11 +3539,16 @@
       "Shake until well chilled.",
       "Strain into a chilled coupe glass."
     ],
-    "imageUrl": "https://www.theshakencocktail.com/wp-content/uploads/2025/01/iStock-2184431771.jpg"
+    "imageUrl": "https://www.theshakencocktail.com/wp-content/uploads/2025/01/iStock-2184431771.jpg",
+    "similarIds": [],
+    "origin": {
+      "classification": "classic",
+      "year": "1950s"
+    }
   },
   {
     "id": "white-toreador",
-    "name": "(White*) Toreador",
+    "name": "Toreador (White)",
     "method": "Shaken",
     "glass": "Coupe",
     "ice": "None",
@@ -3373,8 +3577,8 @@
         "name": "Simple Syrup"
       },
       {
-        "amount": null,
-        "unit": null,
+        "amount": 1,
+        "unit": "pc",
         "name": "Egg White (Optional)"
       },
       {
@@ -3389,7 +3593,12 @@
       "Shake until well chilled.",
       "Strain into a chilled coupe glass."
     ],
-    "imageUrl": "https://robbreport.com/wp-content/uploads/2023/11/White-Toreador.jpg?w=1000"
+    "imageUrl": "https://robbreport.com/wp-content/uploads/2023/11/White-Toreador.jpg?w=1000",
+    "similarIds": [],
+    "origin": {
+      "classification": "classic",
+      "year": "Mid-20th century"
+    }
   },
   {
     "id": "division-bell",
@@ -3404,7 +3613,7 @@
       {
         "amount": 1,
         "unit": "oz",
-        "name": "Mezcal (Preferably Del Maguey Vida)"
+        "name": "Mezcal"
       },
       {
         "amount": 0.75,
@@ -3414,7 +3623,7 @@
       {
         "amount": 0.25,
         "unit": "oz",
-        "name": "Maraschino Liqueur (Preferably Luxardo)"
+        "name": "Maraschino Liqueur"
       },
       {
         "amount": 0.75,
@@ -3428,7 +3637,13 @@
       "Shake until well chilled.",
       "Strain into a chilled coupe glass."
     ],
-    "imageUrl": "https://www.foodandwine.com/thmb/nsR6sMIix68sh897Pz-5kUW6CIQ=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/division-bell-FT-RECIPE1025-29ddd635c24f40f9af98b58bccc5d87a.jpg"
+    "imageUrl": "https://www.foodandwine.com/thmb/nsR6sMIix68sh897Pz-5kUW6CIQ=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/division-bell-FT-RECIPE1025-29ddd635c24f40f9af98b58bccc5d87a.jpg",
+    "similarIds": [],
+    "origin": {
+      "classification": "modern-classic",
+      "year": "2009",
+      "creator": "Phil Ward"
+    }
   },
   {
     "id": "ward-eight",
@@ -3456,18 +3671,24 @@
         "name": "Orange Juice"
       },
       {
-        "amount": null,
-        "unit": null,
-        "name": "teaspoon S Grenadine"
+        "amount": 1,
+        "unit": "pc",
+        "name": "teaspoon Grenadine"
       }
     ],
-    "garnish": "2 or 3 Speared Cherries, Speared Cherries",
+    "garnish": "Speared Cherries",
     "instructions": [
       "Combine all ingredients in a shaker with ice.",
       "Shake until well chilled.",
       "Strain into a chilled coupe glass."
     ],
-    "imageUrl": "https://www.liquor.com/thmb/dszG1wVhVln2eINunyhG4HH0PkM=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/ward-eight-720x720-primary-251bb5bf70634504829b493c0f21361b.jpg"
+    "imageUrl": "https://www.liquor.com/thmb/dszG1wVhVln2eINunyhG4HH0PkM=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/ward-eight-720x720-primary-251bb5bf70634504829b493c0f21361b.jpg",
+    "similarIds": [],
+    "origin": {
+      "classification": "classic",
+      "year": "1898",
+      "creator": "Boston"
+    }
   },
   {
     "id": "dirty-shirley",
@@ -3490,18 +3711,23 @@
         "name": "Grenadine"
       },
       {
-        "amount": null,
-        "unit": null,
-        "name": "-8 Ounces Lemon-Lime Soda (7up, Sprite), Chilled"
+        "amount": 8,
+        "unit": "oz",
+        "name": "Lemon-Lime Soda"
       }
     ],
-    "garnish": "Maraschino Cherry, A Maraschino Cherry",
+    "garnish": "A Maraschino Cherry",
     "instructions": [
       "Combine all ingredients in a mixing glass with ice.",
       "Stir until well chilled and properly diluted.",
       "Strain into a highball glass."
     ],
-    "imageUrl": "https://bellyfull.net/wp-content/uploads/2022/02/Dirty-Shirley-2.jpg"
+    "imageUrl": "https://bellyfull.net/wp-content/uploads/2022/02/Dirty-Shirley-2.jpg",
+    "similarIds": [],
+    "origin": {
+      "classification": "contemporary",
+      "note": "Shirley Temple riff."
+    }
   },
   {
     "id": "white-russian-w-baileys",
@@ -3514,11 +3740,6 @@
     ],
     "ingredients": [
       {
-        "amount": 1.5,
-        "unit": "oz",
-        "name": "Vodka"
-      },
-      {
         "amount": 2,
         "unit": "oz",
         "name": "Bailey'S Irish Cream"
@@ -3527,6 +3748,11 @@
         "amount": 1.5,
         "unit": "oz",
         "name": "Kahlua Liqueur"
+      },
+      {
+        "amount": 1.5,
+        "unit": "oz",
+        "name": "Vodka"
       },
       {
         "amount": 1,
@@ -3573,13 +3799,19 @@
         "name": "Lime Juice"
       }
     ],
-    "garnish": "Brandied Cherry (Optional), A Brandied Cherry (Optional)",
+    "garnish": "A Brandied Cherry",
     "instructions": [
       "Combine all ingredients in a shaker with ice.",
       "Shake until well chilled.",
       "Strain into a chilled coupe glass."
     ],
-    "imageUrl": "https://ik.imagekit.io/vjt1kualr/drinks/last_word/main-image.jpg"
+    "imageUrl": "https://ik.imagekit.io/vjt1kualr/drinks/last_word/main-image.jpg",
+    "similarIds": [],
+    "origin": {
+      "classification": "classic",
+      "year": "Pre-Prohibition",
+      "creator": "Detroit Athletic Club"
+    }
   },
   {
     "id": "creamy-espresso-martini",
@@ -3604,17 +3836,12 @@
       {
         "amount": 2,
         "unit": "oz",
-        "name": "Fresh Espresso Cooled"
+        "name": "Fresh Espresso"
       },
       {
         "amount": 0.5,
         "unit": "oz",
         "name": "Kahlúa"
-      },
-      {
-        "amount": null,
-        "unit": null,
-        "name": "Coffee Beans For Garnish"
       }
     ],
     "garnish": "3 Coffee Beans",
@@ -3623,7 +3850,12 @@
       "Shake until well chilled.",
       "Strain into a chilled martini glass."
     ],
-    "imageUrl": "https://cheneetoday.com/wp-content/uploads/2022/12/creamy-espresso-martini.jpg"
+    "imageUrl": "https://cheneetoday.com/wp-content/uploads/2022/12/creamy-espresso-martini.jpg",
+    "similarIds": [],
+    "origin": {
+      "classification": "contemporary",
+      "note": "Espresso Martini variation."
+    }
   },
   {
     "id": "hemingway-daiquiri-papa-doble",
@@ -3656,13 +3888,19 @@
         "name": "Grapefruit Juice"
       }
     ],
-    "garnish": "Lime Wheel, A Lime Wheel",
+    "garnish": "A Lime Wheel",
     "instructions": [
       "Combine all ingredients in a shaker with ice.",
       "Shake until well chilled.",
       "Strain into a chilled coupe glass."
     ],
-    "imageUrl": "https://www.foodandwine.com/thmb/MhgGHB60Wvy6q1ajTZRojsTYEHw=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/hemingway-daiquiri-FT-RECIPE0724-d8af8c6b25274f309d3e913ce3691320.jpeg"
+    "imageUrl": "https://www.foodandwine.com/thmb/MhgGHB60Wvy6q1ajTZRojsTYEHw=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/hemingway-daiquiri-FT-RECIPE0724-d8af8c6b25274f309d3e913ce3691320.jpeg",
+    "similarIds": [],
+    "origin": {
+      "classification": "classic",
+      "year": "1930s",
+      "creator": "El Floridita, Havana"
+    }
   },
   {
     "id": "army-navy",
@@ -3695,13 +3933,19 @@
         "name": "Of Angostura Bitters"
       }
     ],
-    "garnish": "A Lemon Twist, and Edible Flowers If Desired",
+    "garnish": "A Lemon Twist, and Edible Flower",
     "instructions": [
       "Combine all ingredients in a shaker with ice.",
       "Shake until well chilled.",
       "Strain into a chilled coupe glass."
     ],
-    "imageUrl": "https://www.foodandwine.com/thmb/JWoXvJ05o-XJPcJOpPuP6l3yBMA=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/Army_and_Navy_Cocktail_Credit_Tim_Nusog_4000x2667-d3eb047c2c094db299f7bc77dad7ee8a.jpg"
+    "imageUrl": "https://www.moodymixologist.com/wp-content/uploads/2021/04/IMG_5914-7740888.jpg",
+    "similarIds": [],
+    "origin": {
+      "classification": "classic",
+      "year": "1940s",
+      "creator": "Frank Meier"
+    }
   },
   {
     "id": "gold-rush",
@@ -3729,13 +3973,19 @@
         "name": "Honey Syrup"
       }
     ],
-    "garnish": "Lemon Twist, A Lemon Twist",
+    "garnish": "A Lemon Twist",
     "instructions": [
       "Combine all ingredients in a shaker with ice.",
       "Shake until well chilled.",
       "Strain into a rocks glass over a large ice cube."
     ],
-    "imageUrl": "https://www.liquor.com/thmb/x6M4Pryn2BkBbvgUaBJWSiWZUuk=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/gold-rush-1500x1500-hero-767e1998e44d4d21b53ecc895eabb6fc.jpg"
+    "imageUrl": "https://www.liquor.com/thmb/x6M4Pryn2BkBbvgUaBJWSiWZUuk=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/gold-rush-1500x1500-hero-767e1998e44d4d21b53ecc895eabb6fc.jpg",
+    "similarIds": [],
+    "origin": {
+      "classification": "modern-classic",
+      "year": "2000s",
+      "creator": "Sasha Petraske"
+    }
   },
   {
     "id": "aviation-cocktail",
@@ -3768,13 +4018,19 @@
         "name": "Lemon Juice"
       }
     ],
-    "garnish": "Lemon Twist or a Maraschino Cherry, A Maraschino Cherry or a Lemon Twist",
+    "garnish": "A Maraschino Cherry or a Lemon Twist",
     "instructions": [
       "Combine all ingredients in a shaker with ice.",
       "Shake until well chilled.",
       "Strain into a chilled coupe glass."
     ],
-    "imageUrl": "https://www.liquor.com/thmb/loaUTefntJOQ3v_-7hGJX6G0n9E=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/aviation-720x720-article-0ade34c5f15648bf9da5d2ed34e90729.jpg"
+    "imageUrl": "https://www.liquor.com/thmb/loaUTefntJOQ3v_-7hGJX6G0n9E=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/aviation-720x720-article-0ade34c5f15648bf9da5d2ed34e90729.jpg",
+    "similarIds": [],
+    "origin": {
+      "classification": "classic",
+      "year": "1916",
+      "creator": "Hugo Ensslin"
+    }
   },
   {
     "id": "churchill",
@@ -3846,13 +4102,18 @@
         "name": "Angostura Bitters"
       }
     ],
-    "garnish": "Brandied Cherry or a Lemon Twist, A Brandied Cherry or a Lemon Twist",
+    "garnish": "A Brandied Cherry or a Lemon Twist",
     "instructions": [
       "Combine all ingredients in a mixing glass with ice.",
       "Stir until well chilled and properly diluted.",
       "Strain into a chilled martini glass."
     ],
-    "imageUrl": "https://www.cocktailcontessa.com/wp-content/uploads/2020/04/Perfect-Manhattan-4-500x375.jpg"
+    "imageUrl": "https://www.cocktailcontessa.com/wp-content/uploads/2020/04/Perfect-Manhattan-4-500x375.jpg",
+    "similarIds": [],
+    "origin": {
+      "classification": "classic",
+      "year": "Late 1800s"
+    }
   },
   {
     "id": "naked-famous",
@@ -3885,13 +4146,19 @@
         "name": "Lime Juice"
       }
     ],
-    "garnish": null,
+    "garnish": "A Lime wedge or wheel",
     "instructions": [
       "Combine all ingredients in a shaker with ice.",
       "Shake until well chilled.",
       "Strain into a chilled coupe glass."
     ],
-    "imageUrl": "https://www.acouplecooks.com/wp-content/uploads/2020/10/Naked-and-Famous-Cocktail-006-1.jpg"
+    "imageUrl": "https://www.acouplecooks.com/wp-content/uploads/2020/10/Naked-and-Famous-Cocktail-006-1.jpg",
+    "similarIds": [],
+    "origin": {
+      "classification": "modern-classic",
+      "year": "2011",
+      "creator": "Joaquin Simo"
+    }
   },
   {
     "id": "rosemary-gin-fizz",
@@ -3922,11 +4189,6 @@
         "amount": 3,
         "unit": "oz",
         "name": "Club Soda"
-      },
-      {
-        "amount": null,
-        "unit": null,
-        "name": "Lemon Slice and 1 Rosemary Spring, For Garnish"
       }
     ],
     "garnish": "A Lemon Slice and Rosemary Spring",
@@ -3935,7 +4197,12 @@
       "Shake until well chilled.",
       "Strain into a chilled coupe glass."
     ],
-    "imageUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSCSMFCkDCDmh-zcbc3QIAcVhDE7NkdDdw-tg&s"
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSCSMFCkDCDmh-zcbc3QIAcVhDE7NkdDdw-tg&s",
+    "similarIds": [],
+    "origin": {
+      "classification": "contemporary",
+      "note": "Gin Fizz variation."
+    }
   },
   {
     "id": "boulevardier",
@@ -3961,11 +4228,6 @@
         "amount": 0.75,
         "unit": "oz",
         "name": "Campari"
-      },
-      {
-        "amount": null,
-        "unit": null,
-        "name": "Twist of Orange Peel, For Garnish"
       }
     ],
     "garnish": "An Orange Twist",
@@ -3974,7 +4236,13 @@
       "Stir until well chilled and properly diluted.",
       "Strain into a chilled coupe glass."
     ],
-    "imageUrl": "https://www.liquor.com/thmb/LV0L3CF51hFJoSN-QdLe6ijXsFQ=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/__opt__aboutcom__coeus__resources__content_migration__liquor__2019__09__12094720__Boulevardier-720x720-recipe-53da547e8cfc4bd79a393ac99891f5ba.jpg"
+    "imageUrl": "https://www.liquor.com/thmb/LV0L3CF51hFJoSN-QdLe6ijXsFQ=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/__opt__aboutcom__coeus__resources__content_migration__liquor__2019__09__12094720__Boulevardier-720x720-recipe-53da547e8cfc4bd79a393ac99891f5ba.jpg",
+    "similarIds": [],
+    "origin": {
+      "classification": "classic",
+      "year": "1920s",
+      "creator": "Erskine Gwynne"
+    }
   },
   {
     "id": "corpse-reviver-no-2",
@@ -3992,11 +4260,6 @@
         "name": "London Dry Gin"
       },
       {
-        "amount": null,
-        "unit": null,
-        "name": "Absinthe, To Rinse"
-      },
-      {
         "amount": 0.75,
         "unit": "oz",
         "name": "Lillet Blanc or Dry Vermouth"
@@ -4012,14 +4275,20 @@
         "name": "Lemon Juice"
       }
     ],
-    "garnish": null,
+    "garnish": "A Lemon twist and Absinthe to Rinse",
     "instructions": [
       "Rinse a chilled glass with absinthe and discard excess.",
       "Combine all ingredients in a shaker with ice.",
       "Shake until well chilled.",
       "Strain into a chilled coupe glass."
     ],
-    "imageUrl": "https://www.liquor.com/thmb/eXJ7-yqdNvsGktG1rtdgqCADj1Y=/440x440/filters:no_upscale():max_bytes(150000):strip_icc()/necromancer-720x720-primary-7db0fa68bbf14d43b132b22a439a48ac.jpg"
+    "imageUrl": "https://www.liquor.com/thmb/eXJ7-yqdNvsGktG1rtdgqCADj1Y=/440x440/filters:no_upscale():max_bytes(150000):strip_icc()/necromancer-720x720-primary-7db0fa68bbf14d43b132b22a439a48ac.jpg",
+    "similarIds": [],
+    "origin": {
+      "classification": "classic",
+      "year": "1930",
+      "creator": "Harry Craddock"
+    }
   },
   {
     "id": "milk-punch",
@@ -4033,19 +4302,19 @@
     ],
     "ingredients": [
       {
-        "amount": null,
-        "unit": null,
-        "name": "½ Ounces Bourbon Whiskey"
+        "amount": 0.5,
+        "unit": "oz",
+        "name": "Bourbon Whiskey"
       },
       {
-        "amount": null,
-        "unit": null,
-        "name": "½ Ounce Brandy"
+        "amount": 0.5,
+        "unit": "oz",
+        "name": "Brandy"
       },
       {
-        "amount": null,
-        "unit": null,
-        "name": "½ Ounce Simple Syrup"
+        "amount": 0.5,
+        "unit": "oz",
+        "name": "Simple Syrup"
       },
       {
         "amount": 3,
@@ -4053,14 +4322,9 @@
         "name": "Whole Milk"
       },
       {
-        "amount": null,
-        "unit": null,
-        "name": "½ Teaspoon Vanilla"
-      },
-      {
-        "amount": null,
-        "unit": null,
-        "name": "For the Garnish: Grated Nutmeg, Star Anise (Optional)"
+        "amount": 0.5,
+        "unit": "tsp",
+        "name": "Vanilla"
       }
     ],
     "garnish": "Freshly Grated Nutmeg and If Desired, Star Anise",
@@ -4069,7 +4333,12 @@
       "Shake until well chilled.",
       "Strain into a chilled rocks glass."
     ],
-    "imageUrl": "https://www.thespruceeats.com/thmb/yluz-v8C3vMych7I8WvOisXG2xo=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/brandy-milk-punch-recipe-759447-hero-01-98a54b43f14145998cbca3b2285261d3.jpg"
+    "imageUrl": "https://www.thespruceeats.com/thmb/yluz-v8C3vMych7I8WvOisXG2xo=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/brandy-milk-punch-recipe-759447-hero-01-98a54b43f14145998cbca3b2285261d3.jpg",
+    "similarIds": [],
+    "origin": {
+      "classification": "classic",
+      "year": "1700s"
+    }
   },
   {
     "id": "classic-daiquiri",
@@ -4084,22 +4353,17 @@
       {
         "amount": 2,
         "unit": "oz",
-        "name": "(60 Ml) Rum"
+        "name": "Rum"
       },
       {
         "amount": 0.75,
         "unit": "oz",
-        "name": "(22.5 Ml) Fresh Lime Juice"
+        "name": "Fresh Lime Juice"
       },
       {
         "amount": 0.5,
         "unit": "oz",
-        "name": "(15 Ml) Semi-Rich Simple Syrup"
-      },
-      {
-        "amount": null,
-        "unit": null,
-        "name": "Lime Wheel For Garnish"
+        "name": "Semi-Rich Simple Syrup"
       }
     ],
     "garnish": "A Lime Wheel",
@@ -4108,7 +4372,12 @@
       "Shake until well chilled.",
       "Strain into a chilled coupe glass."
     ],
-    "imageUrl": "https://www.afarmgirlsdabbles.com/wp-content/uploads/2023/06/daiquiri-afarmgirlsdabbles-01s.jpg"
+    "imageUrl": "https://www.afarmgirlsdabbles.com/wp-content/uploads/2023/06/daiquiri-afarmgirlsdabbles-01s.jpg",
+    "similarIds": [],
+    "origin": {
+      "classification": "classic",
+      "year": "Late 1800s"
+    }
   },
   {
     "id": "scofflaw",
@@ -4123,40 +4392,41 @@
       {
         "amount": 1.5,
         "unit": "oz",
-        "name": "(45 Ml) Rye Whiskey"
+        "name": "Rye Whiskey"
       },
       {
         "amount": 1,
         "unit": "oz",
-        "name": "(30 Ml) Dry Vermouth"
+        "name": "Dry Vermouth"
       },
       {
         "amount": 0.5,
         "unit": "oz",
-        "name": "(15 Ml) Lemon Juice"
+        "name": "Lemon Juice"
       },
       {
         "amount": 0.25,
         "unit": "oz",
-        "name": "(7.5 Ml) Grenadine"
+        "name": "Grenadine"
       },
       {
         "amount": 2,
         "unit": "dash",
         "name": "Of Orange Bitters"
-      },
-      {
-        "amount": null,
-        "unit": null,
-        "name": "Orange Zest For Garnish"
       }
     ],
-    "garnish": null,
+    "garnish": "Orange peel For Garnish",
     "instructions": [
       "Combine all ingredients in a shaker with ice.",
       "Shake until well chilled.",
       "Strain into a chilled coupe glass."
     ],
-    "imageUrl": "https://www.foodandwine.com/thmb/pEoj8Y8gDfog-xT_MLGhlrjxhdY=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/scofflaw-FT-RECIPE1025-2bf6177147764d6a858da5b15a0044df.jpg"
+    "imageUrl": "https://www.foodandwine.com/thmb/pEoj8Y8gDfog-xT_MLGhlrjxhdY=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/scofflaw-FT-RECIPE1025-2bf6177147764d6a858da5b15a0044df.jpg",
+    "similarIds": [],
+    "origin": {
+      "classification": "classic",
+      "year": "1924",
+      "creator": "Harry's New York Bar, Paris"
+    }
   }
 ]
