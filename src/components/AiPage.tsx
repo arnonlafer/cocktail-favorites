@@ -1,7 +1,8 @@
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
-import type { AiChat, AiMessage } from '../types'
+import type { AiChat, AiMessage, Cocktail } from '../types'
 import { sendAiChatMessage } from '../lib/aiApi'
+import { formatRecipesForAi } from '../lib/aiRecipesContext'
 import {
   chatTitleFromMessage,
   createAiChat,
@@ -121,14 +122,19 @@ function MessageBubble({ message }: { message: AiMessage }) {
   )
 }
 
-function AiChatView({ chatId }: { chatId: string }) {
+function AiChatView({ chatId, cocktails }: { chatId: string; cocktails: Cocktail[] }) {
   const navigate = useNavigate()
   const [chat, setChat] = useState<AiChat | null>(() => getAiChat(chatId) ?? null)
   const [draft, setDraft] = useState('')
+  const [includeRecipes, setIncludeRecipes] = useState(false)
   const [sending, setSending] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const bottomRef = useRef<HTMLDivElement>(null)
   const settings = loadAiSettings()
+  const recipesContext = useMemo(
+    () => (includeRecipes ? formatRecipesForAi(cocktails) : undefined),
+    [includeRecipes, cocktails],
+  )
 
   useEffect(() => {
     setChat(getAiChat(chatId) ?? null)
@@ -185,7 +191,7 @@ function AiChatView({ chatId }: { chatId: string }) {
     setSending(true)
 
     try {
-      const reply = await sendAiChatMessage(settings, withUser.messages)
+      const reply = await sendAiChatMessage(settings, withUser.messages, recipesContext)
       const assistantMessage = createAiMessage('assistant', reply)
       persistChat({
         ...withUser,
@@ -249,6 +255,17 @@ function AiChatView({ chatId }: { chatId: string }) {
           void sendMessage()
         }}
       >
+        <label className="mb-3 flex cursor-pointer items-start gap-2.5">
+          <input
+            type="checkbox"
+            checked={includeRecipes}
+            onChange={(e) => setIncludeRecipes(e.target.checked)}
+            className="mt-0.5 h-4 w-4 shrink-0 rounded border-app accent-amber-accent"
+          />
+          <span className="text-xs leading-snug text-muted">
+            Include my recipes ({cocktails.length}) so I can ask about them
+          </span>
+        </label>
         <div className="flex items-end gap-2">
           <textarea
             rows={1}
@@ -277,9 +294,9 @@ function AiChatView({ chatId }: { chatId: string }) {
   )
 }
 
-export function AiPage() {
+export function AiPage({ cocktails }: { cocktails: Cocktail[] }) {
   const { chatId } = useParams()
 
-  if (chatId) return <AiChatView chatId={chatId} />
+  if (chatId) return <AiChatView chatId={chatId} cocktails={cocktails} />
   return <AiChatList />
 }

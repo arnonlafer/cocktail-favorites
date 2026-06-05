@@ -1,4 +1,5 @@
 import type { AiMessage, AiSettings } from '../types'
+import { buildRecipesSystemMessage } from './aiRecipesContext'
 
 function parseErrorResponse(body: string, fallback: string): string {
   try {
@@ -9,7 +10,17 @@ function parseErrorResponse(body: string, fallback: string): string {
   }
 }
 
-async function chatOpenAI(settings: AiSettings, messages: AiMessage[]): Promise<string> {
+async function chatOpenAI(
+  settings: AiSettings,
+  messages: AiMessage[],
+  recipesContext?: string,
+): Promise<string> {
+  const apiMessages: { role: string; content: string }[] = []
+  if (recipesContext) {
+    apiMessages.push({ role: 'system', content: buildRecipesSystemMessage(recipesContext) })
+  }
+  apiMessages.push(...messages.map((message) => ({ role: message.role, content: message.content })))
+
   const res = await fetch('https://api.openai.com/v1/chat/completions', {
     method: 'POST',
     headers: {
@@ -18,7 +29,7 @@ async function chatOpenAI(settings: AiSettings, messages: AiMessage[]): Promise<
     },
     body: JSON.stringify({
       model: settings.model,
-      messages: messages.map((message) => ({ role: message.role, content: message.content })),
+      messages: apiMessages,
     }),
   })
 
@@ -32,7 +43,11 @@ async function chatOpenAI(settings: AiSettings, messages: AiMessage[]): Promise<
   return content
 }
 
-async function chatAnthropic(settings: AiSettings, messages: AiMessage[]): Promise<string> {
+async function chatAnthropic(
+  settings: AiSettings,
+  messages: AiMessage[],
+  recipesContext?: string,
+): Promise<string> {
   const res = await fetch('https://api.anthropic.com/v1/messages', {
     method: 'POST',
     headers: {
@@ -44,6 +59,7 @@ async function chatAnthropic(settings: AiSettings, messages: AiMessage[]): Promi
     body: JSON.stringify({
       model: settings.model,
       max_tokens: 4096,
+      ...(recipesContext ? { system: buildRecipesSystemMessage(recipesContext) } : {}),
       messages: messages.map((message) => ({ role: message.role, content: message.content })),
     }),
   })
@@ -58,12 +74,19 @@ async function chatAnthropic(settings: AiSettings, messages: AiMessage[]): Promi
   return content
 }
 
-async function chatGemini(settings: AiSettings, messages: AiMessage[]): Promise<string> {
+async function chatGemini(
+  settings: AiSettings,
+  messages: AiMessage[],
+  recipesContext?: string,
+): Promise<string> {
   const url = `https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(settings.model)}:generateContent?key=${encodeURIComponent(settings.apiKey)}`
   const res = await fetch(url, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
+      ...(recipesContext
+        ? { systemInstruction: { parts: [{ text: buildRecipesSystemMessage(recipesContext) }] } }
+        : {}),
       contents: messages.map((message) => ({
         role: message.role === 'assistant' ? 'model' : 'user',
         parts: [{ text: message.content }],
@@ -83,7 +106,11 @@ async function chatGemini(settings: AiSettings, messages: AiMessage[]): Promise<
   return content
 }
 
-export async function sendAiChatMessage(settings: AiSettings, messages: AiMessage[]): Promise<string> {
+export async function sendAiChatMessage(
+  settings: AiSettings,
+  messages: AiMessage[],
+  recipesContext?: string,
+): Promise<string> {
   if (!settings.apiKey.trim()) {
     throw new Error('Add your API key in Settings before chatting.')
   }
@@ -93,11 +120,11 @@ export async function sendAiChatMessage(settings: AiSettings, messages: AiMessag
 
   switch (settings.vendor) {
     case 'openai':
-      return chatOpenAI(settings, messages)
+      return chatOpenAI(settings, messages, recipesContext)
     case 'anthropic':
-      return chatAnthropic(settings, messages)
+      return chatAnthropic(settings, messages, recipesContext)
     case 'gemini':
-      return chatGemini(settings, messages)
+      return chatGemini(settings, messages, recipesContext)
     default:
       throw new Error('Unsupported AI vendor')
   }

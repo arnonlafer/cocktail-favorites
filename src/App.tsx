@@ -164,7 +164,7 @@ export default function App() {
               />
             }
           />
-          <Route path="/ai/:chatId?" element={<AiPage />} />
+          <Route path="/ai/:chatId?" element={<AiPage cocktails={cocktails} />} />
           <Route
             path="/cocktail/:id"
             element={
