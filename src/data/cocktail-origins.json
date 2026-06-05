@@ -1,0 +1,256 @@
+{
+  "cynarita": { "classification": "modern-classic", "year": "2011", "creator": "Michael Madrusan" },
+  "last-flight": { "classification": "modern-classic", "year": "2018", "creator": "Callum Rixson" },
+  "monter-cassino": { "classification": "modern-classic", "year": "2010", "creator": "Damon Dyer" },
+  "9th-wonder": { "classification": "modern-classic", "year": "2018", "creator": "Erick Castro" },
+  "midnight-flight-new-year-s-eve": {
+    "classification": "contemporary",
+    "note": "Seasonal Last Flight variation; no widely documented origin."
+  },
+  "banana-carajillo": {
+    "classification": "contemporary",
+    "note": "Riff on the Spanish carajillo (19th century)."
+  },
+  "royal-sovereign": {
+    "classification": "contemporary",
+    "note": "No widely documented origin found."
+  },
+  "baby-turtle": {
+    "classification": "contemporary",
+    "note": "No widely documented origin found."
+  },
+  "ruby-cocktail": {
+    "classification": "contemporary",
+    "note": "Modern sour; not the historic Ruby Cocktail."
+  },
+  "juliet-romeo": { "classification": "modern-classic", "year": "2007", "creator": "Toby Maloney" },
+  "french-blonde": {
+    "classification": "modern-classic",
+    "year": "2000s",
+    "note": "St-Germain-era creation; creator undocumented."
+  },
+  "lion-s-tail": { "classification": "classic", "year": "1937", "creator": "L.A. Clarke" },
+  "paper-plane": { "classification": "modern-classic", "year": "2008", "creator": "Sam Ross" },
+  "arnon-s-ultima-palabra": {
+    "classification": "contemporary",
+    "note": "Personal Last Word riff."
+  },
+  "old-fashioned": { "classification": "classic", "year": "1880s", "creator": "Documented as Old Fashioned" },
+  "my-boy-blue": {
+    "classification": "contemporary",
+    "note": "No widely documented origin found."
+  },
+  "blackberry-mint-julep": {
+    "classification": "contemporary",
+    "note": "Variation on the Mint Julep (classic, 1800s)."
+  },
+  "enzoni": { "classification": "modern-classic", "year": "2001", "creator": "Vincenzo Errico" },
+  "whiskey-sour": { "classification": "classic", "year": "1860s" },
+  "espresso-martini": { "classification": "modern-classic", "year": "1983", "creator": "Dick Bradsell" },
+  "penicillin": { "classification": "modern-classic", "year": "2005", "creator": "Sam Ross" },
+  "oaxaca-old-fashioned": { "classification": "modern-classic", "year": "2007", "creator": "Phil Ward" },
+  "beericano": {
+    "classification": "contemporary",
+    "note": "Beer and americano riff."
+  },
+  "upgraded-bourbon-carajillo": {
+    "classification": "contemporary",
+    "note": "Riff on the Spanish carajillo."
+  },
+  "mexican-carajillo": {
+    "classification": "contemporary",
+    "note": "Riff on the Spanish carajillo."
+  },
+  "paloma-v2": {
+    "classification": "contemporary",
+    "note": "Riff on the Paloma (classic, Mexico, 1950s)."
+  },
+  "arnon-s-sunset-passion": {
+    "classification": "contemporary",
+    "note": "Personal recipe."
+  },
+  "the-pisco-sour": { "classification": "classic", "year": "1920s", "creator": "Victor Morris" },
+  "maximillian-affair": { "classification": "modern-classic", "year": "2008", "creator": "Misty Kalkofen" },
+  "elske-shaken": {
+    "classification": "contemporary",
+    "note": "No widely documented origin found."
+  },
+  "firecracker": {
+    "classification": "contemporary",
+    "note": "No widely documented origin found."
+  },
+  "tomatini": {
+    "classification": "contemporary",
+    "note": "No widely documented origin found."
+  },
+  "left-hand": { "classification": "modern-classic", "year": "2005", "creator": "Sam Ross" },
+  "gin-basil-smash": { "classification": "modern-classic", "year": "2008", "creator": "Jörg Meyer" },
+  "the-ninth-ward": { "classification": "modern-classic", "year": "2008", "creator": "Robert \"Brother Cleve\" Toomey" },
+  "international-incident": {
+    "classification": "contemporary",
+    "note": "No widely documented origin found."
+  },
+  "brown-derby": { "classification": "classic", "year": "1930", "creator": "Vendôme Club, Hollywood" },
+  "palo-santo-old-fashioned": {
+    "classification": "contemporary",
+    "note": "Old Fashioned variation."
+  },
+  "yesterday-today-and-amaro": {
+    "classification": "contemporary",
+    "note": "No widely documented origin found."
+  },
+  "giny-germain": {
+    "classification": "contemporary",
+    "note": "St-Germain gin sour; no widely documented origin."
+  },
+  "the-bamboozled-angel": {
+    "classification": "contemporary",
+    "note": "No widely documented origin found."
+  },
+  "daily-rituals": {
+    "classification": "contemporary",
+    "note": "No widely documented origin found."
+  },
+  "debbie-don-t": {
+    "classification": "contemporary",
+    "note": "No widely documented origin found."
+  },
+  "kentucky-maid": { "classification": "modern-classic", "year": "2005", "creator": "Sam Ross" },
+  "brandy-alexander": { "classification": "classic", "year": "1910s" },
+  "white-negroni": { "classification": "modern-classic", "year": "2001", "creator": "Wayne Collins" },
+  "johann-goes-to-mexico": {
+    "classification": "contemporary",
+    "note": "No widely documented origin found."
+  },
+  "pink-squirrel": { "classification": "classic", "year": "1940s", "creator": "Bryant's Cocktail Lounge, Milwaukee" },
+  "nutella-fitzgerald": {
+    "classification": "contemporary",
+    "note": "Fitzgerald/Gin Rickey riff."
+  },
+  "ultima-palabra": { "classification": "modern-classic", "creator": "Simone De Luca" },
+  "paloma-margarita": {
+    "classification": "contemporary",
+    "note": "Hybrid of Paloma and Margarita."
+  },
+  "bourbon-renewal": { "classification": "modern-classic", "year": "2001", "creator": "Jeffrey Morgenthaler" },
+  "napoleon": {
+    "classification": "contemporary",
+    "note": "Not the historic Napoleon cocktail; no documented origin."
+  },
+  "whiskey-smash": { "classification": "classic", "year": "1860s" },
+  "vodka-apricot-cacao": {
+    "classification": "contemporary",
+    "note": "No widely documented origin found."
+  },
+  "classic-margarita": { "classification": "classic", "year": "1930s–40s" },
+  "devil-s-margarita": {
+    "classification": "contemporary",
+    "note": "Margarita variation."
+  },
+  "bourbon-carajillo": {
+    "classification": "contemporary",
+    "note": "Riff on the Spanish carajillo."
+  },
+  "negroni": { "classification": "classic", "year": "1919", "creator": "Count Camillo Negroni" },
+  "carajillo": { "classification": "classic", "year": "19th century", "creator": "Spain" },
+  "watermelon-margarita": {
+    "classification": "contemporary",
+    "note": "Margarita variation."
+  },
+  "smoke-on-the-water": {
+    "classification": "contemporary",
+    "note": "No widely documented origin found."
+  },
+  "chi-chi": { "classification": "classic", "year": "1950s–70s", "creator": "Hawaii" },
+  "lemon-elderflower-sour-with-vodka": {
+    "classification": "contemporary",
+    "note": "St-Germain-era sour."
+  },
+  "pornstar-martini": { "classification": "modern-classic", "year": "2002", "creator": "Douglas Ankrah" },
+  "blacker-the-berry-the-sweeter-the-juice": {
+    "classification": "contemporary",
+    "note": "No widely documented origin found."
+  },
+  "mr-bullock-avec": {
+    "classification": "contemporary",
+    "note": "Inspired by Chicago's Avec; no documented classic origin."
+  },
+  "mezcal-espresso-martini": {
+    "classification": "contemporary",
+    "note": "Riff on the Espresso Martini (1983, Dick Bradsell)."
+  },
+  "green-negroni": {
+    "classification": "contemporary",
+    "note": "Negroni variation; no single documented creator."
+  },
+  "tiger-dwl-valle-cocktail": {
+    "classification": "contemporary",
+    "note": "No widely documented origin found."
+  },
+  "mexican-firing-squad": {
+    "classification": "classic",
+    "year": "1937",
+    "creator": "La Cucaracha, Mexico City",
+    "note": "Recorded by Charles H. Baker Jr. in 1939."
+  },
+  "paris-is-burning": {
+    "classification": "contemporary",
+    "note": "No widely documented origin found."
+  },
+  "blackberry-sage-margarite": {
+    "classification": "contemporary",
+    "note": "Margarita variation."
+  },
+  "arnon-s-siesta": {
+    "classification": "contemporary",
+    "note": "Personal riff on the Siesta (Phil Ward, 2007)."
+  },
+  "silk-stocking": { "classification": "classic", "year": "1950s" },
+  "white-toreador": { "classification": "classic", "year": "Mid-20th century" },
+  "division-bell": { "classification": "modern-classic", "year": "2009", "creator": "Phil Ward" },
+  "ward-eight": { "classification": "classic", "year": "1898", "creator": "Boston" },
+  "dirty-shirley": {
+    "classification": "contemporary",
+    "note": "Shirley Temple riff."
+  },
+  "white-russian-w-baileys": {
+    "classification": "contemporary",
+    "note": "Variation on the White Russian (classic, 1960s)."
+  },
+  "last-word": {
+    "classification": "classic",
+    "year": "Pre-Prohibition",
+    "creator": "Detroit Athletic Club"
+  },
+  "creamy-espresso-martini": {
+    "classification": "contemporary",
+    "note": "Espresso Martini variation."
+  },
+  "hemingway-daiquiri-papa-doble": {
+    "classification": "classic",
+    "year": "1930s",
+    "creator": "El Floridita, Havana"
+  },
+  "the-henderson-old-fashioned": {
+    "classification": "contemporary",
+    "note": "Old Fashioned variation."
+  },
+  "army-navy": { "classification": "classic", "year": "1940s", "creator": "Frank Meier" },
+  "gold-rush": { "classification": "modern-classic", "year": "2000s", "creator": "Sasha Petraske" },
+  "aviation-cocktail": { "classification": "classic", "year": "1916", "creator": "Hugo Ensslin" },
+  "churchill": {
+    "classification": "contemporary",
+    "note": "No widely documented origin found."
+  },
+  "perfect-manhattan": { "classification": "classic", "year": "Late 1800s" },
+  "naked-famous": { "classification": "modern-classic", "year": "2011", "creator": "Joaquin Simo" },
+  "rosemary-gin-fizz": {
+    "classification": "contemporary",
+    "note": "Gin Fizz variation."
+  },
+  "boulevardier": { "classification": "classic", "year": "1920s", "creator": "Erskine Gwynne" },
+  "corpse-reviver-no-2": { "classification": "classic", "year": "1930", "creator": "Harry Craddock" },
+  "milk-punch": { "classification": "classic", "year": "1700s" },
+  "classic-daiquiri": { "classification": "classic", "year": "Late 1800s" },
+  "scofflaw": { "classification": "classic", "year": "1924", "creator": "Harry's New York Bar, Paris" }
+}

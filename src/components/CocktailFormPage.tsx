@@ -1,8 +1,9 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import { parseDraftSelection } from '../lib/draftPrefill'
+import { getCocktailOrigin, ORIGIN_CLASSIFICATION_OPTIONS } from '../lib/origins'
 import { rankSimilarCocktails } from '../lib/similar'
-import type { Cocktail, Ingredient } from '../types'
+import type { Cocktail, CocktailClassification, Ingredient } from '../types'
 import {
   GLASS_OPTIONS,
   ICE_OPTIONS,
@@ -72,6 +73,10 @@ export function CocktailFormPage({ cocktails, onSave, onDelete, mode }: Props) {
   const [instructionsText, setInstructionsText] = useState('')
   const [imageUrl, setImageUrl] = useState('')
   const [similarIds, setSimilarIds] = useState<string[]>([])
+  const [originClassification, setOriginClassification] = useState<CocktailClassification>('contemporary')
+  const [originYear, setOriginYear] = useState('')
+  const [originCreator, setOriginCreator] = useState('')
+  const [originNote, setOriginNote] = useState('')
 
   const suggestedSimilar = useMemo(() => {
     if (mode !== 'edit' || !existing) return []
@@ -108,6 +113,11 @@ export function CocktailFormPage({ cocktails, onSave, onDelete, mode }: Props) {
     setInstructionsText(existing.instructions.join('\n'))
     setImageUrl(existing.imageUrl ?? '')
     setSimilarIds(existing.similarIds ?? [])
+    const origin = getCocktailOrigin(existing)
+    setOriginClassification(origin?.classification ?? 'contemporary')
+    setOriginYear(origin?.year ?? '')
+    setOriginCreator(origin?.creator ?? '')
+    setOriginNote(origin?.note ?? '')
   }, [existing])
 
   const toggleSimilar = (id: string) => {
@@ -137,6 +147,13 @@ export function CocktailFormPage({ cocktails, onSave, onDelete, mode }: Props) {
       .filter(Boolean)
       .slice(0, 4)
 
+    const origin = {
+      classification: originClassification,
+      ...(originYear.trim() && { year: originYear.trim() }),
+      ...(originCreator.trim() && { creator: originCreator.trim() }),
+      ...(originNote.trim() && { note: originNote.trim() }),
+    }
+
     const cocktail: Cocktail = {
       id: existing?.id ?? slugify(name),
       name: name.trim(),
@@ -150,6 +167,7 @@ export function CocktailFormPage({ cocktails, onSave, onDelete, mode }: Props) {
       imageUrl: imageUrl.trim() || null,
       custom: existing?.custom ?? mode === 'add',
       similarIds: mode === 'edit' ? similarIds : undefined,
+      origin,
     }
 
     onSave(cocktail)
@@ -278,6 +296,56 @@ export function CocktailFormPage({ cocktails, onSave, onDelete, mode }: Props) {
             placeholder={'Combine all ingredients in a shaker with ice.\nShake until well chilled.\nStrain into a chilled coupe.'}
           />
         </label>
+
+        <div className="space-y-3 rounded-2xl border border-app bg-bar-900/40 p-4">
+          <div>
+            <h2 className="text-sm font-semibold text-foreground">History</h2>
+            <p className="mt-1 text-xs text-subtle">Classification, year invented, and creator shown on the recipe page.</p>
+          </div>
+          <label className="block space-y-1.5">
+            <span className="text-sm text-muted">Classification</span>
+            <select
+              className={fieldClass}
+              value={originClassification}
+              onChange={(e) => setOriginClassification(e.target.value as CocktailClassification)}
+            >
+              {ORIGIN_CLASSIFICATION_OPTIONS.map((option) => (
+                <option key={option.value} value={option.value}>
+                  {option.label}
+                </option>
+              ))}
+            </select>
+          </label>
+          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+            <label className="block space-y-1.5">
+              <span className="text-sm text-muted">Year</span>
+              <input
+                className={fieldClass}
+                value={originYear}
+                onChange={(e) => setOriginYear(e.target.value)}
+                placeholder="1919, 2008, 1930s…"
+              />
+            </label>
+            <label className="block space-y-1.5">
+              <span className="text-sm text-muted">Creator</span>
+              <input
+                className={fieldClass}
+                value={originCreator}
+                onChange={(e) => setOriginCreator(e.target.value)}
+                placeholder="Sam Ross, Count Camillo Negroni…"
+              />
+            </label>
+          </div>
+          <label className="block space-y-1.5">
+            <span className="text-sm text-muted">Note (optional)</span>
+            <input
+              className={fieldClass}
+              value={originNote}
+              onChange={(e) => setOriginNote(e.target.value)}
+              placeholder="Extra context shown on the recipe page"
+            />
+          </label>
+        </div>
 
         {mode === 'edit' && suggestedSimilar.length > 0 && (
           <div>

@@ -13,6 +13,15 @@ export interface IngredientNutrition {
   custom?: boolean
 }
 
+export type CocktailClassification = 'classic' | 'modern-classic' | 'contemporary'
+
+export interface CocktailOrigin {
+  classification: CocktailClassification
+  year?: string
+  creator?: string
+  note?: string
+}
+
 export interface Cocktail {
   id: string
   name: string
@@ -27,6 +36,8 @@ export interface Cocktail {
   custom?: boolean
   /** Manually curated similar recipes; falls back to auto-match when empty. */
   similarIds?: string[]
+  /** User override; falls back to built-in research in cocktail-origins.json. */
+  origin?: CocktailOrigin
 }
 
 export type UnitSystem = 'oz' | 'ml'

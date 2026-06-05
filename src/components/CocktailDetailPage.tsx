@@ -6,6 +6,7 @@ import { scrollToTop } from '../lib/scroll'
 import { calculateCocktailNutrition } from '../lib/nutrition'
 import { cocktailInitials, spiritGradient, subtitle } from '../lib/cocktailUtils'
 import { markRecentlyViewed, toggleFavorite } from '../lib/storage'
+import { formatCocktailOrigin, getCocktailOrigin } from '../lib/origins'
 import { resolveSimilarCocktails } from '../lib/similar'
 import { CollectionPicker } from './CollectionPicker'
 import { SimilarRecipesSection } from './SimilarRecipesSection'
@@ -123,6 +124,8 @@ export function CocktailDetailPage({
     () => (cocktail ? resolveSimilarCocktails(cocktail, cocktails) : []),
     [cocktail, cocktails],
   )
+
+  const origin = useMemo(() => (cocktail ? getCocktailOrigin(cocktail) : null), [cocktail])
 
   if (!cocktail) {
     return (
@@ -256,8 +259,11 @@ export function CocktailDetailPage({
               )}
             </p>
           )}
-          {showBrowse && (
-            <p className="mt-1 text-xs text-subtle">Swipe left/right for next or previous recipe</p>
+          {origin && (
+            <p className="mt-2 text-sm text-muted">
+              {formatCocktailOrigin(origin)}
+              {origin.note && <span className="text-subtle"> · {origin.note}</span>}
+            </p>
           )}
         </header>
 
