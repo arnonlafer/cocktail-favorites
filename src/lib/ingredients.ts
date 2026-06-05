@@ -1,4 +1,5 @@
 import type { Cocktail, Ingredient } from '../types'
+import { sortIngredients } from './ingredientOrder'
 
 const UNICODE_FRACTIONS: Record<string, number> = {
   '½': 0.5,
@@ -87,6 +88,9 @@ export function normalizeIngredient(ingredient: Ingredient): Ingredient {
 export function normalizeCocktail(cocktail: Cocktail): Cocktail {
   return {
     ...cocktail,
-    ingredients: cocktail.ingredients.map(normalizeIngredient),
+    ingredients: sortIngredients({
+      spirits: cocktail.spirits,
+      ingredients: cocktail.ingredients.map(normalizeIngredient),
+    }),
   }
 }
