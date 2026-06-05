@@ -30,9 +30,13 @@ function slugify(name: string) {
   )
 }
 
+const INGREDIENT_UNIT_PATTERN = 'oz|ml|dash(?:es)?|pinch|tsp|tbsp|pc|cup'
+
 function parseIngredientLine(line: string): Ingredient {
   const trimmed = line.trim()
-  const match = trimmed.match(/^([\d./\s]+)\s*(oz|ml|dash(?:es)?|pinch|tsp|tbsp)?\s*(.+)$/i)
+  const match = trimmed.match(
+    new RegExp(`^([\\d./\\s]+)\\s*(${INGREDIENT_UNIT_PATTERN})?\\s*(.+)$`, 'i'),
+  )
   if (!match) return { amount: null, unit: null, name: trimmed }
   const [, amountRaw, unitRaw, name] = match
   let amount = 0
@@ -42,15 +46,23 @@ function parseIngredientLine(line: string): Ingredient {
       amount += a / b
     } else amount += Number(part)
   }
+  if (!Number.isFinite(amount)) return { amount: null, unit: null, name: trimmed }
+
   const unit = unitRaw?.toLowerCase() ?? null
-  const normalizedUnit = unit === 'oz' || unit?.startsWith('dash') ? (unit.startsWith('dash') ? 'dash' : 'oz') : unit
-  return { amount: Number.isFinite(amount) ? amount : null, unit: normalizedUnit, name: name.trim() }
+  let normalizedUnit =
+    unit === 'oz' || unit?.startsWith('dash') ? (unit.startsWith('dash') ? 'dash' : 'oz') : unit
+  if (!normalizedUnit) normalizedUnit = 'pc'
+
+  return { amount, unit: normalizedUnit, name: name.trim() }
 }
 
 function ingredientsToText(ingredients: Ingredient[]): string {
   return ingredients
     .map((ing) => {
-      if (ing.amount != null && ing.unit) return `${ing.amount} ${ing.unit} ${ing.name}`
+      if (ing.amount != null && ing.unit && ing.unit !== 'pc') {
+        return `${ing.amount} ${ing.unit} ${ing.name}`
+      }
+      if (ing.amount != null) return `${ing.amount} ${ing.name}`
       return ing.name
     })
     .join('\n')

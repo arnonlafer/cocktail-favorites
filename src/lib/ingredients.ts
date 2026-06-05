@@ -40,6 +40,8 @@ function normalizeUnit(raw: string | undefined): string | null {
   if (u === 'tsp' || u === 'teaspoon' || u === 'teaspoons') return 'tsp'
   if (u === 'tbsp' || u === 'tablespoon' || u === 'tablespoons') return 'tbsp'
   if (u === 'fl') return 'fl'
+  if (u === 'pc' || u === 'piece' || u === 'pieces') return 'pc'
+  if (u === 'cup' || u === 'cups') return 'cup'
   return u
 }
 
@@ -80,6 +82,19 @@ export function normalizeIngredient(ingredient: Ingredient): Ingredient {
   if (amount != null && !unit) {
     const reparsed = parseMeasureFromName(name)
     if (reparsed) return reparsed
+
+    const embeddedUnit = name.match(
+      /^(pc|cup|tbsp|tablespoons?|tsp|teaspoons?|dash(?:es)?)\s+(.+)$/i,
+    )
+    if (embeddedUnit) {
+      return {
+        amount,
+        unit: normalizeUnit(embeddedUnit[1]) ?? embeddedUnit[1].toLowerCase(),
+        name: embeddedUnit[2]!.trim(),
+      }
+    }
+
+    return { amount, unit: 'pc', name: name.trim() }
   }
 
   return { amount, unit, name: name.trim() }

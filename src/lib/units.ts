@@ -58,8 +58,14 @@ export function formatIngredientParts(
 ): FormattedIngredient {
   const { amount, unit: ingUnit, name } = ingredient
 
-  if (amount == null || !ingUnit) {
+  if (amount == null) {
     return { amount: '—', name }
+  }
+
+  if (!ingUnit || ingUnit === 'pc') {
+    const scaled = amount * multiplier
+    const amountText = Number.isInteger(scaled) ? String(scaled) : formatAmount(scaled)
+    return { amount: amountText, name }
   }
 
   if (VOLUME_UNITS.has(ingUnit)) {
