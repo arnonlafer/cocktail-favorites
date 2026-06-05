@@ -10,7 +10,7 @@ import { formatCocktailOrigin, getCocktailOrigin } from '../lib/origins'
 import { resolveSimilarCocktails } from '../lib/similar'
 import { CollectionPicker } from './CollectionPicker'
 import { SimilarRecipesSection } from './SimilarRecipesSection'
-import { IconArrowLeft, IconChevronLeft, IconChevronRight, IconCollections, IconEdit, IconHeart } from './icons'
+import { IconArrowLeft, IconChevronLeft, IconChevronRight, IconCollections, IconEdit, IconHeart, IconShuffle } from './icons'
 import { UnitControls } from './UnitControls'
 import { IngredientList } from './IngredientList'
 import { InstructionList } from './InstructionList'
@@ -25,6 +25,7 @@ interface Props {
   collections: Collection[]
   unit: UnitSystem
   multiplier: number
+  randomFavoritesOnly: boolean
   onUnitChange: (unit: UnitSystem) => void
   onMultiplierChange: (multiplier: number) => void
   onFavoriteChange: () => void
@@ -46,6 +47,7 @@ export function CocktailDetailPage({
   collections,
   unit,
   multiplier,
+  randomFavoritesOnly,
   onUnitChange,
   onMultiplierChange,
   onFavoriteChange,
@@ -94,6 +96,19 @@ export function CocktailDetailPage({
     }
     navigate('/')
   }, [filterSearch, navigate])
+
+  const openRandom = useCallback(() => {
+    let pool = randomFavoritesOnly ? cocktails.filter((c) => favorites.includes(c.id)) : cocktails
+    if (pool.length === 0) pool = cocktails
+    if (pool.length === 0) return
+    const pick = pool[Math.floor(Math.random() * pool.length)]!
+    const randomBrowseIds = pool.map((c) => c.id)
+    saveBrowseIds(randomBrowseIds)
+    navigate(`/cocktail/${pick.id}${filterSearch ? `?${filterSearch}` : ''}`, {
+      replace: true,
+      state: { browseIds: randomBrowseIds },
+    })
+  }, [cocktails, favorites, filterSearch, navigate, randomFavoritesOnly])
 
   useEffect(() => {
     if (id) {
@@ -215,6 +230,14 @@ export function CocktailDetailPage({
             >
               <IconEdit size={20} />
             </Link>
+            <button
+              type="button"
+              aria-label="Open random recipe"
+              onClick={openRandom}
+              className={iconBtnClass}
+            >
+              <IconShuffle size={20} />
+            </button>
             <button
               type="button"
               aria-label={isFavorite ? 'Remove favorite' : 'Add favorite'}

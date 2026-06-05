@@ -174,6 +174,7 @@ export default function App() {
                 collections={prefs.collections}
                 unit={prefs.unit}
                 multiplier={prefs.multiplier}
+                randomFavoritesOnly={prefs.randomFavoritesOnly ?? true}
                 onUnitChange={(unit) => updatePrefs({ unit })}
                 onMultiplierChange={(multiplier) => updatePrefs({ multiplier })}
                 onFavoriteChange={refreshPrefs}
