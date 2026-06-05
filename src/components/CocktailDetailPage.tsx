@@ -268,10 +268,7 @@ export function CocktailDetailPage({
 
         <section>
           <div className="mb-3 flex flex-wrap items-center justify-between gap-3">
-            <div>
-              <h2 className="text-lg font-semibold text-foreground">Ingredients</h2>
-              <p className="text-xs text-subtle">Amounts in {unit === 'oz' ? 'ounces' : 'milliliters'}</p>
-            </div>
+            <h2 className="text-lg font-semibold text-foreground">Ingredients</h2>
             <UnitControls
               unit={unit}
               multiplier={multiplier}

@@ -48,7 +48,18 @@ function formatMl(value: number): string {
 
 export interface FormattedIngredient {
   amount: string
+  unit: string | null
   name: string
+}
+
+function shortUnitLabel(unit: string): string {
+  if (unit === 'dash' || unit === 'dashes') return 'dash'
+  if (unit === 'tsp' || unit === 'teaspoon' || unit === 'teaspoons') return 'tsp'
+  if (unit === 'tbsp' || unit === 'tablespoon' || unit === 'tablespoons') return 'tbsp'
+  if (unit === 'oz' || unit === 'ounce' || unit === 'ounces' || unit === 'fl') return 'oz'
+  if (unit === 'ml') return 'ml'
+  if (unit === 'cup' || unit === 'cups') return 'cup'
+  return unit
 }
 
 export function formatIngredientParts(
@@ -59,13 +70,13 @@ export function formatIngredientParts(
   const { amount, unit: ingUnit, name } = ingredient
 
   if (amount == null) {
-    return { amount: '—', name }
+    return { amount: '—', unit: null, name }
   }
 
   if (!ingUnit || ingUnit === 'pc') {
     const scaled = amount * multiplier
     const amountText = Number.isInteger(scaled) ? String(scaled) : formatAmount(scaled)
-    return { amount: amountText, name }
+    return { amount: amountText, unit: null, name }
   }
 
   if (VOLUME_UNITS.has(ingUnit)) {
@@ -73,13 +84,12 @@ export function formatIngredientParts(
     if (ingUnit === 'ml') ozAmount = amount / BAR_OZ_TO_ML
     const scaledOz = ozAmount * multiplier
     if (unit === 'oz') {
-      return { amount: formatAmount(scaledOz), name }
+      return { amount: formatAmount(scaledOz), unit: 'oz', name }
     }
-    return { amount: formatMl(scaledOz * BAR_OZ_TO_ML), name }
+    return { amount: formatMl(scaledOz * BAR_OZ_TO_ML), unit: 'ml', name }
   }
 
   const scaled = amount * multiplier
   const amountText = Number.isInteger(scaled) ? String(scaled) : formatAmount(scaled)
-  const unitLabel = ingUnit === 'dash' || ingUnit === 'dashes' ? 'dash' : ingUnit
-  return { amount: `${amountText} ${unitLabel}`, name }
+  return { amount: amountText, unit: shortUnitLabel(ingUnit), name }
 }
