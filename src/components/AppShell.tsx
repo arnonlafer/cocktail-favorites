@@ -19,7 +19,8 @@ export function AppShell({ children }: Props) {
     pathname === '/draft' ||
     pathname === '/cart' ||
     pathname.startsWith('/collections') ||
-    pathname.startsWith('/settings')
+    pathname.startsWith('/settings') ||
+    (pathname.startsWith('/cocktail/') && !pathname.endsWith('/edit'))
 
   return (
     <>
