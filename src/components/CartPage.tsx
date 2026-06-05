@@ -1,15 +1,16 @@
 import { useState } from 'react'
 import type { CartItem } from '../types'
-import { binnysSearchUrl, createCartItem } from '../lib/cart'
+import { cartItemUrl, createCartItem } from '../lib/cart'
 import { IconClose } from './icons'
 import { PageHeader } from './PageHeader'
 
 interface Props {
   items: CartItem[]
+  searchUrl: string
   onSave: (items: CartItem[]) => void
 }
 
-export function CartPage({ items, onSave }: Props) {
+export function CartPage({ items, searchUrl, onSave }: Props) {
   const [draft, setDraft] = useState('')
 
   const addItem = () => {
@@ -79,7 +80,7 @@ export function CartPage({ items, onSave }: Props) {
             {items.map((item) => (
               <li key={item.id} className="flex items-stretch">
                 <a
-                  href={binnysSearchUrl(item.name)}
+                  href={cartItemUrl(searchUrl, item.name)}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="min-w-0 flex-1 px-4 py-3.5 text-sm text-foreground transition hover:bg-bar-800/80"
@@ -100,7 +101,7 @@ export function CartPage({ items, onSave }: Props) {
         )}
 
         {items.length > 0 && (
-          <p className="text-xs text-subtle">Tap an item to search Binny&apos;s. Items sync with your account.</p>
+          <p className="text-xs text-subtle">Tap an item to search. Items sync with your account.</p>
         )}
       </div>
     </div>

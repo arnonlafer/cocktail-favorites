@@ -1,3 +1,4 @@
+import { DEFAULT_CART_SEARCH_URL } from './cart'
 import type { AppPreferences, Cocktail, IngredientNutrition, SyncPayload, UserProfile } from '../types'
 import { authHeaders } from './auth'
 import {
@@ -52,6 +53,7 @@ function legacyPrefsToProfiles(prefs: AppPreferences): Record<string, UserProfil
       collections: prefs.collections ?? [],
       recipeDraft: '',
       cart: [],
+      cartSearchUrl: DEFAULT_CART_SEARCH_URL,
       randomFavoritesOnly: true,
       updatedAt: prefs.syncUpdatedAt ?? Date.now(),
     },

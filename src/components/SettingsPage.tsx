@@ -2,9 +2,11 @@ import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import type { FontSize, Theme } from '../types'
 import { FONT_SIZE_LABELS, THEME_LABELS, THEME_ORDER, stepFontSize } from '../lib/theme'
+import { DEFAULT_CART_SEARCH_URL } from '../lib/cart'
 import { logout } from '../lib/auth'
 import { checkSyncServer, formatSyncTime, syncNow, type SyncStatus } from '../lib/sync'
 import { PageHeader } from './PageHeader'
+import { AiSettingsSection } from './AiSettingsSection'
 
 interface Props {
   theme: Theme
@@ -12,10 +14,12 @@ interface Props {
   syncCode: string
   lastSyncedAt: number | null
   randomFavoritesOnly: boolean
+  cartSearchUrl: string
   onThemeChange: (theme: Theme) => void
   onFontSizeChange: (fontSize: FontSize) => void
   onSyncCodeChange: (syncCode: string) => void
   onRandomFavoritesOnlyChange: (value: boolean) => void
+  onCartSearchUrlChange: (url: string) => void
   onSynced: () => void
   onLogout: () => void
 }
@@ -26,20 +30,27 @@ export function SettingsPage({
   syncCode,
   lastSyncedAt,
   randomFavoritesOnly,
+  cartSearchUrl,
   onThemeChange,
   onFontSizeChange,
   onSyncCodeChange,
   onRandomFavoritesOnlyChange,
+  onCartSearchUrlChange,
   onSynced,
   onLogout,
 }: Props) {
   const [draftCode, setDraftCode] = useState(syncCode)
+  const [draftCartSearchUrl, setDraftCartSearchUrl] = useState(cartSearchUrl)
   const [syncStatus, setSyncStatus] = useState<SyncStatus>('idle')
   const [serverReady, setServerReady] = useState<'checking' | 'ready' | 'not-configured' | 'error'>('checking')
 
   useEffect(() => {
     void checkSyncServer().then(setServerReady)
   }, [])
+
+  useEffect(() => {
+    setDraftCartSearchUrl(cartSearchUrl)
+  }, [cartSearchUrl])
 
   async function runSync(code: string) {
     setSyncStatus('syncing')
@@ -64,6 +75,10 @@ export function SettingsPage({
     const code = draftCode.trim() || syncCode.trim()
     if (!code) return
     await runSync(code)
+  }
+
+  function saveCartSearchUrl() {
+    onCartSearchUrlChange(draftCartSearchUrl.trim() || DEFAULT_CART_SEARCH_URL)
   }
 
   const showServerWarning = serverReady === 'not-configured' || syncStatus === 'not-configured'
@@ -197,6 +212,49 @@ export function SettingsPage({
             <span className="text-sm text-foreground">Pick from favorites only</span>
           </label>
         </section>
+
+        <section className="rounded-2xl border border-app bg-bar-900/60 p-4">
+          <h2 className="mb-1 text-base font-semibold text-foreground">Cart</h2>
+          <p className="mb-3 text-sm text-muted">
+            Choose where cart items open when tapped. Use <code className="text-foreground">{'{query}'}</code> for
+            the item name.
+          </p>
+          <label className="mb-2 block text-sm font-medium text-foreground" htmlFor="cart-search-url">
+            Search URL
+          </label>
+          <input
+            id="cart-search-url"
+            type="url"
+            autoComplete="off"
+            autoCapitalize="none"
+            spellCheck={false}
+            value={draftCartSearchUrl}
+            onChange={(e) => setDraftCartSearchUrl(e.target.value)}
+            placeholder={DEFAULT_CART_SEARCH_URL}
+            className="mb-3 w-full rounded-xl border border-app bg-bar-800 px-3 py-2.5 text-sm text-foreground placeholder:text-subtle"
+          />
+          <div className="flex gap-2">
+            <button
+              type="button"
+              onClick={saveCartSearchUrl}
+              className="flex-1 rounded-xl bg-amber-accent py-2.5 text-sm font-semibold text-bar-950"
+            >
+              Save URL
+            </button>
+            <button
+              type="button"
+              onClick={() => {
+                setDraftCartSearchUrl(DEFAULT_CART_SEARCH_URL)
+                onCartSearchUrlChange(DEFAULT_CART_SEARCH_URL)
+              }}
+              className="flex-1 rounded-xl border border-app bg-bar-800 py-2.5 text-sm font-medium text-foreground"
+            >
+              Reset
+            </button>
+          </div>
+        </section>
+
+        <AiSettingsSection />
 
         <section className="rounded-2xl border border-app bg-bar-900/60 p-4">
           <h2 className="mb-1 text-base font-semibold text-foreground">Lists</h2>

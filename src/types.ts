@@ -56,6 +56,29 @@ export interface CartItem {
   name: string
 }
 
+export type AiVendor = 'openai' | 'anthropic' | 'gemini'
+
+export interface AiSettings {
+  vendor: AiVendor
+  apiKey: string
+  model: string
+}
+
+export interface AiMessage {
+  id: string
+  role: 'user' | 'assistant'
+  content: string
+  createdAt: number
+}
+
+export interface AiChat {
+  id: string
+  title: string
+  messages: AiMessage[]
+  createdAt: number
+  updatedAt: number
+}
+
 /** Per-user settings synced by username key. */
 export interface UserProfile {
   userName: string
@@ -72,6 +95,8 @@ export interface UserProfile {
   recipeDraft: string
   /** Shopping list for spirits, syrups, bitters, etc. */
   cart: CartItem[]
+  /** URL template for opening cart items; use `{query}` for the item name. */
+  cartSearchUrl?: string
   /** When true, the random recipe button only picks from favorites. */
   randomFavoritesOnly: boolean
   updatedAt: number
@@ -94,6 +119,7 @@ export interface AppPreferences {
   collections: Collection[]
   recipeDraft: string
   cart: CartItem[]
+  cartSearchUrl: string
   randomFavoritesOnly: boolean
 }
 

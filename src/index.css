@@ -137,3 +137,72 @@ button {
 .pb-page-end-lg {
   padding-bottom: calc(6rem + env(safe-area-inset-bottom, 0px));
 }
+
+.ai-markdown {
+  font-size: 0.875rem;
+  line-height: 1.6;
+}
+
+.ai-markdown > :first-child {
+  margin-top: 0;
+}
+
+.ai-markdown > :last-child {
+  margin-bottom: 0;
+}
+
+.ai-markdown p + p,
+.ai-markdown p + ul,
+.ai-markdown p + ol,
+.ai-markdown ul + p,
+.ai-markdown ol + p,
+.ai-markdown h2 + p,
+.ai-markdown h3 + p {
+  margin-top: 0.75rem;
+}
+
+.ai-markdown h2 {
+  margin-top: 1.25rem;
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--color-text);
+}
+
+.ai-markdown h3 {
+  margin-top: 1rem;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.ai-markdown strong {
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.ai-markdown ul,
+.ai-markdown ol {
+  margin-top: 0.5rem;
+  padding-left: 1.25rem;
+}
+
+.ai-markdown ul {
+  list-style-type: disc;
+}
+
+.ai-markdown ol {
+  list-style-type: decimal;
+}
+
+.ai-markdown li + li {
+  margin-top: 0.35rem;
+}
+
+.ai-markdown li > p {
+  margin: 0;
+}
+
+.ai-markdown hr {
+  margin: 1rem 0;
+  border-color: var(--color-border);
+}

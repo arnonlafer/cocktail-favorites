@@ -1,3 +1,4 @@
+import { DEFAULT_CART_SEARCH_URL } from './cart'
 import type {
   AppPreferences,
   Collection,
@@ -75,6 +76,7 @@ function defaultProfile(userName: string): UserProfile {
     collections: [],
     recipeDraft: '',
     cart: [],
+    cartSearchUrl: DEFAULT_CART_SEARCH_URL,
     randomFavoritesOnly: true,
     updatedAt: Date.now(),
   }
@@ -133,6 +135,7 @@ function migrateLegacyPrefs(): Record<string, UserProfile> {
       collections: parsed.collections ?? [],
       recipeDraft: '',
       cart: [],
+      cartSearchUrl: DEFAULT_CART_SEARCH_URL,
       randomFavoritesOnly: true,
       updatedAt: parsed.syncUpdatedAt ?? Date.now(),
     }
@@ -191,6 +194,7 @@ function profileToPrefs(profile: UserProfile, shared: SharedSettings): AppPrefer
     collections: profile.collections,
     recipeDraft: profile.recipeDraft ?? '',
     cart: profile.cart ?? [],
+    cartSearchUrl: profile.cartSearchUrl?.trim() || DEFAULT_CART_SEARCH_URL,
     randomFavoritesOnly: profile.randomFavoritesOnly ?? true,
     syncCode: shared.syncCode,
     syncUpdatedAt: shared.syncUpdatedAt,
@@ -234,6 +238,7 @@ export function savePrefs(prefs: AppPreferences) {
     collections: prefs.collections ?? [],
     recipeDraft: prefs.recipeDraft ?? '',
     cart: prefs.cart ?? [],
+    cartSearchUrl: prefs.cartSearchUrl?.trim() || DEFAULT_CART_SEARCH_URL,
     randomFavoritesOnly: prefs.randomFavoritesOnly ?? true,
     updatedAt: Date.now(),
   }

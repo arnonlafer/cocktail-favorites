@@ -173,3 +173,12 @@ export function IconShuffle({ className, size }: IconProps) {
     </Icon>
   )
 }
+
+export function IconAi({ className, size }: IconProps) {
+  return (
+    <Icon className={className} size={size}>
+      <path d="M12 3l1.1 3.9L17 8l-3.9 1.1L12 13l-1.1-3.9L7 8l3.9-1.1z" />
+      <path d="M19 15l.7 2.3 2.3.7-2.3.7-.7 2.3-.7-2.3-2.3-.7 2.3-.7z" />
+    </Icon>
+  )
+}

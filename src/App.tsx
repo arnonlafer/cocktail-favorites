@@ -15,6 +15,7 @@ import { LoginPage } from './components/LoginPage'
 import { SettingsPage } from './components/SettingsPage'
 import { DraftPage } from './components/DraftPage'
 import { CartPage } from './components/CartPage'
+import { AiPage } from './components/AiPage'
 
 export default function App() {
   const [authReady, setAuthReady] = useState(false)
@@ -128,12 +129,14 @@ export default function App() {
                 syncCode={prefs.syncCode}
                 lastSyncedAt={prefs.lastSyncedAt}
                 randomFavoritesOnly={prefs.randomFavoritesOnly ?? true}
+                cartSearchUrl={prefs.cartSearchUrl}
                 onThemeChange={(theme) => updatePrefs({ theme })}
                 onFontSizeChange={(fontSize) => updatePrefs({ fontSize })}
                 onSyncCodeChange={(syncCode) => updatePrefs({ syncCode })}
                 onRandomFavoritesOnlyChange={(randomFavoritesOnly) =>
                   updatePrefs({ randomFavoritesOnly })
                 }
+                onCartSearchUrlChange={(cartSearchUrl) => updatePrefs({ cartSearchUrl })}
                 onSynced={refreshPrefs}
                 onLogout={() => setAuthenticated(false)}
               />
@@ -156,10 +159,12 @@ export default function App() {
             element={
               <CartPage
                 items={prefs.cart ?? []}
+                searchUrl={prefs.cartSearchUrl}
                 onSave={(cart) => updatePrefs({ cart })}
               />
             }
           />
+          <Route path="/ai/:chatId?" element={<AiPage />} />
           <Route
             path="/cocktail/:id"
             element={

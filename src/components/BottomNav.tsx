@@ -1,11 +1,12 @@
 import { Link, useLocation } from 'react-router-dom'
-import { IconCart, IconCollections, IconDraft, IconHome, IconSettings } from './icons'
+import { IconAi, IconCart, IconCollections, IconDraft, IconHome, IconSettings } from './icons'
 
 const tabs = [
   { to: '/', label: 'Home', Icon: IconHome, match: (path: string) => path === '/' },
   { to: '/collections', label: 'List', Icon: IconCollections, match: (path: string) => path.startsWith('/collections') },
   { to: '/draft', label: 'Draft', Icon: IconDraft, match: (path: string) => path === '/draft' },
   { to: '/cart', label: 'Cart', Icon: IconCart, match: (path: string) => path === '/cart' },
+  { to: '/ai', label: 'AI', Icon: IconAi, match: (path: string) => path === '/ai' || path.startsWith('/ai/') },
   { to: '/settings', label: 'Settings', Icon: IconSettings, match: (path: string) => path.startsWith('/settings') },
 ] as const
 
