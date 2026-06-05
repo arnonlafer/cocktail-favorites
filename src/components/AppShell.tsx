@@ -1,4 +1,6 @@
+import { useEffect } from 'react'
 import { useLocation } from 'react-router-dom'
+import { scrollToTop } from '../lib/scroll'
 import { BottomNav } from './BottomNav'
 
 interface Props {
@@ -7,6 +9,11 @@ interface Props {
 
 export function AppShell({ children }: Props) {
   const { pathname } = useLocation()
+
+  useEffect(() => {
+    scrollToTop()
+  }, [pathname])
+
   const showNav =
     pathname === '/' ||
     pathname === '/draft' ||
