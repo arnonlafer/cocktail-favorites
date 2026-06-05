@@ -78,7 +78,7 @@ export function DraftPage({ draft, onSave }: Props) {
     'w-full min-h-[60vh] resize-y rounded-2xl border border-app bg-bar-800 px-4 py-3 font-mono text-sm leading-relaxed text-foreground outline-none focus:border-amber-accent/60'
 
   return (
-    <div className="safe-bottom pb-[3.5rem]">
+    <div>
       <PageHeader title="Draft">
         <div className="flex shrink-0 items-center gap-2">
           {selection && (

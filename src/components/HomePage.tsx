@@ -200,7 +200,7 @@ export function HomePage({
   const flatBrowseIds = useMemo(() => filtered.map((c) => c.id), [filtered])
 
   return (
-    <div className="safe-bottom pb-[3.5rem]">
+    <div>
       <header className="sticky top-0 z-10 border-b border-app bg-app px-4 py-4 backdrop-blur">
         <div className="mb-4 flex items-center gap-3">
           <Link to="/" className="shrink-0">

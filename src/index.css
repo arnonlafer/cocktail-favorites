@@ -123,3 +123,17 @@ button {
 .safe-bottom {
   padding-bottom: max(1rem, env(safe-area-inset-bottom));
 }
+
+/* Fixed bottom tab bar (~3.25rem) + home indicator */
+.pb-bottom-nav {
+  padding-bottom: calc(3.25rem + env(safe-area-inset-bottom, 0px));
+}
+
+/* Pages without tab bar but needing scroll clearance at the bottom */
+.pb-page-end {
+  padding-bottom: calc(2rem + env(safe-area-inset-bottom, 0px));
+}
+
+.pb-page-end-lg {
+  padding-bottom: calc(6rem + env(safe-area-inset-bottom, 0px));
+}

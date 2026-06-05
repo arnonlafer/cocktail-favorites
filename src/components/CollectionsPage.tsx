@@ -48,7 +48,7 @@ export function CollectionsPage({ onChanged }: Props) {
   }
 
   return (
-    <div className="safe-bottom pb-[3.5rem]">
+    <div>
       <PageHeader title="Lists" backTo={backTo} />
 
       <div className="space-y-4 px-4 pt-4">

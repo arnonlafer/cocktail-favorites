@@ -16,7 +16,7 @@ export function AppShell({ children }: Props) {
 
   return (
     <>
-      {children}
+      <div className={showNav ? 'pb-bottom-nav' : undefined}>{children}</div>
       {showNav && <BottomNav />}
     </>
   )

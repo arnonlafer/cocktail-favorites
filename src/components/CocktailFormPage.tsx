@@ -182,7 +182,7 @@ export function CocktailFormPage({ cocktails, onSave, onDelete, mode }: Props) {
     'w-full rounded-xl border border-app bg-bar-800 px-3 py-2.5 text-foreground outline-none focus:border-amber-accent/60'
 
   return (
-    <div className="safe-bottom pb-8">
+    <div className="pb-page-end">
       <div className="sticky top-0 z-10 flex items-center gap-3 border-b border-app bg-app px-4 py-3 backdrop-blur">
         <button
           type="button"

@@ -143,7 +143,7 @@ export function CocktailDetailPage({
 
   return (
     <div
-      className="safe-bottom pb-24"
+      className="pb-page-end-lg"
       onTouchStart={(e) => {
         if (isSwipeExcluded(e.target)) {
           pageSwipeActive.current = false

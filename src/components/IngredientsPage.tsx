@@ -208,7 +208,7 @@ export function IngredientsPage({ onChanged }: Props) {
     )
 
   return (
-    <div className="safe-bottom pb-8">
+    <div>
       <div className="sticky top-0 z-10 flex items-center gap-3 border-b border-app bg-app/95 px-4 py-3 backdrop-blur">
         <button type="button" onClick={() => navigate(-1)} className="text-amber-accent">
           ← Back

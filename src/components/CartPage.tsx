@@ -37,7 +37,7 @@ export function CartPage({ items, onSave }: Props) {
     'min-w-0 flex-1 rounded-xl border border-app bg-bar-800 px-3 py-2.5 text-foreground outline-none focus:border-amber-accent/60'
 
   return (
-    <div className="safe-bottom pb-[3.5rem]">
+    <div>
       <PageHeader title="Cart">
         <button
           type="button"

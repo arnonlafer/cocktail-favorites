@@ -69,7 +69,7 @@ export function SettingsPage({
   const showServerWarning = serverReady === 'not-configured' || syncStatus === 'not-configured'
 
   return (
-    <div className="safe-bottom pb-[3.5rem]">
+    <div>
       <PageHeader title="Settings" />
 
       <div className="space-y-4 px-4 pt-4">
