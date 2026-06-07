@@ -110,6 +110,7 @@ function MessageBubble({ message }: { message: AiMessage }) {
   return (
     <div className={`flex ${isUser ? 'justify-end' : 'justify-start'}`}>
       <div
+        data-assistant-message={isUser ? undefined : true}
         className={`min-w-0 rounded-2xl px-4 py-3 text-sm leading-relaxed ${
           isUser
             ? 'max-w-[85%] whitespace-pre-wrap bg-amber-accent text-bar-950'
@@ -129,6 +130,8 @@ function AiChatView({ chatId, cocktails }: { chatId: string; cocktails: Cocktail
   const [includeRecipes, setIncludeRecipes] = useState(false)
   const [sending, setSending] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const [selection, setSelection] = useState('')
+  const messagesRef = useRef<HTMLDivElement>(null)
   const bottomRef = useRef<HTMLDivElement>(null)
   const settings = loadAiSettings()
   const recipesContext = useMemo(
@@ -143,6 +146,32 @@ function AiChatView({ chatId, cocktails }: { chatId: string; cocktails: Cocktail
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: 'smooth' })
   }, [chat?.messages.length, sending])
+
+  const readSelection = useCallback(() => {
+    const sel = window.getSelection()
+    if (!sel || sel.isCollapsed || !messagesRef.current) {
+      setSelection('')
+      return
+    }
+    const anchor = sel.anchorNode
+    const focus = sel.focusNode
+    if (!anchor || !focus || !messagesRef.current.contains(anchor) || !messagesRef.current.contains(focus)) {
+      setSelection('')
+      return
+    }
+    const element =
+      anchor.nodeType === Node.TEXT_NODE ? anchor.parentElement : (anchor as Element)
+    if (!element?.closest('[data-assistant-message]')) {
+      setSelection('')
+      return
+    }
+    setSelection(sel.toString().trim())
+  }, [])
+
+  useEffect(() => {
+    document.addEventListener('selectionchange', readSelection)
+    return () => document.removeEventListener('selectionchange', readSelection)
+  }, [readSelection])
 
   if (!chat) {
     return (
@@ -206,18 +235,35 @@ function AiChatView({ chatId, cocktails }: { chatId: string; cocktails: Cocktail
     }
   }
 
+  const convertToRecipe = () => {
+    if (!selection) return
+    navigate('/add', { state: { fromDraft: selection } })
+  }
+
   const fieldClass =
     'min-w-0 flex-1 resize-none rounded-xl border border-app bg-bar-800 px-3 py-2.5 text-sm text-foreground outline-none focus:border-amber-accent/60'
 
   return (
     <div className="flex min-h-[calc(100dvh-3.25rem-env(safe-area-inset-bottom,0px))] flex-col">
       <PageHeader title={chat.title} backTo="/ai">
-        <button type="button" onClick={removeChat} className="text-sm font-semibold text-red-300">
-          Delete
-        </button>
+        <div className="flex shrink-0 items-center gap-2">
+          {selection && (
+            <button
+              type="button"
+              onClick={convertToRecipe}
+              title="Create recipe from selection"
+              className="rounded-lg border border-amber-accent/50 bg-amber-accent/15 px-2.5 py-1.5 text-xs font-semibold text-amber-light"
+            >
+              → Recipe
+            </button>
+          )}
+          <button type="button" onClick={removeChat} className="text-sm font-semibold text-red-300">
+            Delete
+          </button>
+        </div>
       </PageHeader>
 
-      <div className="flex-1 space-y-3 overflow-y-auto px-4 py-4">
+      <div ref={messagesRef} className="flex-1 space-y-3 overflow-y-auto px-4 py-4">
         {chat.messages.length === 0 && (
           <p className="text-sm text-subtle">Ask about cocktails, recipes, substitutions, or bar tips.</p>
         )}

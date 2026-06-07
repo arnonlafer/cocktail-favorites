@@ -28,9 +28,20 @@ export function formatRecipesForAi(cocktails: Cocktail[]): string {
   return `# Recipe collection (${sorted.length} recipes)\n\n${body}`
 }
 
-export const AI_RECIPES_SYSTEM_PROMPT =
-  'You are a helpful cocktail assistant. The user has a personal recipe collection in their app. When recipe context is provided, answer questions about those specific recipes, compare them, suggest variations, and help with substitutions. Prefer the provided recipes over general knowledge when they are relevant.'
+export const AI_BARTENDER_SYSTEM_PROMPT =
+  'You are a professional bartender and cocktail recipe expert. Focus on classic and modern cocktail recipes, ingredients, measurements, techniques, and bar knowledge. Keep answers practical and recipe-oriented.'
 
+export const AI_RECIPES_SYSTEM_PROMPT =
+  'The user has a personal recipe collection in their app. When recipe context is provided, answer questions about those specific recipes, compare them, suggest variations, and help with substitutions. Prefer the provided recipes over general knowledge when they are relevant.'
+
+export function buildAiSystemMessage(recipesContext?: string): string {
+  if (recipesContext) {
+    return `${AI_BARTENDER_SYSTEM_PROMPT}\n\n${AI_RECIPES_SYSTEM_PROMPT}\n\n${recipesContext}`
+  }
+  return AI_BARTENDER_SYSTEM_PROMPT
+}
+
+/** @deprecated use buildAiSystemMessage */
 export function buildRecipesSystemMessage(recipesContext: string): string {
-  return `${AI_RECIPES_SYSTEM_PROMPT}\n\n${recipesContext}`
+  return buildAiSystemMessage(recipesContext)
 }

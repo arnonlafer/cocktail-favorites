@@ -1,5 +1,5 @@
 import type { AiMessage, AiSettings } from '../types'
-import { buildRecipesSystemMessage } from './aiRecipesContext'
+import { buildAiSystemMessage } from './aiRecipesContext'
 
 function parseErrorResponse(body: string, fallback: string): string {
   try {
@@ -15,10 +15,9 @@ async function chatOpenAI(
   messages: AiMessage[],
   recipesContext?: string,
 ): Promise<string> {
+  const systemMessage = buildAiSystemMessage(recipesContext)
   const apiMessages: { role: string; content: string }[] = []
-  if (recipesContext) {
-    apiMessages.push({ role: 'system', content: buildRecipesSystemMessage(recipesContext) })
-  }
+  apiMessages.push({ role: 'system', content: systemMessage })
   apiMessages.push(...messages.map((message) => ({ role: message.role, content: message.content })))
 
   const res = await fetch('https://api.openai.com/v1/chat/completions', {
@@ -48,6 +47,7 @@ async function chatAnthropic(
   messages: AiMessage[],
   recipesContext?: string,
 ): Promise<string> {
+  const systemMessage = buildAiSystemMessage(recipesContext)
   const res = await fetch('https://api.anthropic.com/v1/messages', {
     method: 'POST',
     headers: {
@@ -59,7 +59,7 @@ async function chatAnthropic(
     body: JSON.stringify({
       model: settings.model,
       max_tokens: 4096,
-      ...(recipesContext ? { system: buildRecipesSystemMessage(recipesContext) } : {}),
+      system: systemMessage,
       messages: messages.map((message) => ({ role: message.role, content: message.content })),
     }),
   })
@@ -79,14 +79,13 @@ async function chatGemini(
   messages: AiMessage[],
   recipesContext?: string,
 ): Promise<string> {
+  const systemMessage = buildAiSystemMessage(recipesContext)
   const url = `https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(settings.model)}:generateContent?key=${encodeURIComponent(settings.apiKey)}`
   const res = await fetch(url, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
-      ...(recipesContext
-        ? { systemInstruction: { parts: [{ text: buildRecipesSystemMessage(recipesContext) }] } }
-        : {}),
+      systemInstruction: { parts: [{ text: systemMessage }] },
       contents: messages.map((message) => ({
         role: message.role === 'assistant' ? 'model' : 'user',
         parts: [{ text: message.content }],

@@ -55,6 +55,8 @@ function legacyPrefsToProfiles(prefs: AppPreferences): Record<string, UserProfil
       cart: [],
       cartSearchUrl: DEFAULT_CART_SEARCH_URL,
       randomFavoritesOnly: true,
+      homeGroupView: 'spirits',
+      cocktailSort: 'recent',
       updatedAt: prefs.syncUpdatedAt ?? Date.now(),
     },
   }

@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Link, useLocation } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import type { Collection } from '../types'
 import {
   createCollection,
@@ -8,13 +8,18 @@ import {
   renameCollection,
 } from '../lib/storage'
 import { PageHeader } from './PageHeader'
+import { IconEdit, IconTrash } from './icons'
 
 interface Props {
   onChanged: () => void
 }
 
+const iconBtnClass =
+  'flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-app-strong text-muted transition hover:text-foreground'
+
 export function CollectionsPage({ onChanged }: Props) {
   const location = useLocation()
+  const navigate = useNavigate()
   const backTo = location.pathname.startsWith('/settings') ? '/settings' : '/'
   const [collections, setCollections] = useState<Collection[]>(() => loadCollections())
   const [newName, setNewName] = useState('')
@@ -43,8 +48,13 @@ export function CollectionsPage({ onChanged }: Props) {
   }
 
   const handleDelete = (id: string) => {
+    if (!window.confirm('Delete this list?')) return
     deleteCollection(id)
     refresh()
+  }
+
+  const openCollection = (id: string) => {
+    navigate(`/?collection=${id}`)
   }
 
   return (
@@ -103,39 +113,37 @@ export function CollectionsPage({ onChanged }: Props) {
                   </button>
                 </div>
               ) : (
-                <div className="flex items-center justify-between gap-2">
-                  <div>
+                <div className="flex items-center gap-2">
+                  <button
+                    type="button"
+                    onClick={() => openCollection(collection.id)}
+                    className="min-w-0 flex-1 text-left"
+                  >
                     <p className="font-medium text-foreground">{collection.name}</p>
                     <p className="text-xs text-subtle">
                       {collection.cocktailIds.length} recipe
                       {collection.cocktailIds.length === 1 ? '' : 's'}
                     </p>
-                  </div>
-                  <div className="flex shrink-0 gap-3">
-                    <Link
-                      to={`/?collection=${collection.id}`}
-                      className="text-sm text-amber-accent"
-                    >
-                      View
-                    </Link>
-                    <button
-                      type="button"
-                      onClick={() => {
-                        setEditingId(collection.id)
-                        setEditName(collection.name)
-                      }}
-                      className="text-sm text-muted"
-                    >
-                      Rename
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => handleDelete(collection.id)}
-                      className="text-sm text-red-300"
-                    >
-                      Delete
-                    </button>
-                  </div>
+                  </button>
+                  <button
+                    type="button"
+                    aria-label={`Rename ${collection.name}`}
+                    onClick={() => {
+                      setEditingId(collection.id)
+                      setEditName(collection.name)
+                    }}
+                    className={iconBtnClass}
+                  >
+                    <IconEdit size={18} />
+                  </button>
+                  <button
+                    type="button"
+                    aria-label={`Delete ${collection.name}`}
+                    onClick={() => handleDelete(collection.id)}
+                    className={`${iconBtnClass} hover:text-red-300`}
+                  >
+                    <IconTrash size={18} />
+                  </button>
                 </div>
               )}
             </div>

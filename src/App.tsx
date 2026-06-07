@@ -24,7 +24,6 @@ export default function App() {
     cocktails,
     prefs,
     fuse,
-    addCocktail,
     saveCocktail,
     deleteCocktail,
     updatePrefs,
@@ -117,6 +116,8 @@ export default function App() {
                 onFavoriteChange={refreshPrefs}
                 onUpdateCollapsedGroups={(collapsedGroups) => updatePrefs({ collapsedGroups })}
                 onListViewChange={(listView) => updatePrefs({ listView })}
+                onHomeGroupViewChange={(homeGroupView) => updatePrefs({ homeGroupView })}
+                onCocktailSortChange={(cocktailSort) => updatePrefs({ cocktailSort })}
               />
             }
           />
@@ -182,7 +183,7 @@ export default function App() {
               />
             }
           />
-          <Route path="/add" element={<CocktailFormPage cocktails={cocktails} onSave={addCocktail} mode="add" />} />
+          <Route path="/add" element={<CocktailFormPage cocktails={cocktails} onSave={saveCocktail} mode="add" />} />
           <Route
             path="/cocktail/:id/edit"
             element={

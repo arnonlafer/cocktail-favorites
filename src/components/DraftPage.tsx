@@ -103,7 +103,13 @@ export function DraftPage({ draft, onSave }: Props) {
         </div>
       </PageHeader>
 
-      <div className="px-4 pt-4" ref={containerRef}>
+      <div
+        className="px-4 pt-4"
+        ref={containerRef}
+        onDoubleClick={() => {
+          if (!editing) startEdit()
+        }}
+      >
         {editing ? (
           <textarea
             ref={textareaRef}
@@ -115,10 +121,10 @@ export function DraftPage({ draft, onSave }: Props) {
             autoFocus
           />
         ) : text.trim() ? (
-          <div className="whitespace-pre-wrap text-sm leading-relaxed text-foreground">{text}</div>
+          <div className="cursor-text whitespace-pre-wrap text-sm leading-relaxed text-foreground">{text}</div>
         ) : (
-          <p className="text-sm text-subtle">
-            No draft yet. Tap <span className="text-amber-accent">Edit</span> to start writing.
+          <p className="cursor-text text-sm text-subtle">
+            No draft yet. Double-click or tap <span className="text-amber-accent">Edit</span> to start writing.
           </p>
         )}
       </div>

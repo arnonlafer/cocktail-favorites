@@ -78,6 +78,8 @@ function defaultProfile(userName: string): UserProfile {
     cart: [],
     cartSearchUrl: DEFAULT_CART_SEARCH_URL,
     randomFavoritesOnly: true,
+    homeGroupView: 'spirits',
+    cocktailSort: 'recent',
     updatedAt: Date.now(),
   }
 }
@@ -137,6 +139,8 @@ function migrateLegacyPrefs(): Record<string, UserProfile> {
       cart: [],
       cartSearchUrl: DEFAULT_CART_SEARCH_URL,
       randomFavoritesOnly: true,
+      homeGroupView: 'spirits',
+      cocktailSort: 'recent',
       updatedAt: parsed.syncUpdatedAt ?? Date.now(),
     }
 
@@ -196,6 +200,8 @@ function profileToPrefs(profile: UserProfile, shared: SharedSettings): AppPrefer
     cart: profile.cart ?? [],
     cartSearchUrl: profile.cartSearchUrl?.trim() || DEFAULT_CART_SEARCH_URL,
     randomFavoritesOnly: profile.randomFavoritesOnly ?? true,
+    homeGroupView: profile.homeGroupView ?? 'spirits',
+    cocktailSort: profile.cocktailSort ?? 'recent',
     syncCode: shared.syncCode,
     syncUpdatedAt: shared.syncUpdatedAt,
     lastSyncedAt: shared.lastSyncedAt,
@@ -240,6 +246,8 @@ export function savePrefs(prefs: AppPreferences) {
     cart: prefs.cart ?? [],
     cartSearchUrl: prefs.cartSearchUrl?.trim() || DEFAULT_CART_SEARCH_URL,
     randomFavoritesOnly: prefs.randomFavoritesOnly ?? true,
+    homeGroupView: prefs.homeGroupView ?? 'spirits',
+    cocktailSort: prefs.cocktailSort ?? 'recent',
     updatedAt: Date.now(),
   }
   saveUserProfiles(profiles)

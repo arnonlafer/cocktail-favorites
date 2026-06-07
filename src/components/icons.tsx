@@ -166,6 +166,41 @@ export function IconEdit({ className, size }: IconProps) {
   )
 }
 
+export function IconTrash({ className, size }: IconProps) {
+  return (
+    <Icon className={className} size={size}>
+      <path d="M3 6h18M8 6V4a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v2M19 6l-1 14a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1L5 6" />
+      <path d="M10 11v6M14 11v6" />
+    </Icon>
+  )
+}
+
+export function IconLayers({ className, size }: IconProps) {
+  return (
+    <Icon className={className} size={size}>
+      <path d="M12 2 2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
+    </Icon>
+  )
+}
+
+export function IconSortAlpha({ className, size }: IconProps) {
+  return (
+    <Icon className={className} size={size}>
+      <path d="M4 18h6M4 6h10M4 12h8" />
+      <path d="M16 6v12M13 9l3-3 3 3" />
+    </Icon>
+  )
+}
+
+export function IconClock({ className, size }: IconProps) {
+  return (
+    <Icon className={className} size={size}>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M12 7v5l3 2" />
+    </Icon>
+  )
+}
+
 export function IconShuffle({ className, size }: IconProps) {
   return (
     <Icon className={className} size={size}>

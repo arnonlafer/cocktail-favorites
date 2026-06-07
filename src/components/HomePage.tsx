@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo } from 'react'
 import { Link, useNavigate, useSearchParams } from 'react-router-dom'
-import type { AppPreferences, Cocktail, ListView } from '../types'
+import type { AppPreferences, Cocktail, CocktailSort, HomeGroupView, ListView } from '../types'
 import { SPIRIT_ORDER } from '../types'
 import { saveBrowseIds } from '../lib/browse'
 import { computeCollapsedGroups } from '../lib/groups'
@@ -10,7 +10,7 @@ import { CocktailCard } from './CocktailCard'
 import { CocktailGridCard } from './CocktailGridCard'
 import { SearchBar } from './SearchBar'
 import { ViewToggle } from './ViewToggle'
-import { IconHeart, IconPlus, IconShuffle } from './icons'
+import { IconClock, IconHeart, IconLayers, IconList, IconPlus, IconShuffle, IconSortAlpha } from './icons'
 import type Fuse from 'fuse.js'
 
 interface IconToggleProps {
@@ -47,6 +47,8 @@ interface Props {
   onFavoriteChange: () => void
   onUpdateCollapsedGroups: (collapsed: string[]) => void
   onListViewChange: (view: ListView) => void
+  onHomeGroupViewChange: (view: HomeGroupView) => void
+  onCocktailSortChange: (sort: CocktailSort) => void
 }
 
 export function HomePage({
@@ -58,10 +60,14 @@ export function HomePage({
   onFavoriteChange,
   onUpdateCollapsedGroups,
   onListViewChange,
+  onHomeGroupViewChange,
+  onCocktailSortChange,
 }: Props) {
   const [searchParams, setSearchParams] = useSearchParams()
   const navigate = useNavigate()
   const listView = prefs.listView ?? 'list'
+  const homeGroupView = prefs.homeGroupView ?? 'spirits'
+  const cocktailSort = prefs.cocktailSort ?? 'recent'
 
   useEffect(() => {
     restoreHomeScroll()
@@ -113,11 +119,14 @@ export function HomePage({
       const ids = new Set(activeCollection.cocktailIds)
       items = items.filter((c) => ids.has(c.id))
     }
+    if (cocktailSort === 'alphabetical') {
+      return [...items].sort((a, b) => a.name.localeCompare(b.name))
+    }
     return sortByRecent(items)
-  }, [query, cocktails, fuse, favoritesOnly, favorites, activeCollection, sortByRecent])
+  }, [query, cocktails, fuse, favoritesOnly, favorites, activeCollection, cocktailSort, sortByRecent])
 
   const grouped = useMemo(() => {
-    if (query.trim() || favoritesOnly || activeCollection) return null
+    if (query.trim() || favoritesOnly || activeCollection || homeGroupView === 'all') return null
 
     const map = new Map<string, Cocktail[]>()
     for (const spirit of SPIRIT_ORDER) map.set(spirit, [])
@@ -134,7 +143,7 @@ export function HomePage({
       spirit,
       cocktails: map.get(spirit) ?? [],
     }))
-  }, [filtered, query, favoritesOnly, activeCollection])
+  }, [filtered, query, favoritesOnly, activeCollection, homeGroupView])
 
   const visibleSpirits = useMemo(() => grouped?.map((g) => g.spirit) ?? [], [grouped])
 
@@ -226,7 +235,7 @@ export function HomePage({
           </Link>
         </div>
         <SearchBar value={query} onChange={setQuery} />
-        <div className="mt-3 flex items-center gap-2">
+        <div className="mt-3 flex flex-wrap items-center gap-2">
           <IconToggle
             active={favoritesOnly}
             onClick={() => setFavoritesOnly(!favoritesOnly)}
@@ -234,6 +243,56 @@ export function HomePage({
           >
             <IconHeart filled={favoritesOnly} size={20} />
           </IconToggle>
+          {!query.trim() && !favoritesOnly && !activeCollection && (
+            <div className="inline-flex rounded-xl border border-app bg-bar-800 p-1">
+              <button
+                type="button"
+                aria-label="Group by spirit"
+                aria-pressed={homeGroupView === 'spirits'}
+                onClick={() => onHomeGroupViewChange('spirits')}
+                className={`flex h-9 w-10 items-center justify-center rounded-lg transition ${
+                  homeGroupView === 'spirits' ? 'bg-amber-accent text-bar-950' : 'text-muted'
+                }`}
+              >
+                <IconLayers size={18} />
+              </button>
+              <button
+                type="button"
+                aria-label="Show all recipes"
+                aria-pressed={homeGroupView === 'all'}
+                onClick={() => onHomeGroupViewChange('all')}
+                className={`flex h-9 w-10 items-center justify-center rounded-lg transition ${
+                  homeGroupView === 'all' ? 'bg-amber-accent text-bar-950' : 'text-muted'
+                }`}
+              >
+                <IconList size={18} />
+              </button>
+            </div>
+          )}
+          <div className="inline-flex rounded-xl border border-app bg-bar-800 p-1">
+            <button
+              type="button"
+              aria-label="Sort by recently opened"
+              aria-pressed={cocktailSort === 'recent'}
+              onClick={() => onCocktailSortChange('recent')}
+              className={`flex h-9 w-10 items-center justify-center rounded-lg transition ${
+                cocktailSort === 'recent' ? 'bg-amber-accent text-bar-950' : 'text-muted'
+              }`}
+            >
+              <IconClock size={18} />
+            </button>
+            <button
+              type="button"
+              aria-label="Sort alphabetically"
+              aria-pressed={cocktailSort === 'alphabetical'}
+              onClick={() => onCocktailSortChange('alphabetical')}
+              className={`flex h-9 w-10 items-center justify-center rounded-lg transition ${
+                cocktailSort === 'alphabetical' ? 'bg-amber-accent text-bar-950' : 'text-muted'
+              }`}
+            >
+              <IconSortAlpha size={18} />
+            </button>
+          </div>
           <ViewToggle value={listView} onChange={onListViewChange} />
           <p className="ml-auto text-xs text-subtle">
             {activeCollection

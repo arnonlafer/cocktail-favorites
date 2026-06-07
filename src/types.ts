@@ -44,6 +44,8 @@ export type UnitSystem = 'oz' | 'ml'
 export type Theme = 'dark' | 'dim' | 'light'
 export type FontSize = 'sm' | 'md' | 'lg' | 'xl'
 export type ListView = 'list' | 'grid'
+export type HomeGroupView = 'spirits' | 'all'
+export type CocktailSort = 'recent' | 'alphabetical'
 
 export interface Collection {
   id: string
@@ -99,6 +101,10 @@ export interface UserProfile {
   cartSearchUrl?: string
   /** When true, the random recipe button only picks from favorites. */
   randomFavoritesOnly: boolean
+  /** Home screen grouping: by spirit or flat list. */
+  homeGroupView: HomeGroupView
+  /** Home screen recipe order. */
+  cocktailSort: CocktailSort
   updatedAt: number
 }
 
@@ -121,6 +127,8 @@ export interface AppPreferences {
   cart: CartItem[]
   cartSearchUrl: string
   randomFavoritesOnly: boolean
+  homeGroupView: HomeGroupView
+  cocktailSort: CocktailSort
 }
 
 export interface SyncPayload {
