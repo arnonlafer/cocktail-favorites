@@ -73,7 +73,6 @@ export function CocktailFormPage({ cocktails, onSave, onDelete, mode }: Props) {
   const navigate = useNavigate()
   const location = useLocation()
   const draftPrefillApplied = useRef(false)
-  const createdIdRef = useRef<string | null>(null)
   const existing = mode === 'edit' ? cocktails.find((c) => c.id === id) : undefined
 
   const [name, setName] = useState('')
@@ -131,7 +130,7 @@ export function CocktailFormPage({ cocktails, onSave, onDelete, mode }: Props) {
     setOriginYear(origin?.year ?? '')
     setOriginCreator(origin?.creator ?? '')
     setOriginNote(origin?.note ?? '')
-  }, [existing])
+  }, [existing?.id])
 
   const toggleSimilar = (id: string) => {
     setSimilarIds((prev) => (prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]))
@@ -146,12 +145,6 @@ export function CocktailFormPage({ cocktails, onSave, onDelete, mode }: Props) {
 
   const buildCocktail = (): Cocktail | null => {
     if (!name.trim()) return null
-
-    let cocktailId = existing?.id ?? createdIdRef.current
-    if (!cocktailId) {
-      cocktailId = slugify(name.trim())
-      createdIdRef.current = cocktailId
-    }
 
     const ingredients = ingredientsText
       .split('\n')
@@ -173,7 +166,7 @@ export function CocktailFormPage({ cocktails, onSave, onDelete, mode }: Props) {
     }
 
     return {
-      id: cocktailId,
+      id: existing?.id ?? slugify(name.trim()),
       name: name.trim(),
       method,
       glass,
@@ -189,34 +182,18 @@ export function CocktailFormPage({ cocktails, onSave, onDelete, mode }: Props) {
     }
   }
 
-  useEffect(() => {
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault()
     const cocktail = buildCocktail()
     if (!cocktail) return
 
-    const timer = window.setTimeout(() => {
-      onSave(cocktail)
-    }, 600)
-
-    return () => window.clearTimeout(timer)
-  }, [
-    name,
-    method,
-    glass,
-    ice,
-    spirits,
-    garnish,
-    ingredientsText,
-    instructionsText,
-    imageUrl,
-    similarIds,
-    originClassification,
-    originYear,
-    originCreator,
-    originNote,
-    mode,
-    existing,
-    onSave,
-  ])
+    onSave(cocktail)
+    if (mode === 'edit') {
+      navigate(-1)
+    } else {
+      navigate(`/cocktail/${cocktail.id}`)
+    }
+  }
 
   const fieldClass =
     'w-full rounded-xl border border-app bg-bar-800 px-3 py-2.5 text-foreground outline-none focus:border-amber-accent/60'
@@ -237,7 +214,7 @@ export function CocktailFormPage({ cocktails, onSave, onDelete, mode }: Props) {
         </h1>
       </div>
 
-      <div className="space-y-5 px-4 pt-4">
+      <form onSubmit={handleSubmit} className="space-y-5 px-4 pt-4">
         <label className="block space-y-1.5">
           <span className="text-sm text-muted">Name *</span>
           <input className={fieldClass} value={name} onChange={(e) => setName(e.target.value)} required />
@@ -415,6 +392,13 @@ export function CocktailFormPage({ cocktails, onSave, onDelete, mode }: Props) {
           </div>
         )}
 
+        <button
+          type="submit"
+          className="w-full rounded-2xl bg-amber-accent py-3.5 text-base font-semibold text-bar-950"
+        >
+          {mode === 'edit' ? 'Save Changes' : 'Save Cocktail'}
+        </button>
+
         {mode === 'edit' && existing && onDelete && (
           <button
             type="button"
@@ -428,7 +412,7 @@ export function CocktailFormPage({ cocktails, onSave, onDelete, mode }: Props) {
             Delete Cocktail
           </button>
         )}
-      </div>
+      </form>
     </div>
   )
 }
