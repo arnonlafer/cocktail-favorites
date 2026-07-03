@@ -18,6 +18,8 @@ export function AppShell({ children }: Props) {
     pathname === '/' ||
     pathname === '/draft' ||
     pathname === '/cart' ||
+    pathname === '/stock' ||
+    pathname.startsWith('/stock/') ||
     pathname === '/ai' ||
     pathname.startsWith('/ai/') ||
     pathname.startsWith('/collections') ||

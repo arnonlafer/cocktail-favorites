@@ -58,6 +58,26 @@ export interface CartItem {
   name: string
 }
 
+export type StockCategory = 'spirit' | 'liqueur' | 'syrup' | 'citrus' | 'other'
+
+export interface StockItem {
+  id: string
+  name: string
+  category: StockCategory
+  open: boolean
+  quantityLeft: number
+}
+
+export const STOCK_CATEGORY_ORDER: StockCategory[] = ['spirit', 'liqueur', 'syrup', 'citrus', 'other']
+
+export const STOCK_CATEGORY_LABELS: Record<StockCategory, string> = {
+  spirit: 'Spirit',
+  liqueur: 'Liqueur',
+  syrup: 'Syrup',
+  citrus: 'Citrus',
+  other: 'Other',
+}
+
 export type AiVendor = 'openai' | 'anthropic' | 'gemini'
 
 export interface AiSettings {
@@ -97,6 +117,10 @@ export interface UserProfile {
   recipeDraft: string
   /** Shopping list for spirits, syrups, bitters, etc. */
   cart: CartItem[]
+  /** Bar inventory tracked on the Stock tab. */
+  stock: StockItem[]
+  /** Default category when adding a new stock item. */
+  lastStockCategory: StockCategory
   /** URL template for opening cart items; use `{query}` for the item name. */
   cartSearchUrl?: string
   /** When true, the random recipe button only picks from favorites. */
@@ -125,6 +149,8 @@ export interface AppPreferences {
   collections: Collection[]
   recipeDraft: string
   cart: CartItem[]
+  stock: StockItem[]
+  lastStockCategory: StockCategory
   cartSearchUrl: string
   randomFavoritesOnly: boolean
   homeGroupView: HomeGroupView

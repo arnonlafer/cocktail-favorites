@@ -53,6 +53,8 @@ function legacyPrefsToProfiles(prefs: AppPreferences): Record<string, UserProfil
       collections: prefs.collections ?? [],
       recipeDraft: '',
       cart: [],
+      stock: [],
+      lastStockCategory: 'spirit',
       cartSearchUrl: DEFAULT_CART_SEARCH_URL,
       randomFavoritesOnly: true,
       homeGroupView: 'spirits',

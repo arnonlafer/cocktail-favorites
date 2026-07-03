@@ -15,6 +15,7 @@ import { LoginPage } from './components/LoginPage'
 import { SettingsPage } from './components/SettingsPage'
 import { DraftPage } from './components/DraftPage'
 import { CartPage } from './components/CartPage'
+import { StockPage } from './components/StockPage'
 import { AiPage } from './components/AiPage'
 
 export default function App() {
@@ -162,6 +163,18 @@ export default function App() {
                 items={prefs.cart ?? []}
                 searchUrl={prefs.cartSearchUrl}
                 onSave={(cart) => updatePrefs({ cart })}
+              />
+            }
+          />
+          <Route
+            path="/stock/:id?"
+            element={
+              <StockPage
+                items={prefs.stock ?? []}
+                lastCategory={prefs.lastStockCategory ?? 'spirit'}
+                cart={prefs.cart ?? []}
+                onSaveStock={(stock, lastStockCategory) => updatePrefs({ stock, lastStockCategory })}
+                onAddToCart={(cart) => updatePrefs({ cart })}
               />
             }
           />

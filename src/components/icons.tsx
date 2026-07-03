@@ -117,6 +117,16 @@ export function IconCart({ className, size }: IconProps) {
   )
 }
 
+export function IconStock({ className, size }: IconProps) {
+  return (
+    <Icon className={className} size={size}>
+      <path d="M9 3h6l1 2h4v2H4V5h4l1-2z" />
+      <path d="M6 9h12v10a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2V9z" />
+      <path d="M10 13h4" />
+    </Icon>
+  )
+}
+
 export function IconSettings({ className, size }: IconProps) {
   return (
     <Icon className={className} size={size}>
