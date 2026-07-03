@@ -54,7 +54,7 @@ function legacyPrefsToProfiles(prefs: AppPreferences): Record<string, UserProfil
       recipeDraft: '',
       cart: [],
       stock: [],
-      lastStockCategory: 'whiskey',
+      lastStockCategory: 'whiskey-other',
       cartSearchUrl: DEFAULT_CART_SEARCH_URL,
       randomFavoritesOnly: true,
       homeGroupView: 'spirits',

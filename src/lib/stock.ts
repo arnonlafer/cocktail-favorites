@@ -1,8 +1,36 @@
-import type { StockCategory, StockItem } from '../types'
-import { STOCK_CATEGORY_ORDER } from '../types'
+import type {
+  StockCategory,
+  StockItem,
+  StockListGroup,
+  WhiskeySubcategory,
+} from '../types'
+import {
+  STOCK_CATEGORY_ORDER,
+  STOCK_LIST_GROUP_LABELS,
+  STOCK_LIST_GROUP_ORDER,
+  WHISKEY_SUBCATEGORIES,
+  WHISKEY_SUBCATEGORY_LABELS,
+} from '../types'
 
 const LEGACY_STOCK_CATEGORIES: Record<string, StockCategory> = {
   spirit: 'other',
+  whiskey: 'whiskey-other',
+  citrus: 'other',
+}
+
+export function isWhiskeyCategory(category: StockCategory): boolean {
+  return category.startsWith('whiskey-')
+}
+
+export function getWhiskeySubcategory(category: StockCategory): WhiskeySubcategory | null {
+  if (!isWhiskeyCategory(category)) return null
+  const sub = category.slice('whiskey-'.length) as WhiskeySubcategory
+  return WHISKEY_SUBCATEGORIES.includes(sub) ? sub : null
+}
+
+export function getStockListGroup(category: StockCategory): StockListGroup {
+  if (isWhiskeyCategory(category)) return 'whiskey'
+  return category as StockListGroup
 }
 
 export function normalizeStockCategory(category: string | undefined): StockCategory {
@@ -12,35 +40,93 @@ export function normalizeStockCategory(category: string | undefined): StockCateg
   if (category && LEGACY_STOCK_CATEGORIES[category]) {
     return LEGACY_STOCK_CATEGORIES[category]
   }
-  return 'whiskey'
+  return 'whiskey-other'
 }
 
 export function createStockItem(partial?: Partial<Pick<StockItem, 'name' | 'category' | 'open' | 'quantityLeft'>>): StockItem {
   return {
     id: `stock-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 7)}`,
     name: partial?.name?.trim() ?? '',
-    category: partial?.category ? normalizeStockCategory(partial.category) : 'whiskey',
+    category: partial?.category ? normalizeStockCategory(partial.category) : 'whiskey-other',
     open: partial?.open ?? false,
     quantityLeft: partial?.quantityLeft ?? 1,
   }
 }
 
-export function groupStockByCategory(items: StockItem[]): { category: StockCategory; items: StockItem[] }[] {
-  const byCategory = new Map<StockCategory, StockItem[]>()
-  for (const category of STOCK_CATEGORY_ORDER) {
-    byCategory.set(category, [])
+export interface StockWhiskeySubgroup {
+  subcategory: WhiskeySubcategory
+  label: string
+  totalQuantity: number
+  items: StockItem[]
+}
+
+export interface StockListSection {
+  group: StockListGroup
+  label: string
+  totalQuantity: number
+  itemCount: number
+  items: StockItem[]
+  whiskeySubgroups?: StockWhiskeySubgroup[]
+}
+
+export function sumStockQuantities(items: StockItem[]): number {
+  return items.reduce((sum, item) => sum + Math.max(0, item.quantityLeft), 0)
+}
+
+export function formatTotalQuantity(total: number): string {
+  if (total <= 0) return '0'
+  if (Number.isInteger(total)) return String(total)
+  return total.toFixed(1).replace(/\.0$/, '')
+}
+
+export function groupStockForList(items: StockItem[]): StockListSection[] {
+  const byGroup = new Map<StockListGroup, StockItem[]>()
+  for (const group of STOCK_LIST_GROUP_ORDER) {
+    byGroup.set(group, [])
   }
 
   for (const item of items) {
     const category = normalizeStockCategory(item.category)
-    const list = byCategory.get(category) ?? byCategory.get('other')!
+    const group = getStockListGroup(category)
+    const list = byGroup.get(group) ?? byGroup.get('other')!
     list.push({ ...item, category })
   }
 
-  return STOCK_CATEGORY_ORDER.map((category) => ({
-    category,
-    items: (byCategory.get(category) ?? []).sort((a, b) => a.name.localeCompare(b.name)),
-  })).filter((group) => group.items.length > 0)
+  return STOCK_LIST_GROUP_ORDER.map((group) => {
+    const groupItems = (byGroup.get(group) ?? []).sort((a, b) => a.name.localeCompare(b.name))
+    if (groupItems.length === 0) return null
+
+    const section: StockListSection = {
+      group,
+      label: STOCK_LIST_GROUP_LABELS[group],
+      totalQuantity: sumStockQuantities(groupItems),
+      itemCount: groupItems.length,
+      items: groupItems,
+    }
+
+    if (group === 'whiskey') {
+      const bySub = new Map<WhiskeySubcategory, StockItem[]>()
+      for (const sub of WHISKEY_SUBCATEGORIES) {
+        bySub.set(sub, [])
+      }
+      for (const item of groupItems) {
+        const sub = getWhiskeySubcategory(item.category) ?? 'other'
+        bySub.get(sub)!.push(item)
+      }
+      section.whiskeySubgroups = WHISKEY_SUBCATEGORIES.map((subcategory) => {
+        const subItems = (bySub.get(subcategory) ?? []).sort((a, b) => a.name.localeCompare(b.name))
+        return {
+          subcategory,
+          label: WHISKEY_SUBCATEGORY_LABELS[subcategory],
+          totalQuantity: sumStockQuantities(subItems),
+          items: subItems,
+        }
+      }).filter((sub) => sub.items.length > 0)
+      section.items = []
+    }
+
+    return section
+  }).filter((section): section is StockListSection => section !== null)
 }
 
 export function isStockEmpty(item: Pick<StockItem, 'quantityLeft'>): boolean {

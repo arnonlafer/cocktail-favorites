@@ -4,15 +4,22 @@ import { createCartItem } from '../lib/cart'
 import {
   createStockItem,
   formatQuantityLeft,
-  groupStockByCategory,
+  formatTotalQuantity,
+  groupStockForList,
   isStockEmpty,
   markStockItemEmpty,
   normalizeStockCategory,
   removeStockItem,
   upsertStockItem,
+  type StockListSection,
 } from '../lib/stock'
-import type { CartItem, StockCategory, StockItem } from '../types'
-import { STOCK_CATEGORY_LABELS, STOCK_CATEGORY_ORDER } from '../types'
+import type { CartItem, StockCategory, StockItem, StockListGroup } from '../types'
+import {
+  STOCK_CATEGORY_LABELS,
+  STOCK_CATEGORY_ORDER,
+  WHISKEY_SUBCATEGORIES,
+  WHISKEY_SUBCATEGORY_LABELS,
+} from '../types'
 import { PageHeader } from './PageHeader'
 import { SearchBar } from './SearchBar'
 import { IconCart, IconRanOut } from './icons'
@@ -31,6 +38,70 @@ const fieldClass =
 const actionButtonClass =
   'flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-app-strong text-muted transition disabled:opacity-30'
 
+function StockItemRow({
+  item,
+  inCart,
+  onMarkEmpty,
+  onAddToCart,
+}: {
+  item: StockItem
+  inCart: boolean
+  onMarkEmpty: (id: string) => void
+  onAddToCart: (name: string) => void
+}) {
+  const empty = isStockEmpty(item)
+
+  return (
+    <li className={`flex items-center gap-2 px-3 py-3 ${empty ? 'bg-red-950/25' : ''}`}>
+      <Link to={`/stock/${item.id}`} className="min-w-0 flex-1">
+        <p
+          className={`truncate text-sm font-medium ${empty ? 'text-muted line-through decoration-red-300/60' : 'text-foreground'}`}
+        >
+          {item.name}
+        </p>
+        <p className={`mt-0.5 text-xs ${empty ? 'font-semibold text-red-300' : 'text-subtle'}`}>
+          {empty ? (
+            'Ran out'
+          ) : (
+            <>
+              {item.open ? 'Open · ' : ''}
+              {formatQuantityLeft(item.quantityLeft)}
+            </>
+          )}
+        </p>
+      </Link>
+      {item.open && !empty && (
+        <span className="shrink-0 rounded-full bg-amber-accent/15 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-amber-light">
+          Open
+        </span>
+      )}
+      {empty && (
+        <span className="shrink-0 rounded-full bg-red-900/40 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-red-300">
+          Empty
+        </span>
+      )}
+      <button
+        type="button"
+        aria-label={`Mark ${item.name} as ran out`}
+        disabled={empty}
+        onClick={() => onMarkEmpty(item.id)}
+        className={`${actionButtonClass} hover:border-red-400/40 hover:text-red-300`}
+      >
+        <IconRanOut size={18} />
+      </button>
+      <button
+        type="button"
+        aria-label={`Add ${item.name} to cart`}
+        disabled={inCart}
+        onClick={() => onAddToCart(item.name)}
+        className={`${actionButtonClass} hover:text-amber-accent`}
+      >
+        <IconCart size={18} />
+      </button>
+    </li>
+  )
+}
+
 function StockList({
   items,
   lastCategory,
@@ -39,21 +110,21 @@ function StockList({
   onAddToCart,
 }: Pick<Props, 'items' | 'lastCategory' | 'cart' | 'onSaveStock' | 'onAddToCart'>) {
   const [query, setQuery] = useState('')
-  const [expanded, setExpanded] = useState<Set<StockCategory>>(() => new Set())
+  const [expanded, setExpanded] = useState<Set<StockListGroup>>(() => new Set())
   const filteredItems = useMemo(() => {
     const q = query.trim().toLowerCase()
     if (!q) return items
     return items.filter((item) => item.name.toLowerCase().includes(q))
   }, [items, query])
-  const grouped = useMemo(() => groupStockByCategory(filteredItems), [filteredItems])
+  const grouped = useMemo(() => groupStockForList(filteredItems), [filteredItems])
   const cartNames = useMemo(() => new Set(cart.map((item) => item.name.toLowerCase())), [cart])
-  const allExpanded = grouped.length > 0 && grouped.every(({ category }) => expanded.has(category))
+  const allExpanded = grouped.length > 0 && grouped.every(({ group }) => expanded.has(group))
 
-  const toggleCategory = (category: StockCategory) => {
+  const toggleCategory = (group: StockListGroup) => {
     setExpanded((prev) => {
       const next = new Set(prev)
-      if (next.has(category)) next.delete(category)
-      else next.add(category)
+      if (next.has(group)) next.delete(group)
+      else next.add(group)
       return next
     })
   }
@@ -63,7 +134,7 @@ function StockList({
       setExpanded(new Set())
       return
     }
-    setExpanded(new Set(grouped.map(({ category }) => category)))
+    setExpanded(new Set(grouped.map(({ group }) => group)))
   }
 
   const addItemToCart = (name: string) => {
@@ -105,95 +176,102 @@ function StockList({
         ) : grouped.length === 0 ? (
           <p className="text-sm text-subtle">No items match your search.</p>
         ) : (
-          grouped.map(({ category, items: groupItems }) => {
-            const isExpanded = expanded.has(category)
-            return (
-              <section key={category} className="rounded-2xl border border-app bg-bar-900/40">
-                <button
-                  type="button"
-                  onClick={() => toggleCategory(category)}
-                  aria-expanded={isExpanded}
-                  className="flex w-full items-center gap-3 px-4 py-3.5 text-left"
-                >
-                  <span
-                    className={`text-sm text-amber-light/70 transition-transform ${isExpanded ? 'rotate-90' : ''}`}
-                    aria-hidden
-                  >
-                    ▸
-                  </span>
-                  <span className="flex-1 font-display text-lg text-amber-light">
-                    {STOCK_CATEGORY_LABELS[category]}
-                  </span>
-                  <span className="rounded-full bg-surface-muted px-2.5 py-0.5 text-xs font-medium text-subtle">
-                    {groupItems.length}
-                  </span>
-                </button>
-                {isExpanded && (
-                  <ul className="divide-y divide-app border-t border-app">
-                    {groupItems.map((item) => {
-                      const inCart = cartNames.has(item.name.toLowerCase())
-                      const empty = isStockEmpty(item)
-                      return (
-                        <li
-                          key={item.id}
-                          className={`flex items-center gap-2 px-3 py-3 ${empty ? 'bg-red-950/25' : ''}`}
-                        >
-                          <Link to={`/stock/${item.id}`} className="min-w-0 flex-1">
-                            <p
-                              className={`truncate text-sm font-medium ${empty ? 'text-muted line-through decoration-red-300/60' : 'text-foreground'}`}
-                            >
-                              {item.name}
-                            </p>
-                            <p className={`mt-0.5 text-xs ${empty ? 'font-semibold text-red-300' : 'text-subtle'}`}>
-                              {empty ? (
-                                'Ran out'
-                              ) : (
-                                <>
-                                  {item.open ? 'Open · ' : ''}
-                                  {formatQuantityLeft(item.quantityLeft)}
-                                </>
-                              )}
-                            </p>
-                          </Link>
-                          {item.open && !empty && (
-                            <span className="shrink-0 rounded-full bg-amber-accent/15 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-amber-light">
-                              Open
-                            </span>
-                          )}
-                          {empty && (
-                            <span className="shrink-0 rounded-full bg-red-900/40 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-red-300">
-                              Empty
-                            </span>
-                          )}
-                          <button
-                            type="button"
-                            aria-label={`Mark ${item.name} as ran out`}
-                            disabled={empty}
-                            onClick={() => markItemEmpty(item.id)}
-                            className={`${actionButtonClass} hover:border-red-400/40 hover:text-red-300`}
-                          >
-                            <IconRanOut size={18} />
-                          </button>
-                          <button
-                            type="button"
-                            aria-label={`Add ${item.name} to cart`}
-                            disabled={inCart}
-                            onClick={() => addItemToCart(item.name)}
-                            className={`${actionButtonClass} hover:text-amber-accent`}
-                          >
-                            <IconCart size={18} />
-                          </button>
-                        </li>
-                      )
-                    })}
-                  </ul>
-                )}
-              </section>
-            )
-          })
+          grouped.map((section) => (
+            <StockListSection
+              key={section.group}
+              section={section}
+              isExpanded={expanded.has(section.group)}
+              cartNames={cartNames}
+              onToggle={() => toggleCategory(section.group)}
+              onMarkEmpty={markItemEmpty}
+              onAddToCart={addItemToCart}
+            />
+          ))
         )}
       </div>
     </div>
+  )
+}
+
+function StockListSection({
+  section,
+  isExpanded,
+  cartNames,
+  onToggle,
+  onMarkEmpty,
+  onAddToCart,
+}: {
+  section: StockListSection
+  isExpanded: boolean
+  cartNames: Set<string>
+  onToggle: () => void
+  onMarkEmpty: (id: string) => void
+  onAddToCart: (name: string) => void
+}) {
+  return (
+    <section className="rounded-2xl border border-app bg-bar-900/40">
+      <button
+        type="button"
+        onClick={onToggle}
+        aria-expanded={isExpanded}
+        className="flex w-full items-center gap-3 px-4 py-3.5 text-left"
+      >
+        <span
+          className={`text-sm text-amber-light/70 transition-transform ${isExpanded ? 'rotate-90' : ''}`}
+          aria-hidden
+        >
+          ▸
+        </span>
+        <span className="min-w-0 flex-1 font-display text-lg text-amber-light">
+          {section.label}
+          <span className="ml-2 text-sm font-sans font-medium text-subtle">
+            {formatTotalQuantity(section.totalQuantity)} total
+          </span>
+        </span>
+        <span className="rounded-full bg-surface-muted px-2.5 py-0.5 text-xs font-medium text-subtle">
+          {section.itemCount}
+        </span>
+      </button>
+      {isExpanded && (
+        <div className="border-t border-app">
+          {section.whiskeySubgroups ? (
+            section.whiskeySubgroups.map((subgroup) => (
+              <div key={subgroup.subcategory}>
+                <div className="flex items-center gap-2 bg-bar-900/60 px-4 py-2">
+                  <span className="text-xs font-semibold uppercase tracking-wide text-amber-light/80">
+                    {subgroup.label}
+                  </span>
+                  <span className="text-xs text-subtle">{formatTotalQuantity(subgroup.totalQuantity)} total</span>
+                </div>
+                <ul className="divide-y divide-app">
+                  {subgroup.items.map((item) => (
+                    <StockItemRow
+                      key={item.id}
+                      item={item}
+                      inCart={cartNames.has(item.name.toLowerCase())}
+                      onMarkEmpty={onMarkEmpty}
+                      onAddToCart={onAddToCart}
+                    />
+                  ))}
+                </ul>
+              </div>
+            ))
+          ) : (
+            <ul className="divide-y divide-app">
+              {section.items.map((item) => (
+                <StockItemRow
+                  key={item.id}
+                  item={item}
+                  inCart={cartNames.has(item.name.toLowerCase())}
+                  onMarkEmpty={onMarkEmpty}
+                  onAddToCart={onAddToCart}
+                />
+              ))}
+            </ul>
+          )}
+        </div>
+      )}
+    </section>
   )
 }
 
@@ -329,7 +407,17 @@ function StockItemEditor({
             value={category}
             onChange={(e) => setCategory(e.target.value as StockCategory)}
           >
-            {STOCK_CATEGORY_ORDER.map((value) => (
+            <optgroup label="Whiskey">
+              {WHISKEY_SUBCATEGORIES.map((sub) => {
+                const value = `whiskey-${sub}` as StockCategory
+                return (
+                  <option key={value} value={value}>
+                    {WHISKEY_SUBCATEGORY_LABELS[sub]}
+                  </option>
+                )
+              })}
+            </optgroup>
+            {STOCK_CATEGORY_ORDER.filter((value) => !value.startsWith('whiskey-')).map((value) => (
               <option key={value} value={value}>
                 {STOCK_CATEGORY_LABELS[value]}
               </option>

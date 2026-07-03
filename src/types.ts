@@ -58,7 +58,26 @@ export interface CartItem {
   name: string
 }
 
+export type WhiskeySubcategory = 'bourbon' | 'rye' | 'scotch' | 'other'
+
 export type StockCategory =
+  | 'whiskey-bourbon'
+  | 'whiskey-rye'
+  | 'whiskey-scotch'
+  | 'whiskey-other'
+  | 'tequila-mezcal'
+  | 'gin'
+  | 'vodka'
+  | 'brandy'
+  | 'rum'
+  | 'liqueur'
+  | 'amaro'
+  | 'wine-vermouth'
+  | 'bitters'
+  | 'syrup'
+  | 'other'
+
+export type StockListGroup =
   | 'whiskey'
   | 'tequila-mezcal'
   | 'gin'
@@ -70,7 +89,6 @@ export type StockCategory =
   | 'wine-vermouth'
   | 'bitters'
   | 'syrup'
-  | 'citrus'
   | 'other'
 
 export interface StockItem {
@@ -81,7 +99,34 @@ export interface StockItem {
   quantityLeft: number
 }
 
+export const WHISKEY_SUBCATEGORIES: WhiskeySubcategory[] = ['bourbon', 'rye', 'scotch', 'other']
+
+export const WHISKEY_SUBCATEGORY_LABELS: Record<WhiskeySubcategory, string> = {
+  bourbon: 'Bourbon',
+  rye: 'Rye',
+  scotch: 'Scotch',
+  other: 'Other',
+}
+
 export const STOCK_CATEGORY_ORDER: StockCategory[] = [
+  'whiskey-bourbon',
+  'whiskey-rye',
+  'whiskey-scotch',
+  'whiskey-other',
+  'tequila-mezcal',
+  'gin',
+  'vodka',
+  'brandy',
+  'rum',
+  'liqueur',
+  'amaro',
+  'wine-vermouth',
+  'bitters',
+  'syrup',
+  'other',
+]
+
+export const STOCK_LIST_GROUP_ORDER: StockListGroup[] = [
   'whiskey',
   'tequila-mezcal',
   'gin',
@@ -93,11 +138,10 @@ export const STOCK_CATEGORY_ORDER: StockCategory[] = [
   'wine-vermouth',
   'bitters',
   'syrup',
-  'citrus',
   'other',
 ]
 
-export const STOCK_CATEGORY_LABELS: Record<StockCategory, string> = {
+export const STOCK_LIST_GROUP_LABELS: Record<StockListGroup, string> = {
   whiskey: 'Whiskey',
   'tequila-mezcal': 'Tequila/Mezcal',
   gin: 'Gin',
@@ -109,7 +153,24 @@ export const STOCK_CATEGORY_LABELS: Record<StockCategory, string> = {
   'wine-vermouth': 'Wine/Vermouth',
   bitters: 'Bitters',
   syrup: 'Syrup',
-  citrus: 'Citrus',
+  other: 'Other',
+}
+
+export const STOCK_CATEGORY_LABELS: Record<StockCategory, string> = {
+  'whiskey-bourbon': 'Bourbon',
+  'whiskey-rye': 'Rye',
+  'whiskey-scotch': 'Scotch',
+  'whiskey-other': 'Other',
+  'tequila-mezcal': 'Tequila/Mezcal',
+  gin: 'Gin',
+  vodka: 'Vodka',
+  brandy: 'Brandy',
+  rum: 'Rum',
+  liqueur: 'Liqueur',
+  amaro: 'Amaro',
+  'wine-vermouth': 'Wine/Vermouth',
+  bitters: 'Bitters',
+  syrup: 'Syrup',
   other: 'Other',
 }
 
