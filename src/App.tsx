@@ -4,6 +4,7 @@ import { useCocktails } from './hooks/useCocktails'
 import { validateSession } from './lib/auth'
 import { applyAppearance } from './lib/theme'
 import { loadPrefs } from './lib/storage'
+import { normalizeStockCategory } from './lib/stock'
 import { pullSync, subscribeSyncApplied } from './lib/sync'
 import { AppShell } from './components/AppShell'
 import { HomePage } from './components/HomePage'
@@ -171,7 +172,7 @@ export default function App() {
             element={
               <StockPage
                 items={prefs.stock ?? []}
-                lastCategory={prefs.lastStockCategory ?? 'spirit'}
+                lastCategory={normalizeStockCategory(prefs.lastStockCategory)}
                 cart={prefs.cart ?? []}
                 onSaveStock={(stock, lastStockCategory) => updatePrefs({ stock, lastStockCategory })}
                 onAddToCart={(cart) => updatePrefs({ cart })}

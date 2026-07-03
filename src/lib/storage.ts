@@ -1,4 +1,5 @@
 import { DEFAULT_CART_SEARCH_URL } from './cart'
+import { normalizeStockCategory } from './stock'
 import type {
   AppPreferences,
   Collection,
@@ -77,7 +78,7 @@ function defaultProfile(userName: string): UserProfile {
     recipeDraft: '',
     cart: [],
     stock: [],
-    lastStockCategory: 'spirit',
+    lastStockCategory: 'whiskey',
     cartSearchUrl: DEFAULT_CART_SEARCH_URL,
     randomFavoritesOnly: true,
     homeGroupView: 'spirits',
@@ -140,7 +141,7 @@ function migrateLegacyPrefs(): Record<string, UserProfile> {
       recipeDraft: '',
       cart: [],
       stock: [],
-      lastStockCategory: 'spirit',
+      lastStockCategory: 'whiskey',
       cartSearchUrl: DEFAULT_CART_SEARCH_URL,
       randomFavoritesOnly: true,
       homeGroupView: 'spirits',
@@ -203,7 +204,7 @@ function profileToPrefs(profile: UserProfile, shared: SharedSettings): AppPrefer
     recipeDraft: profile.recipeDraft ?? '',
     cart: profile.cart ?? [],
     stock: profile.stock ?? [],
-    lastStockCategory: profile.lastStockCategory ?? 'spirit',
+    lastStockCategory: normalizeStockCategory(profile.lastStockCategory),
     cartSearchUrl: profile.cartSearchUrl?.trim() || DEFAULT_CART_SEARCH_URL,
     randomFavoritesOnly: profile.randomFavoritesOnly ?? true,
     homeGroupView: profile.homeGroupView ?? 'spirits',
@@ -251,7 +252,7 @@ export function savePrefs(prefs: AppPreferences) {
     recipeDraft: prefs.recipeDraft ?? '',
     cart: prefs.cart ?? [],
     stock: prefs.stock ?? [],
-    lastStockCategory: prefs.lastStockCategory ?? 'spirit',
+    lastStockCategory: normalizeStockCategory(prefs.lastStockCategory),
     cartSearchUrl: prefs.cartSearchUrl?.trim() || DEFAULT_CART_SEARCH_URL,
     randomFavoritesOnly: prefs.randomFavoritesOnly ?? true,
     homeGroupView: prefs.homeGroupView ?? 'spirits',

@@ -117,6 +117,15 @@ export function IconCart({ className, size }: IconProps) {
   )
 }
 
+export function IconRanOut({ className, size }: IconProps) {
+  return (
+    <Icon className={className} size={size}>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M7 17L17 7" />
+    </Icon>
+  )
+}
+
 export function IconStock({ className, size }: IconProps) {
   return (
     <Icon className={className} size={size}>

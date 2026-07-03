@@ -58,7 +58,20 @@ export interface CartItem {
   name: string
 }
 
-export type StockCategory = 'spirit' | 'liqueur' | 'syrup' | 'citrus' | 'other'
+export type StockCategory =
+  | 'whiskey'
+  | 'tequila-mezcal'
+  | 'gin'
+  | 'vodka'
+  | 'brandy'
+  | 'rum'
+  | 'liqueur'
+  | 'amaro'
+  | 'wine-vermouth'
+  | 'bitters'
+  | 'syrup'
+  | 'citrus'
+  | 'other'
 
 export interface StockItem {
   id: string
@@ -68,11 +81,33 @@ export interface StockItem {
   quantityLeft: number
 }
 
-export const STOCK_CATEGORY_ORDER: StockCategory[] = ['spirit', 'liqueur', 'syrup', 'citrus', 'other']
+export const STOCK_CATEGORY_ORDER: StockCategory[] = [
+  'whiskey',
+  'tequila-mezcal',
+  'gin',
+  'vodka',
+  'brandy',
+  'rum',
+  'liqueur',
+  'amaro',
+  'wine-vermouth',
+  'bitters',
+  'syrup',
+  'citrus',
+  'other',
+]
 
 export const STOCK_CATEGORY_LABELS: Record<StockCategory, string> = {
-  spirit: 'Spirit',
+  whiskey: 'Whiskey',
+  'tequila-mezcal': 'Tequila/Mezcal',
+  gin: 'Gin',
+  vodka: 'Vodka',
+  brandy: 'Brandy',
+  rum: 'Rum',
   liqueur: 'Liqueur',
+  amaro: 'Amaro',
+  'wine-vermouth': 'Wine/Vermouth',
+  bitters: 'Bitters',
   syrup: 'Syrup',
   citrus: 'Citrus',
   other: 'Other',
