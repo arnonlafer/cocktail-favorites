@@ -8,6 +8,12 @@ export interface AppExportPayload extends SyncPayload {
   userName: string
 }
 
+export function exportToSyncPayload(exportData: AppExportPayload | SyncPayload): SyncPayload {
+  const { exportVersion: _exportVersion, exportedAt: _exportedAt, userName: _userName, ...payload } =
+    exportData as AppExportPayload
+  return payload
+}
+
 export function buildAppExport(): AppExportPayload {
   const prefs = loadPrefs()
   return {

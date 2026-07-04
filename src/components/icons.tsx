@@ -153,6 +153,26 @@ export function IconClose({ className, size }: IconProps) {
   )
 }
 
+export function IconEye({ className, size }: IconProps) {
+  return (
+    <Icon className={className} size={size}>
+      <path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z" />
+      <circle cx="12" cy="12" r="3" />
+    </Icon>
+  )
+}
+
+export function IconEyeOff({ className, size }: IconProps) {
+  return (
+    <Icon className={className} size={size}>
+      <path d="M3 3l18 18" />
+      <path d="M10.6 10.6a2 2 0 0 0 2.8 2.8" />
+      <path d="M9.9 5.1A10.8 10.8 0 0 1 12 5c6.5 0 10 7 10 7a18.2 18.2 0 0 1-4.1 5.2" />
+      <path d="M6.1 6.1C3.7 7.8 2 12 2 12s3.5 7 10 7c1.2 0 2.3-.2 3.4-.5" />
+    </Icon>
+  )
+}
+
 export function IconChevronLeft({ className, size }: IconProps) {
   return (
     <Icon className={className} size={size}>

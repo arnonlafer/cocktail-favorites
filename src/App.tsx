@@ -5,7 +5,7 @@ import { validateSession } from './lib/auth'
 import { applyAppearance } from './lib/theme'
 import { loadPrefs } from './lib/storage'
 import { normalizeStockCategory } from './lib/stock'
-import { pullSync, subscribeSyncApplied } from './lib/sync'
+import { pullSync, subscribeSyncApplied, syncNow } from './lib/sync'
 import { AppShell } from './components/AppShell'
 import { HomePage } from './components/HomePage'
 import { CocktailDetailPage } from './components/CocktailDetailPage'
@@ -59,9 +59,7 @@ export default function App() {
 
     pull()
 
-    const onPageShow = (event: PageTransitionEvent) => {
-      if (event.persisted) pull()
-    }
+    const onPageShow = () => pull()
     window.addEventListener('pageshow', onPageShow)
     return () => window.removeEventListener('pageshow', onPageShow)
   }, [authenticated, refreshPrefs])
@@ -95,6 +93,12 @@ export default function App() {
             const p = loadPrefs()
             applyAppearance(p.theme, p.fontSize)
             setAuthenticated(true)
+            const code = loadPrefs().syncCode?.trim()
+            if (code) {
+              void syncNow(code).then((status) => {
+                if (status === 'synced') refreshPrefs()
+              })
+            }
           }}
         />
       </div>

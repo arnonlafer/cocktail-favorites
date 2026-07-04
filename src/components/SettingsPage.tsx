@@ -222,14 +222,14 @@ export function SettingsPage({
         <section className="rounded-2xl border border-app bg-bar-900/60 p-4">
           <h2 className="mb-1 text-base font-semibold text-foreground">Sync across devices</h2>
           <p className="mb-3 text-sm text-muted">
-            The sync code links your devices together, but your edits only travel between them after they are
-            saved to Cloudflare storage on the server.
+            Use the same sync code on every device. Changes to recipes, lists, draft, cart, and stock are saved to
+            the server when you save, and downloaded when you open or refresh the app.
           </p>
           <ol className="mb-4 list-decimal space-y-1 pl-4 text-xs text-subtle">
             <li>Finish the one-time Cloudflare setup (bind SYNC_KV — see README)</li>
             <li>Enter the same sync code on every device</li>
-            <li>After editing a recipe, tap Sync now on that device</li>
-            <li>On the other device, tap Sync now to download the change</li>
+            <li>Saved changes upload automatically; refresh or reopen the app to pull the latest</li>
+            <li>Use Sync now if you want to force an immediate upload or download</li>
           </ol>
           {showServerWarning && (
             <p className="mb-4 rounded-xl border border-red-900/50 bg-red-950/40 px-3 py-2 text-sm text-red-200">

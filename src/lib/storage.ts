@@ -284,7 +284,7 @@ export function switchUser(userName: string) {
 
   const profiles = loadUserProfiles()
   if (!profiles[key]) {
-    profiles[key] = defaultProfile(name)
+    profiles[key] = { ...defaultProfile(name), updatedAt: 0 }
     saveUserProfiles(profiles)
   }
 

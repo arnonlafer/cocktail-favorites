@@ -1,5 +1,11 @@
 import { DEFAULT_CART_SEARCH_URL } from './cart'
-import type { AppPreferences, Cocktail, IngredientNutrition, SyncPayload, UserProfile } from '../types'
+import type {
+  AppPreferences,
+  Cocktail,
+  IngredientNutrition,
+  SyncPayload,
+  UserProfile,
+} from '../types'
 import { authHeaders } from './auth'
 import {
   exportSyncUserData,
@@ -90,15 +96,83 @@ function mergeCustomCocktails(
   return [...byId.values()]
 }
 
+function mergeRecentlyViewed(
+  local: Record<string, number>,
+  remote: Record<string, number>,
+): Record<string, number> {
+  const merged = { ...local }
+  for (const [id, ts] of Object.entries(remote)) {
+    merged[id] = Math.max(merged[id] ?? 0, ts)
+  }
+  return merged
+}
+
+function mergeFavorites(local: string[], remote: string[]): string[] {
+  return [...new Set([...local, ...remote])]
+}
+
+function mergeById<T extends { id: string }>(
+  local: T[],
+  remote: T[],
+  preferRemote: boolean,
+): T[] {
+  const byId = new Map<string, T>()
+  const [first, second] = preferRemote ? [local, remote] : [remote, local]
+  for (const item of first) byId.set(item.id, item)
+  for (const item of second) byId.set(item.id, item)
+  return [...byId.values()]
+}
+
+function mergeRecipeDraft(local: string, remote: string, preferRemote: boolean): string {
+  const localText = local.trim()
+  const remoteText = remote.trim()
+  if (!localText) return remote
+  if (!remoteText) return local
+  return preferRemote ? remote : local
+}
+
+function mergeUserProfile(local: UserProfile, remote: UserProfile): UserProfile {
+  const preferRemote = remote.updatedAt > local.updatedAt
+  const newer = preferRemote ? remote : local
+  const older = preferRemote ? local : remote
+
+  return {
+    userName: newer.userName || older.userName,
+    favorites: mergeFavorites(local.favorites ?? [], remote.favorites ?? []),
+    recentlyViewed: mergeRecentlyViewed(local.recentlyViewed ?? {}, remote.recentlyViewed ?? {}),
+    unit: newer.unit,
+    multiplier: newer.multiplier,
+    theme: newer.theme,
+    fontSize: newer.fontSize,
+    collapsedGroups: newer.collapsedGroups,
+    listView: newer.listView,
+    collections: mergeById(local.collections ?? [], remote.collections ?? [], preferRemote),
+    recipeDraft: mergeRecipeDraft(local.recipeDraft ?? '', remote.recipeDraft ?? '', preferRemote),
+    cart: mergeById(local.cart ?? [], remote.cart ?? [], preferRemote),
+    stock: mergeById(local.stock ?? [], remote.stock ?? [], preferRemote),
+    lastStockCategory: newer.lastStockCategory ?? older.lastStockCategory,
+    cartSearchUrl: newer.cartSearchUrl ?? older.cartSearchUrl,
+    randomFavoritesOnly: newer.randomFavoritesOnly,
+    homeGroupView: newer.homeGroupView,
+    cocktailSort: newer.cocktailSort,
+    updatedAt: Math.max(local.updatedAt, remote.updatedAt),
+  }
+}
+
 function mergeUserProfiles(
   local: Record<string, UserProfile>,
   remote: Record<string, UserProfile>,
 ): Record<string, UserProfile> {
   const merged = { ...local }
-  for (const [key, remoteProfile] of Object.entries(remote)) {
-    const localProfile = merged[key]
-    if (!localProfile || remoteProfile.updatedAt > localProfile.updatedAt) {
+  for (const key of new Set([...Object.keys(local), ...Object.keys(remote)])) {
+    const localProfile = local[key]
+    const remoteProfile = remote[key]
+    if (!localProfile && remoteProfile) {
       merged[key] = remoteProfile
+    } else if (localProfile && !remoteProfile) {
+      merged[key] = localProfile
+    } else if (localProfile && remoteProfile) {
+      merged[key] = mergeUserProfile(localProfile, remoteProfile)
     }
   }
   return merged
