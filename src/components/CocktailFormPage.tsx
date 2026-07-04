@@ -185,6 +185,44 @@ export function CocktailFormPage({ cocktails, onSave, onDelete, onSaved, mode }:
     }
   }
 
+  const isFormDirty = useMemo(() => {
+    if (mode === 'add') {
+      return !!(
+        name.trim() ||
+        ingredientsText.trim() ||
+        instructionsText.trim() ||
+        garnish.trim() ||
+        imageUrl.trim()
+      )
+    }
+    if (!existing) return false
+    return (
+      name !== existing.name ||
+      method !== existing.method ||
+      glass !== existing.glass ||
+      ice !== existing.ice ||
+      JSON.stringify(spirits) !== JSON.stringify(existing.spirits) ||
+      (garnish.trim() || '') !== (existing.garnish ?? '') ||
+      ingredientsText !== ingredientsToText(existing.ingredients) ||
+      instructionsText !== existing.instructions.join('\n') ||
+      (imageUrl.trim() || '') !== (existing.imageUrl ?? '') ||
+      JSON.stringify(similarIds) !== JSON.stringify(existing.similarIds ?? [])
+    )
+  }, [
+    mode,
+    existing,
+    name,
+    method,
+    glass,
+    ice,
+    spirits,
+    garnish,
+    ingredientsText,
+    instructionsText,
+    imageUrl,
+    similarIds,
+  ])
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     const cocktail = buildCocktail()
@@ -209,7 +247,7 @@ export function CocktailFormPage({ cocktails, onSave, onDelete, onSaved, mode }:
         <button
           type="button"
           onClick={() => {
-            if (!confirmDiscardChanges()) return
+            if (isFormDirty && !confirmDiscardChanges()) return
             navigate(-1)
           }}
           aria-label="Cancel"

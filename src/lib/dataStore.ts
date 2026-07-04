@@ -12,41 +12,12 @@ function emptyState(): Omit<SyncPayload, 'syncCode'> {
 }
 
 let state = emptyState()
-let dirty = false
-const dirtyListeners = new Set<() => void>()
-
-function notifyDirtyListeners() {
-  dirtyListeners.forEach((listener) => listener())
-}
-
-export function subscribeDataDirty(listener: () => void) {
-  dirtyListeners.add(listener)
-  return () => {
-    dirtyListeners.delete(listener)
-  }
-}
-
-export function isDataDirty(): boolean {
-  return dirty
-}
-
-export function markDataDirty() {
-  if (dirty) return
-  dirty = true
-  notifyDirtyListeners()
-}
-
-export function clearDataDirty() {
-  if (!dirty) return
-  dirty = false
-  notifyDirtyListeners()
-}
 
 export function getDataState(): Omit<SyncPayload, 'syncCode'> {
   return state
 }
 
-export function replaceDataFromServer(payload: SyncPayload) {
+export function replaceDataFromServer(payload: Omit<SyncPayload, 'syncCode'> | SyncPayload) {
   state = {
     updatedAt: payload.updatedAt ?? 0,
     edits: payload.edits ?? {},
@@ -55,52 +26,46 @@ export function replaceDataFromServer(payload: SyncPayload) {
     nutritionOverrides: payload.nutritionOverrides ?? [],
     userProfiles: payload.userProfiles ?? {},
   }
-  dirty = false
 }
 
 export function loadEdits(): Record<string, Cocktail> {
   return state.edits
 }
 
-export function saveEdits(edits: Record<string, Cocktail>, markDirty = true) {
+export function saveEdits(edits: Record<string, Cocktail>) {
   state.edits = edits
-  if (markDirty) markDataDirty()
 }
 
 export function loadCustomCocktails(): Cocktail[] {
   return state.custom
 }
 
-export function saveCustomCocktails(cocktails: Cocktail[], markDirty = true) {
+export function saveCustomCocktails(cocktails: Cocktail[]) {
   state.custom = cocktails
-  if (markDirty) markDataDirty()
 }
 
 export function loadDeletedIds(): string[] {
   return state.deletedIds
 }
 
-export function saveDeletedIds(ids: string[], markDirty = true) {
+export function saveDeletedIds(ids: string[]) {
   state.deletedIds = ids
-  if (markDirty) markDataDirty()
 }
 
 export function loadNutritionOverrides(): IngredientNutrition[] {
   return state.nutritionOverrides ?? []
 }
 
-export function saveNutritionOverrides(entries: IngredientNutrition[], markDirty = true) {
+export function saveNutritionOverrides(entries: IngredientNutrition[]) {
   state.nutritionOverrides = entries
-  if (markDirty) markDataDirty()
 }
 
 export function loadUserProfiles(): Record<string, UserProfile> {
   return state.userProfiles
 }
 
-export function saveUserProfiles(profiles: Record<string, UserProfile>, markDirty = true) {
+export function saveUserProfiles(profiles: Record<string, UserProfile>) {
   state.userProfiles = profiles
-  if (markDirty) markDataDirty()
 }
 
 export function touchDataUpdatedAt() {

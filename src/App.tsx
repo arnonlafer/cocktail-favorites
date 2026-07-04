@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import { useCocktails } from './hooks/useCocktails'
 import { validateSession } from './lib/auth'
-import { isDataDirty } from './lib/dataStore'
+import { importLegacyLocalStorageIfPresent } from './lib/legacyMigration'
 import { loadLocalUiPrefs } from './lib/localPrefs'
 import { loadFromServer } from './lib/serverSave'
 import { loadPrefs, saveLocalAppearance, saveSyncCode } from './lib/storage'
@@ -55,7 +55,7 @@ export default function App() {
     if (!code) return
 
     const pull = () => {
-      if (isDataDirty()) return
+      importLegacyLocalStorageIfPresent()
       void pullFromServer(code).then((status) => {
         if (status === 'synced') refreshPrefs()
       })
@@ -73,9 +73,9 @@ export default function App() {
 
     const onVisible = () => {
       if (document.visibilityState !== 'visible') return
-      if (isDataDirty()) return
       const code = loadPrefs().syncCode?.trim()
       if (!code) return
+      importLegacyLocalStorageIfPresent()
       void pullFromServer(code).then((status) => {
         if (status === 'synced') refreshPrefs()
       })
@@ -98,6 +98,7 @@ export default function App() {
             const ui = loadLocalUiPrefs()
             applyAppearance(ui.theme, ui.fontSize)
             setAuthenticated(true)
+            importLegacyLocalStorageIfPresent()
             void loadFromServer().then((status) => {
               if (status === 'synced') refreshPrefs()
             })
@@ -109,7 +110,7 @@ export default function App() {
 
   return (
     <BrowserRouter>
-      <AppShell onServerSaved={refreshPrefs}>
+      <AppShell>
         <div className="app-shell mx-auto min-h-dvh bg-bar-950">
           <Routes>
           <Route

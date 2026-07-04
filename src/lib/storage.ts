@@ -151,7 +151,7 @@ export function switchUser(userName: string) {
   const profiles = loadUserProfiles()
   if (!profiles[key]) {
     profiles[key] = { ...defaultProfile(name), updatedAt: 0 }
-    saveUserProfiles(profiles, false)
+    saveUserProfiles(profiles)
   }
 
   const localUi = loadLocalUiPrefs()
@@ -313,7 +313,7 @@ export function importSyncUserData(
   preserveCurrentUserKey = true,
 ) {
   const currentKey = preserveCurrentUserKey ? getCurrentUserKey() : ''
-  saveUserProfiles(userProfiles, false)
+  saveUserProfiles(userProfiles)
   if (currentKey) setCurrentUserKey(currentKey)
   if (syncCode) saveLocalUiPrefs({ syncCode })
 }

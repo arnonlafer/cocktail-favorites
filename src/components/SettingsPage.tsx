@@ -5,6 +5,7 @@ import { FONT_SIZE_LABELS, THEME_LABELS, THEME_ORDER, stepFontSize } from '../li
 import { DEFAULT_CART_SEARCH_URL } from '../lib/cart'
 import { logout } from '../lib/auth'
 import { downloadAppExport } from '../lib/export'
+import { importLegacyLocalStorageIfPresent } from '../lib/legacyMigration'
 import { loadFromServer, saveToServer } from '../lib/serverSave'
 import { checkSyncServer, formatSyncTime, type SyncStatus } from '../lib/sync'
 import { confirmDiscardChanges } from '../lib/unsavedChanges'
@@ -64,7 +65,7 @@ export function SettingsPage({
     if (!code) return
     if (
       !confirmDiscardChanges(
-        'Load from server? Any unsaved changes on this device will be replaced with the server copy.',
+        'Load from server? This replaces your current data with the server copy.',
       )
     ) {
       return
@@ -87,6 +88,18 @@ export function SettingsPage({
     const status = await saveToServer()
     setSyncStatus(status)
     if (status === 'synced') onReloaded()
+  }
+
+  function handleRecoverFromBrowser() {
+    const found = importLegacyLocalStorageIfPresent()
+    if (found) {
+      onReloaded()
+      window.alert(
+        'Recovered data from older browser storage on this device. Save your recipes and lists to upload them to the server.',
+      )
+    } else {
+      window.alert('No older browser storage data was found on this device.')
+    }
   }
 
   const showServerWarning = serverReady === 'not-configured' || syncStatus === 'not-configured'
@@ -222,9 +235,8 @@ export function SettingsPage({
         <section className="rounded-2xl border border-app bg-bar-900/60 p-4">
           <h2 className="mb-1 text-base font-semibold text-foreground">Cloud data</h2>
           <p className="mb-3 text-sm text-muted">
-            Your recipes, lists, draft, cart, and stock live on the server under your sync code. Save changes with
-            the Save button on each page, or use the banner at the top. Refreshing the app loads the latest server
-            data when you have nothing unsaved.
+            Your recipes, lists, draft, cart, and stock live on the server under your sync code. Use Save on each
+            page to upload changes. Refreshing the app loads the latest server data.
           </p>
           {showServerWarning && (
             <p className="mb-4 rounded-xl border border-red-900/50 bg-red-950/40 px-3 py-2 text-sm text-red-200">
@@ -258,6 +270,13 @@ export function SettingsPage({
             className="w-full rounded-xl bg-amber-accent py-2.5 text-sm font-semibold text-bar-950"
           >
             Load from server
+          </button>
+          <button
+            type="button"
+            onClick={handleRecoverFromBrowser}
+            className="mt-2 w-full rounded-xl border border-app bg-bar-800 py-2.5 text-sm font-medium text-foreground"
+          >
+            Recover from browser storage
           </button>
           <p className="mt-3 text-xs text-subtle">
             Last loaded: {formatSyncTime(lastSyncedAt)}
