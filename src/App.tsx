@@ -2,10 +2,13 @@ import { useEffect, useState } from 'react'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import { useCocktails } from './hooks/useCocktails'
 import { validateSession } from './lib/auth'
-import { applyAppearance } from './lib/theme'
-import { loadPrefs } from './lib/storage'
+import { isDataDirty } from './lib/dataStore'
+import { loadLocalUiPrefs } from './lib/localPrefs'
+import { loadFromServer } from './lib/serverSave'
+import { loadPrefs, saveLocalAppearance, saveSyncCode } from './lib/storage'
 import { normalizeStockCategory } from './lib/stock'
-import { pullSync, subscribeSyncApplied, syncNow } from './lib/sync'
+import { applyAppearance } from './lib/theme'
+import { pullFromServer, subscribeSyncApplied } from './lib/sync'
 import { AppShell } from './components/AppShell'
 import { HomePage } from './components/HomePage'
 import { CocktailDetailPage } from './components/CocktailDetailPage'
@@ -52,7 +55,8 @@ export default function App() {
     if (!code) return
 
     const pull = () => {
-      void pullSync(code).then((status) => {
+      if (isDataDirty()) return
+      void pullFromServer(code).then((status) => {
         if (status === 'synced') refreshPrefs()
       })
     }
@@ -69,9 +73,10 @@ export default function App() {
 
     const onVisible = () => {
       if (document.visibilityState !== 'visible') return
+      if (isDataDirty()) return
       const code = loadPrefs().syncCode?.trim()
       if (!code) return
-      void pullSync(code).then((status) => {
+      void pullFromServer(code).then((status) => {
         if (status === 'synced') refreshPrefs()
       })
     }
@@ -90,15 +95,12 @@ export default function App() {
         <LoginPage
           onSuccess={() => {
             refreshPrefs()
-            const p = loadPrefs()
-            applyAppearance(p.theme, p.fontSize)
+            const ui = loadLocalUiPrefs()
+            applyAppearance(ui.theme, ui.fontSize)
             setAuthenticated(true)
-            const code = loadPrefs().syncCode?.trim()
-            if (code) {
-              void syncNow(code).then((status) => {
-                if (status === 'synced') refreshPrefs()
-              })
-            }
+            void loadFromServer().then((status) => {
+              if (status === 'synced') refreshPrefs()
+            })
           }}
         />
       </div>
@@ -107,7 +109,7 @@ export default function App() {
 
   return (
     <BrowserRouter>
-      <AppShell>
+      <AppShell onServerSaved={refreshPrefs}>
         <div className="app-shell mx-auto min-h-dvh bg-bar-950">
           <Routes>
           <Route
@@ -137,14 +139,23 @@ export default function App() {
                 lastSyncedAt={prefs.lastSyncedAt}
                 randomFavoritesOnly={prefs.randomFavoritesOnly ?? true}
                 cartSearchUrl={prefs.cartSearchUrl}
-                onThemeChange={(theme) => updatePrefs({ theme })}
-                onFontSizeChange={(fontSize) => updatePrefs({ fontSize })}
-                onSyncCodeChange={(syncCode) => updatePrefs({ syncCode })}
+                onThemeChange={(theme) => {
+                  saveLocalAppearance(theme, prefs.fontSize)
+                  refreshPrefs()
+                }}
+                onFontSizeChange={(fontSize) => {
+                  saveLocalAppearance(prefs.theme, fontSize)
+                  refreshPrefs()
+                }}
+                onSyncCodeChange={(syncCode) => {
+                  saveSyncCode(syncCode)
+                  refreshPrefs()
+                }}
                 onRandomFavoritesOnlyChange={(randomFavoritesOnly) =>
                   updatePrefs({ randomFavoritesOnly })
                 }
                 onCartSearchUrlChange={(cartSearchUrl) => updatePrefs({ cartSearchUrl })}
-                onSynced={refreshPrefs}
+                onReloaded={refreshPrefs}
                 onLogout={() => setAuthenticated(false)}
               />
             }
@@ -158,6 +169,7 @@ export default function App() {
               <DraftPage
                 draft={prefs.recipeDraft ?? ''}
                 onSave={(recipeDraft) => updatePrefs({ recipeDraft })}
+                onSaved={refreshPrefs}
               />
             }
           />
@@ -168,6 +180,7 @@ export default function App() {
                 items={prefs.cart ?? []}
                 searchUrl={prefs.cartSearchUrl}
                 onSave={(cart) => updatePrefs({ cart })}
+                onSaved={refreshPrefs}
               />
             }
           />
@@ -180,6 +193,7 @@ export default function App() {
                 cart={prefs.cart ?? []}
                 onSaveStock={(stock, lastStockCategory) => updatePrefs({ stock, lastStockCategory })}
                 onAddToCart={(cart) => updatePrefs({ cart })}
+                onSaved={refreshPrefs}
               />
             }
           />
@@ -201,7 +215,17 @@ export default function App() {
               />
             }
           />
-          <Route path="/add" element={<CocktailFormPage cocktails={cocktails} onSave={saveCocktail} mode="add" />} />
+          <Route
+            path="/add"
+            element={
+              <CocktailFormPage
+                cocktails={cocktails}
+                onSave={saveCocktail}
+                onSaved={refreshPrefs}
+                mode="add"
+              />
+            }
+          />
           <Route
             path="/cocktail/:id/edit"
             element={
@@ -209,6 +233,7 @@ export default function App() {
                 cocktails={cocktails}
                 onSave={saveCocktail}
                 onDelete={deleteCocktail}
+                onSaved={refreshPrefs}
                 mode="edit"
               />
             }
@@ -220,5 +245,5 @@ export default function App() {
   )
 }
 
-// Apply saved appearance before first paint
-applyAppearance(loadPrefs().theme, loadPrefs().fontSize)
+const ui = loadLocalUiPrefs()
+applyAppearance(ui.theme, ui.fontSize)

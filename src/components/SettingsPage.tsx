@@ -5,7 +5,9 @@ import { FONT_SIZE_LABELS, THEME_LABELS, THEME_ORDER, stepFontSize } from '../li
 import { DEFAULT_CART_SEARCH_URL } from '../lib/cart'
 import { logout } from '../lib/auth'
 import { downloadAppExport } from '../lib/export'
-import { checkSyncServer, formatSyncTime, syncNow, type SyncStatus } from '../lib/sync'
+import { loadFromServer, saveToServer } from '../lib/serverSave'
+import { checkSyncServer, formatSyncTime, type SyncStatus } from '../lib/sync'
+import { confirmDiscardChanges } from '../lib/unsavedChanges'
 import { PageHeader } from './PageHeader'
 import { AiSettingsSection } from './AiSettingsSection'
 
@@ -21,7 +23,7 @@ interface Props {
   onSyncCodeChange: (syncCode: string) => void
   onRandomFavoritesOnlyChange: (value: boolean) => void
   onCartSearchUrlChange: (url: string) => void
-  onSynced: () => void
+  onReloaded: () => void
   onLogout: () => void
 }
 
@@ -37,7 +39,7 @@ export function SettingsPage({
   onSyncCodeChange,
   onRandomFavoritesOnlyChange,
   onCartSearchUrlChange,
-  onSynced,
+  onReloaded,
   onLogout,
 }: Props) {
   const [draftCode, setDraftCode] = useState(syncCode)
@@ -50,36 +52,41 @@ export function SettingsPage({
   }, [])
 
   useEffect(() => {
+    setDraftCode(syncCode)
+  }, [syncCode])
+
+  useEffect(() => {
     setDraftCartSearchUrl(cartSearchUrl)
   }, [cartSearchUrl])
 
-  async function runSync(code: string) {
+  async function handleLoadFromServer() {
+    const code = draftCode.trim()
+    if (!code) return
+    if (
+      !confirmDiscardChanges(
+        'Load from server? Any unsaved changes on this device will be replaced with the server copy.',
+      )
+    ) {
+      return
+    }
+    onSyncCodeChange(code)
     setSyncStatus('syncing')
-    const status = await syncNow(code)
+    const status = await loadFromServer()
     setSyncStatus(status)
     if (status === 'synced') {
       setServerReady('ready')
-      onSynced()
+      onReloaded()
     } else if (status === 'not-configured') {
       setServerReady('not-configured')
     }
   }
 
-  async function saveSyncCode() {
-    const code = draftCode.trim()
-    onSyncCodeChange(code)
-    if (!code) return
-    await runSync(code)
-  }
-
-  async function handleSyncNow() {
-    const code = draftCode.trim() || syncCode.trim()
-    if (!code) return
-    await runSync(code)
-  }
-
-  function saveCartSearchUrl() {
+  async function handleSaveServerSettings() {
     onCartSearchUrlChange(draftCartSearchUrl.trim() || DEFAULT_CART_SEARCH_URL)
+    setSyncStatus('syncing')
+    const status = await saveToServer()
+    setSyncStatus(status)
+    if (status === 'synced') onReloaded()
   }
 
   const showServerWarning = serverReady === 'not-configured' || syncStatus === 'not-configured'
@@ -199,47 +206,35 @@ export function SettingsPage({
           <div className="flex gap-2">
             <button
               type="button"
-              onClick={saveCartSearchUrl}
-              className="flex-1 rounded-xl bg-amber-accent py-2.5 text-sm font-semibold text-bar-950"
-            >
-              Save URL
-            </button>
-            <button
-              type="button"
               onClick={() => {
                 setDraftCartSearchUrl(DEFAULT_CART_SEARCH_URL)
-                onCartSearchUrlChange(DEFAULT_CART_SEARCH_URL)
               }}
-              className="flex-1 rounded-xl border border-app bg-bar-800 py-2.5 text-sm font-medium text-foreground"
+              className="w-full rounded-xl border border-app bg-bar-800 py-2.5 text-sm font-medium text-foreground"
             >
-              Reset
+              Reset to default
             </button>
           </div>
+          <p className="mt-2 text-xs text-subtle">Use “Save settings to server” below to persist this URL.</p>
         </section>
 
         <AiSettingsSection />
 
         <section className="rounded-2xl border border-app bg-bar-900/60 p-4">
-          <h2 className="mb-1 text-base font-semibold text-foreground">Sync across devices</h2>
+          <h2 className="mb-1 text-base font-semibold text-foreground">Cloud data</h2>
           <p className="mb-3 text-sm text-muted">
-            Use the same sync code on every device. Changes to recipes, lists, draft, cart, and stock are saved to
-            the server when you save, and downloaded when you open or refresh the app.
+            Your recipes, lists, draft, cart, and stock live on the server under your sync code. Save changes with
+            the Save button on each page, or use the banner at the top. Refreshing the app loads the latest server
+            data when you have nothing unsaved.
           </p>
-          <ol className="mb-4 list-decimal space-y-1 pl-4 text-xs text-subtle">
-            <li>Finish the one-time Cloudflare setup (bind SYNC_KV — see README)</li>
-            <li>Enter the same sync code on every device</li>
-            <li>Saved changes upload automatically; refresh or reopen the app to pull the latest</li>
-            <li>Use Sync now if you want to force an immediate upload or download</li>
-          </ol>
           {showServerWarning && (
             <p className="mb-4 rounded-xl border border-red-900/50 bg-red-950/40 px-3 py-2 text-sm text-red-200">
-              Cloud storage is not connected yet. Sync will not work until you bind the SYNC_KV namespace to the
-              cocktail-favorites worker in Cloudflare (Step 3 in the README).
+              Cloud storage is not connected yet. Bind the SYNC_KV namespace to the cocktail-favorites worker in
+              Cloudflare (see README).
             </p>
           )}
           {serverReady === 'ready' && !showServerWarning && (
             <p className="mb-4 rounded-xl border border-emerald-900/40 bg-emerald-950/30 px-3 py-2 text-xs text-emerald-200">
-              Cloud storage is connected. Sync should work between devices.
+              Cloud storage is connected.
             </p>
           )}
           <label className="mb-2 block text-sm font-medium text-foreground" htmlFor="sync-code">
@@ -253,32 +248,36 @@ export function SettingsPage({
             spellCheck={false}
             value={draftCode}
             onChange={(e) => setDraftCode(e.target.value)}
-            placeholder="e.g. my-bar-2026"
+            onBlur={() => onSyncCodeChange(draftCode.trim())}
+            placeholder="e.g. arnon"
             className="mb-3 w-full rounded-xl border border-app bg-bar-800 px-3 py-2.5 text-sm text-foreground placeholder:text-subtle"
           />
-          <div className="flex gap-2">
-            <button
-              type="button"
-              onClick={() => void saveSyncCode()}
-              className="flex-1 rounded-xl bg-amber-accent py-2.5 text-sm font-semibold text-bar-950"
-            >
-              Save code
-            </button>
-            <button
-              type="button"
-              onClick={() => void handleSyncNow()}
-              className="flex-1 rounded-xl border border-app bg-bar-800 py-2.5 text-sm font-medium text-foreground"
-            >
-              Sync now
-            </button>
-          </div>
+          <button
+            type="button"
+            onClick={() => void handleLoadFromServer()}
+            className="w-full rounded-xl bg-amber-accent py-2.5 text-sm font-semibold text-bar-950"
+          >
+            Load from server
+          </button>
           <p className="mt-3 text-xs text-subtle">
-            Last synced: {formatSyncTime(lastSyncedAt)}
-            {syncStatus === 'syncing' ? ' · Syncing…' : ''}
-            {syncStatus === 'synced' ? ' · Synced just now' : ''}
-            {syncStatus === 'error' ? ' · Sync failed — check connection and sign-in' : ''}
+            Last loaded: {formatSyncTime(lastSyncedAt)}
+            {syncStatus === 'syncing' ? ' · Working…' : ''}
+            {syncStatus === 'synced' ? ' · Done' : ''}
+            {syncStatus === 'error' ? ' · Failed — check connection and sign-in' : ''}
             {syncStatus === 'not-configured' ? ' · Server storage not set up' : ''}
           </p>
+        </section>
+
+        <section className="rounded-2xl border border-app bg-bar-900/60 p-4">
+          <h2 className="mb-1 text-base font-semibold text-foreground">Server settings</h2>
+          <p className="mb-3 text-sm text-muted">Save cart search URL and random-recipe preference to the server.</p>
+          <button
+            type="button"
+            onClick={() => void handleSaveServerSettings()}
+            className="w-full rounded-xl border border-app bg-bar-800 py-2.5 text-sm font-medium text-foreground"
+          >
+            Save settings to server
+          </button>
         </section>
 
         <section className="rounded-2xl border border-app bg-bar-900/60 p-4">

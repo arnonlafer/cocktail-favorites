@@ -7,6 +7,7 @@ import {
   loadCollections,
   renameCollection,
 } from '../lib/storage'
+import { saveToServer } from '../lib/serverSave'
 import { PageHeader } from './PageHeader'
 import { IconEdit, IconTrash } from './icons'
 
@@ -153,6 +154,16 @@ export function CollectionsPage({ onChanged }: Props) {
         {collections.length === 0 && (
           <p className="py-8 text-center text-sm text-muted">No lists yet.</p>
         )}
+
+        <button
+          type="button"
+          onClick={async () => {
+            await saveToServer()
+          }}
+          className="mt-6 w-full rounded-xl border border-app-strong bg-surface py-3 text-sm font-medium text-primary"
+        >
+          Save to server
+        </button>
       </div>
     </div>
   )

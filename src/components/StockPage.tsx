@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import { createCartItem } from '../lib/cart'
+import { saveToServer } from '../lib/serverSave'
 import {
   createStockItem,
   formatQuantityLeft,
@@ -30,6 +31,7 @@ interface Props {
   cart: CartItem[]
   onSaveStock: (items: StockItem[], lastCategory: StockCategory) => void
   onAddToCart: (items: CartItem[]) => void
+  onSaved: () => void
 }
 
 const primaryButtonClass =
@@ -287,12 +289,14 @@ function StockItemEditor({
   mode,
   lastCategory,
   onSaveStock,
+  onSaved,
 }: {
   items: StockItem[]
   itemId?: string
   mode: 'add' | 'edit'
   lastCategory: StockCategory
   onSaveStock: (items: StockItem[], lastCategory: StockCategory) => void
+  onSaved: () => void
 }) {
   const navigate = useNavigate()
   const existing = mode === 'edit' ? items.find((item) => item.id === itemId) : undefined
@@ -303,6 +307,7 @@ function StockItemEditor({
   )
   const [open, setOpen] = useState(existing?.open ?? false)
   const [quantityLeft, setQuantityLeft] = useState(String(existing?.quantityLeft ?? 1))
+  const [saving, setSaving] = useState(false)
 
   useEffect(() => {
     if (!existing) return
@@ -335,13 +340,24 @@ function StockItemEditor({
     return next
   }
 
-  const handleSave = () => {
+  const handleSave = async () => {
     if (!persistItem()) return
-    navigate('/stock')
+    setSaving(true)
+    const status = await saveToServer()
+    setSaving(false)
+    if (status === 'synced') {
+      onSaved()
+      navigate('/stock')
+    }
   }
 
-  const handleSaveAndAddNew = () => {
+  const handleSaveAndAddNew = async () => {
     if (!persistItem()) return
+    setSaving(true)
+    const status = await saveToServer()
+    setSaving(false)
+    if (status !== 'synced') return
+    onSaved()
     if (mode === 'add') {
       setName('')
       setOpen(false)
@@ -351,14 +367,20 @@ function StockItemEditor({
     navigate('/stock/new')
   }
 
-  const handleDelete = () => {
+  const handleDelete = async () => {
     if (!existing) {
       navigate('/stock')
       return
     }
     if (!window.confirm(`Delete "${existing.name}" from stock?`)) return
     onSaveStock(removeStockItem(items, existing.id), lastCategory)
-    navigate('/stock')
+    setSaving(true)
+    const status = await saveToServer()
+    setSaving(false)
+    if (status === 'synced') {
+      onSaved()
+      navigate('/stock')
+    }
   }
 
   if (mode === 'edit' && itemId && !existing) {
@@ -376,10 +398,15 @@ function StockItemEditor({
   const qty = Number.isFinite(parsedQty) ? Math.max(0, parsedQty) : 0
   const empty = isStockEmpty({ quantityLeft: qty })
   const canSave = name.trim().length > 0
+  const isDirty =
+    name.trim() !== (existing?.name ?? '') ||
+    category !== (existing ? normalizeStockCategory(existing.category) : lastCategory) ||
+    open !== (existing?.open ?? false) ||
+    qty !== (existing?.quantityLeft ?? 1)
 
   return (
     <div className="pb-page-end">
-      <PageHeader title={mode === 'add' ? 'Add Stock' : 'Edit Stock'} backTo="/stock">
+      <PageHeader title={mode === 'add' ? 'Add Stock' : 'Edit Stock'} backTo="/stock" confirmBack={isDirty}>
         {existing && (
           <button type="button" onClick={handleDelete} className="text-sm font-semibold text-red-300">
             Delete
@@ -463,14 +490,14 @@ function StockItemEditor({
           </button>
         )}
 
-        <button type="button" onClick={handleSave} disabled={!canSave} className={primaryButtonClass}>
-          Save
+        <button type="button" onClick={() => void handleSave()} disabled={!canSave || saving} className={primaryButtonClass}>
+          {saving ? 'Saving…' : 'Save'}
         </button>
 
         <button
           type="button"
-          onClick={handleSaveAndAddNew}
-          disabled={!canSave}
+          onClick={() => void handleSaveAndAddNew()}
+          disabled={!canSave || saving}
           className={secondaryButtonClass}
         >
           Save & Add New
@@ -490,7 +517,7 @@ function StockItemEditor({
   )
 }
 
-export function StockPage({ items, lastCategory, cart, onSaveStock, onAddToCart }: Props) {
+export function StockPage({ items, lastCategory, cart, onSaveStock, onAddToCart, onSaved }: Props) {
   const { id } = useParams()
 
   if (id === 'new') {
@@ -501,6 +528,7 @@ export function StockPage({ items, lastCategory, cart, onSaveStock, onAddToCart 
         mode="add"
         lastCategory={lastCategory}
         onSaveStock={onSaveStock}
+        onSaved={onSaved}
       />
     )
   }
@@ -514,9 +542,18 @@ export function StockPage({ items, lastCategory, cart, onSaveStock, onAddToCart 
         mode="edit"
         lastCategory={lastCategory}
         onSaveStock={onSaveStock}
+        onSaved={onSaved}
       />
     )
   }
 
-  return <StockList items={items} lastCategory={lastCategory} cart={cart} onSaveStock={onSaveStock} onAddToCart={onAddToCart} />
+  return (
+    <StockList
+      items={items}
+      lastCategory={lastCategory}
+      cart={cart}
+      onSaveStock={onSaveStock}
+      onAddToCart={onAddToCart}
+    />
+  )
 }

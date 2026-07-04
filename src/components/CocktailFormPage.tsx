@@ -3,6 +3,8 @@ import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import { parseDraftSelection } from '../lib/draftPrefill'
 import { getCocktailOrigin, ORIGIN_CLASSIFICATION_OPTIONS } from '../lib/origins'
 import { rankSimilarCocktails } from '../lib/similar'
+import { saveToServer } from '../lib/serverSave'
+import { confirmDiscardChanges } from '../lib/unsavedChanges'
 import type { Cocktail, CocktailClassification, Ingredient } from '../types'
 import {
   GLASS_OPTIONS,
@@ -16,6 +18,7 @@ interface Props {
   cocktails: Cocktail[]
   onSave: (cocktail: Cocktail) => void
   onDelete?: (id: string) => void
+  onSaved?: () => void
   mode: 'add' | 'edit'
 }
 
@@ -68,7 +71,7 @@ function ingredientsToText(ingredients: Ingredient[]): string {
     .join('\n')
 }
 
-export function CocktailFormPage({ cocktails, onSave, onDelete, mode }: Props) {
+export function CocktailFormPage({ cocktails, onSave, onDelete, onSaved, mode }: Props) {
   const { id } = useParams()
   const navigate = useNavigate()
   const location = useLocation()
@@ -182,12 +185,14 @@ export function CocktailFormPage({ cocktails, onSave, onDelete, mode }: Props) {
     }
   }
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     const cocktail = buildCocktail()
     if (!cocktail) return
 
     onSave(cocktail)
+    const status = await saveToServer()
+    if (status === 'synced') onSaved?.()
     if (mode === 'edit') {
       navigate(-1)
     } else {
@@ -203,7 +208,10 @@ export function CocktailFormPage({ cocktails, onSave, onDelete, mode }: Props) {
       <div className="sticky top-0 z-10 flex items-center gap-3 border-b border-app bg-app px-4 py-3 backdrop-blur">
         <button
           type="button"
-          onClick={() => navigate(-1)}
+          onClick={() => {
+            if (!confirmDiscardChanges()) return
+            navigate(-1)
+          }}
           aria-label="Cancel"
           className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-app-strong text-muted"
         >

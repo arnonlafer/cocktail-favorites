@@ -4,7 +4,8 @@ import { Link, useNavigate } from 'react-router-dom'
 import type { IngredientNutrition } from '../types'
 import { getAllNutritionEntries } from '../lib/nutrition'
 import { deleteNutritionEntry, loadNutritionOverrides, loadPrefs, upsertNutritionEntry } from '../lib/storage'
-import { subscribeSyncApplied, syncNow, type SyncStatus } from '../lib/sync'
+import { saveToServer } from '../lib/serverSave'
+import { subscribeSyncApplied, type SyncStatus } from '../lib/sync'
 
 interface Props {
   onChanged: () => void
@@ -77,7 +78,7 @@ export function IngredientsPage({ onChanged }: Props) {
       return
     }
     setSyncStatus('syncing')
-    const status = await syncNow(code)
+    const status = await saveToServer()
     setSyncStatus(status)
     if (status === 'synced') refresh()
   }

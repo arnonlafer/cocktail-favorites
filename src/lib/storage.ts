@@ -1,4 +1,23 @@
 import { DEFAULT_CART_SEARCH_URL } from './cart'
+import {
+  loadCustomCocktails,
+  loadDeletedIds,
+  loadEdits,
+  loadNutritionOverrides,
+  loadUserProfiles,
+  saveCustomCocktails,
+  saveDeletedIds,
+  saveEdits,
+  saveNutritionOverrides,
+  saveUserProfiles,
+  touchDataUpdatedAt,
+} from './dataStore'
+import {
+  getCurrentUserKey,
+  loadLocalUiPrefs,
+  saveLocalUiPrefs,
+  setCurrentUserKey,
+} from './localPrefs'
 import { normalizeStockCategory } from './stock'
 import type {
   AppPreferences,
@@ -8,59 +27,10 @@ import type {
   UserProfile,
 } from '../types'
 
-const PREFS_KEY = 'cocktail-favorites:prefs'
-const CUSTOM_KEY = 'cocktail-favorites:custom'
-const EDITS_KEY = 'cocktail-favorites:edits'
-const DELETED_KEY = 'cocktail-favorites:deleted'
-const NUTRITION_KEY = 'cocktail-favorites:nutrition'
-const USER_PROFILES_KEY = 'cocktail-favorites:user-profiles'
-const CURRENT_USER_KEY = 'cocktail-favorites:current-user'
-const SHARED_KEY = 'cocktail-favorites:shared'
-const LEGACY_COLLAPSED_GROUPS_KEY = 'cocktail-favorites:collapsed-groups'
-
 export const DEFAULT_SYNC_CODE = 'arnon'
-
-let syncSuppressed = false
-
-function triggerRecipeSync() {
-  if (syncSuppressed) return
-  void import('./sync').then((m) => m.syncAfterRecipeChange())
-}
-
-function triggerPrefsSync() {
-  if (syncSuppressed) return
-  void import('./sync').then((m) => m.scheduleSyncPush())
-}
-
-function triggerNutritionSync() {
-  if (syncSuppressed) return
-  bumpSyncTimestamp()
-  void import('./sync').then((m) => m.syncAfterNutritionChange())
-}
-
-export function runWithoutSync(fn: () => void) {
-  syncSuppressed = true
-  try {
-    fn()
-  } finally {
-    syncSuppressed = false
-  }
-}
 
 export function userKey(userName: string): string {
   return userName.trim().toLowerCase().replace(/\s+/g, '-')
-}
-
-interface SharedSettings {
-  syncCode: string
-  syncUpdatedAt: number
-  lastSyncedAt: number | null
-}
-
-const defaultShared: SharedSettings = {
-  syncCode: '',
-  syncUpdatedAt: 0,
-  lastSyncedAt: null,
 }
 
 function defaultProfile(userName: string): UserProfile {
@@ -87,117 +57,15 @@ function defaultProfile(userName: string): UserProfile {
   }
 }
 
-export function getCurrentUserKey(): string {
-  return localStorage.getItem(CURRENT_USER_KEY) ?? ''
-}
-
-export function setCurrentUserKey(key: string) {
-  if (key) localStorage.setItem(CURRENT_USER_KEY, key)
-  else localStorage.removeItem(CURRENT_USER_KEY)
-}
-
-export function loadUserProfiles(): Record<string, UserProfile> {
-  try {
-    const raw = localStorage.getItem(USER_PROFILES_KEY)
-    if (raw) return JSON.parse(raw) as Record<string, UserProfile>
-  } catch {
-    /* fall through to migration */
-  }
-  return migrateLegacyPrefs()
-}
-
-function migrateLegacyCollapsedGroups(): string[] | null {
-  try {
-    const raw = localStorage.getItem(LEGACY_COLLAPSED_GROUPS_KEY)
-    if (!raw) return null
-    localStorage.removeItem(LEGACY_COLLAPSED_GROUPS_KEY)
-    return JSON.parse(raw) as string[]
-  } catch {
-    return null
-  }
-}
-
-function migrateLegacyPrefs(): Record<string, UserProfile> {
-  try {
-    const raw = localStorage.getItem(PREFS_KEY)
-    if (!raw) return {}
-
-    const parsed = JSON.parse(raw) as Partial<AppPreferences>
-    const legacyCollapsed = parsed.collapsedGroups === undefined ? migrateLegacyCollapsedGroups() : null
-    const name = parsed.userName?.trim() || 'Guest'
-    const key = userKey(name)
-
-    const profile: UserProfile = {
-      userName: name,
-      favorites: parsed.favorites ?? [],
-      recentlyViewed: parsed.recentlyViewed ?? {},
-      unit: parsed.unit ?? 'oz',
-      multiplier: parsed.multiplier ?? 1,
-      theme: parsed.theme ?? 'dark',
-      fontSize: parsed.fontSize ?? 'md',
-      collapsedGroups: parsed.collapsedGroups ?? legacyCollapsed,
-      listView: parsed.listView ?? 'list',
-      collections: parsed.collections ?? [],
-      recipeDraft: '',
-      cart: [],
-      stock: [],
-      lastStockCategory: 'whiskey-other',
-      cartSearchUrl: DEFAULT_CART_SEARCH_URL,
-      randomFavoritesOnly: true,
-      homeGroupView: 'spirits',
-      cocktailSort: 'recent',
-      updatedAt: parsed.syncUpdatedAt ?? Date.now(),
-    }
-
-    const profiles = { [key]: profile }
-    localStorage.setItem(USER_PROFILES_KEY, JSON.stringify(profiles))
-    setCurrentUserKey(key)
-
-    const shared: SharedSettings = {
-      syncCode: parsed.syncCode ?? '',
-      syncUpdatedAt: parsed.syncUpdatedAt ?? 0,
-      lastSyncedAt: parsed.lastSyncedAt ?? null,
-    }
-    localStorage.setItem(SHARED_KEY, JSON.stringify(shared))
-    localStorage.removeItem(PREFS_KEY)
-
-    return profiles
-  } catch {
-    return {}
-  }
-}
-
-export function saveUserProfiles(profiles: Record<string, UserProfile>) {
-  localStorage.setItem(USER_PROFILES_KEY, JSON.stringify(profiles))
-}
-
-export function loadSharedSettings(): SharedSettings {
-  try {
-    const raw = localStorage.getItem(SHARED_KEY)
-    if (raw) return { ...defaultShared, ...(JSON.parse(raw) as Partial<SharedSettings>) }
-  } catch {
-    /* ignore */
-  }
-
-  const profiles = loadUserProfiles()
-  if (Object.keys(profiles).length === 0) return { ...defaultShared }
-
-  return { ...defaultShared }
-}
-
-export function saveSharedSettings(shared: SharedSettings) {
-  localStorage.setItem(SHARED_KEY, JSON.stringify(shared))
-}
-
-function profileToPrefs(profile: UserProfile, shared: SharedSettings): AppPreferences {
+function profileToPrefs(profile: UserProfile, localUi: ReturnType<typeof loadLocalUiPrefs>): AppPreferences {
   return {
     userName: profile.userName,
     favorites: profile.favorites,
     recentlyViewed: profile.recentlyViewed,
     unit: profile.unit,
     multiplier: profile.multiplier,
-    theme: profile.theme === 'dim' || profile.theme === 'light' ? profile.theme : 'dark',
-    fontSize: profile.fontSize,
+    theme: localUi.theme === 'dim' || localUi.theme === 'light' ? localUi.theme : 'dark',
+    fontSize: localUi.fontSize,
     collapsedGroups: profile.collapsedGroups,
     listView: profile.listView,
     collections: profile.collections,
@@ -209,9 +77,9 @@ function profileToPrefs(profile: UserProfile, shared: SharedSettings): AppPrefer
     randomFavoritesOnly: profile.randomFavoritesOnly ?? true,
     homeGroupView: profile.homeGroupView ?? 'spirits',
     cocktailSort: profile.cocktailSort ?? 'recent',
-    syncCode: shared.syncCode,
-    syncUpdatedAt: shared.syncUpdatedAt,
-    lastSyncedAt: shared.lastSyncedAt,
+    syncCode: localUi.syncCode,
+    syncUpdatedAt: 0,
+    lastSyncedAt: localUi.lastSyncedAt,
   }
 }
 
@@ -230,7 +98,15 @@ function getCurrentProfile(): UserProfile {
 }
 
 export function loadPrefs(): AppPreferences {
-  return profileToPrefs(getCurrentProfile(), loadSharedSettings())
+  return profileToPrefs(getCurrentProfile(), loadLocalUiPrefs())
+}
+
+export function saveLocalAppearance(theme: Theme, fontSize: AppPreferences['fontSize']) {
+  saveLocalUiPrefs({ theme, fontSize })
+}
+
+export function saveSyncCode(syncCode: string) {
+  saveLocalUiPrefs({ syncCode })
 }
 
 export function savePrefs(prefs: AppPreferences) {
@@ -238,14 +114,14 @@ export function savePrefs(prefs: AppPreferences) {
   if (!getCurrentUserKey()) setCurrentUserKey(key)
 
   const profiles = loadUserProfiles()
+  const existing = profiles[key] ?? defaultProfile(prefs.userName || 'Guest')
   profiles[key] = {
+    ...existing,
     userName: prefs.userName,
     favorites: prefs.favorites,
     recentlyViewed: prefs.recentlyViewed,
     unit: prefs.unit,
     multiplier: prefs.multiplier,
-    theme: prefs.theme,
-    fontSize: prefs.fontSize,
     collapsedGroups: prefs.collapsedGroups,
     listView: prefs.listView,
     collections: prefs.collections ?? [],
@@ -260,23 +136,13 @@ export function savePrefs(prefs: AppPreferences) {
     updatedAt: Date.now(),
   }
   saveUserProfiles(profiles)
+  touchDataUpdatedAt()
 
-  const shared = loadSharedSettings()
-  shared.syncCode = prefs.syncCode
-  shared.syncUpdatedAt = prefs.syncUpdatedAt
-  shared.lastSyncedAt = prefs.lastSyncedAt
-  saveSharedSettings(shared)
-
-  triggerPrefsSync()
+  if (prefs.syncCode !== undefined) {
+    saveLocalUiPrefs({ syncCode: prefs.syncCode })
+  }
 }
 
-function bumpSyncTimestamp() {
-  const shared = loadSharedSettings()
-  shared.syncUpdatedAt = Date.now()
-  saveSharedSettings(shared)
-}
-
-/** Switch to a user profile on login; set default sync code on first household use. */
 export function switchUser(userName: string) {
   const name = userName.trim()
   const key = userKey(name)
@@ -285,13 +151,12 @@ export function switchUser(userName: string) {
   const profiles = loadUserProfiles()
   if (!profiles[key]) {
     profiles[key] = { ...defaultProfile(name), updatedAt: 0 }
-    saveUserProfiles(profiles)
+    saveUserProfiles(profiles, false)
   }
 
-  const shared = loadSharedSettings()
-  if (!shared.syncCode.trim()) {
-    shared.syncCode = DEFAULT_SYNC_CODE
-    saveSharedSettings(shared)
+  const localUi = loadLocalUiPrefs()
+  if (!localUi.syncCode.trim()) {
+    saveLocalUiPrefs({ syncCode: DEFAULT_SYNC_CODE })
   }
 }
 
@@ -299,68 +164,7 @@ export function saveLoginProfile(userName: string) {
   switchUser(userName)
 }
 
-export function loadCustomCocktails(): import('../types').Cocktail[] {
-  try {
-    const raw = localStorage.getItem(CUSTOM_KEY)
-    if (!raw) return []
-    return JSON.parse(raw) as import('../types').Cocktail[]
-  } catch {
-    return []
-  }
-}
-
-export function saveCustomCocktails(cocktails: import('../types').Cocktail[]) {
-  localStorage.setItem(CUSTOM_KEY, JSON.stringify(cocktails))
-  bumpSyncTimestamp()
-  triggerRecipeSync()
-}
-
-export function loadEdits(): Record<string, import('../types').Cocktail> {
-  try {
-    const raw = localStorage.getItem(EDITS_KEY)
-    if (!raw) return {}
-    return JSON.parse(raw) as Record<string, import('../types').Cocktail>
-  } catch {
-    return {}
-  }
-}
-
-export function saveEdits(edits: Record<string, import('../types').Cocktail>) {
-  localStorage.setItem(EDITS_KEY, JSON.stringify(edits))
-  bumpSyncTimestamp()
-  triggerRecipeSync()
-}
-
-export function loadDeletedIds(): string[] {
-  try {
-    const raw = localStorage.getItem(DELETED_KEY)
-    if (!raw) return []
-    return JSON.parse(raw) as string[]
-  } catch {
-    return []
-  }
-}
-
-export function saveDeletedIds(ids: string[]) {
-  localStorage.setItem(DELETED_KEY, JSON.stringify(ids))
-  bumpSyncTimestamp()
-  triggerRecipeSync()
-}
-
-export function loadNutritionOverrides(): import('../types').IngredientNutrition[] {
-  try {
-    const raw = localStorage.getItem(NUTRITION_KEY)
-    if (!raw) return []
-    return JSON.parse(raw) as import('../types').IngredientNutrition[]
-  } catch {
-    return []
-  }
-}
-
-export function saveNutritionOverrides(entries: import('../types').IngredientNutrition[]) {
-  localStorage.setItem(NUTRITION_KEY, JSON.stringify(entries))
-  triggerNutritionSync()
-}
+export { loadCustomCocktails, loadEdits, loadDeletedIds, loadNutritionOverrides, loadUserProfiles, saveCustomCocktails }
 
 export function upsertNutritionEntry(entry: import('../types').IngredientNutrition) {
   const entries = loadNutritionOverrides()
@@ -390,13 +194,17 @@ export function deleteCocktail(id: string, isCustom: boolean) {
   }
 
   const prefs = loadPrefs()
-  prefs.favorites = prefs.favorites.filter((f) => f !== id)
-  delete prefs.recentlyViewed[id]
-  prefs.collections = prefs.collections.map((c) => ({
-    ...c,
-    cocktailIds: c.cocktailIds.filter((cid) => cid !== id),
-  }))
-  savePrefs(prefs)
+  savePrefs({
+    ...prefs,
+    favorites: prefs.favorites.filter((f) => f !== id),
+    recentlyViewed: Object.fromEntries(
+      Object.entries(prefs.recentlyViewed).filter(([cocktailId]) => cocktailId !== id),
+    ),
+    collections: prefs.collections.map((c) => ({
+      ...c,
+      cocktailIds: c.cocktailIds.filter((cid) => cid !== id),
+    })),
+  })
 }
 
 export function saveCocktailEdit(cocktail: import('../types').Cocktail) {
@@ -416,9 +224,11 @@ export function saveCocktailEdit(cocktail: import('../types').Cocktail) {
 
 export function markRecentlyViewed(id: string) {
   const prefs = loadPrefs()
-  prefs.recentlyViewed[id] = Date.now()
-  prefs.collapsedGroups = null
-  savePrefs(prefs)
+  savePrefs({
+    ...prefs,
+    recentlyViewed: { ...prefs.recentlyViewed, [id]: Date.now() },
+    collapsedGroups: null,
+  })
 }
 
 export function toggleFavorite(id: string): boolean {
@@ -426,9 +236,7 @@ export function toggleFavorite(id: string): boolean {
   const set = new Set(prefs.favorites)
   if (set.has(id)) set.delete(id)
   else set.add(id)
-  prefs.favorites = [...set]
-  savePrefs(prefs)
-  void import('./sync').then((m) => m.syncAfterPrefsChange())
+  savePrefs({ ...prefs, favorites: [...set] })
   return set.has(id)
 }
 
@@ -439,56 +247,62 @@ export function createCollection(name: string): Collection {
     name: name.trim(),
     cocktailIds: [],
   }
-  prefs.collections = [...prefs.collections, collection]
-  savePrefs(prefs)
+  savePrefs({ ...prefs, collections: [...prefs.collections, collection] })
   return collection
 }
 
 export function renameCollection(id: string, name: string) {
   const prefs = loadPrefs()
-  prefs.collections = prefs.collections.map((c) =>
-    c.id === id ? { ...c, name: name.trim() } : c,
-  )
-  savePrefs(prefs)
+  savePrefs({
+    ...prefs,
+    collections: prefs.collections.map((c) =>
+      c.id === id ? { ...c, name: name.trim() } : c,
+    ),
+  })
 }
 
 export function deleteCollection(id: string) {
   const prefs = loadPrefs()
-  prefs.collections = prefs.collections.filter((c) => c.id !== id)
-  savePrefs(prefs)
+  savePrefs({
+    ...prefs,
+    collections: prefs.collections.filter((c) => c.id !== id),
+  })
 }
 
 export function addCocktailToCollection(collectionId: string, cocktailId: string) {
   const prefs = loadPrefs()
-  prefs.collections = prefs.collections.map((c) => {
-    if (c.id !== collectionId) return c
-    if (c.cocktailIds.includes(cocktailId)) return c
-    return { ...c, cocktailIds: [...c.cocktailIds, cocktailId] }
+  savePrefs({
+    ...prefs,
+    collections: prefs.collections.map((c) => {
+      if (c.id !== collectionId) return c
+      if (c.cocktailIds.includes(cocktailId)) return c
+      return { ...c, cocktailIds: [...c.cocktailIds, cocktailId] }
+    }),
   })
-  savePrefs(prefs)
 }
 
 export function removeCocktailFromCollection(collectionId: string, cocktailId: string) {
   const prefs = loadPrefs()
-  prefs.collections = prefs.collections.map((c) =>
-    c.id === collectionId
-      ? { ...c, cocktailIds: c.cocktailIds.filter((id) => id !== cocktailId) }
-      : c,
-  )
-  savePrefs(prefs)
+  savePrefs({
+    ...prefs,
+    collections: prefs.collections.map((c) =>
+      c.id === collectionId
+        ? { ...c, cocktailIds: c.cocktailIds.filter((id) => id !== cocktailId) }
+        : c,
+    ),
+  })
 }
 
 export function loadCollections(): Collection[] {
   return loadPrefs().collections
 }
 
-/** Used by sync to read/write all user data. */
 export function exportSyncUserData(): {
   syncCode: string
   userProfiles: Record<string, UserProfile>
 } {
   return {
-    syncCode: loadSharedSettings().syncCode,
+    syncCode: loadLocalUiPrefs().syncCode,
     userProfiles: loadUserProfiles(),
   }
 }
@@ -499,12 +313,9 @@ export function importSyncUserData(
   preserveCurrentUserKey = true,
 ) {
   const currentKey = preserveCurrentUserKey ? getCurrentUserKey() : ''
-  saveUserProfiles(userProfiles)
+  saveUserProfiles(userProfiles, false)
   if (currentKey) setCurrentUserKey(currentKey)
-
-  const shared = loadSharedSettings()
-  shared.syncCode = syncCode || shared.syncCode
-  saveSharedSettings(shared)
+  if (syncCode) saveLocalUiPrefs({ syncCode })
 }
 
-export type { SharedSettings, UserProfile, Theme, UnitSystem }
+export type { UserProfile, Theme, UnitSystem }
