@@ -4,6 +4,7 @@ import type { FontSize, Theme } from '../types'
 import { FONT_SIZE_LABELS, THEME_LABELS, THEME_ORDER, stepFontSize } from '../lib/theme'
 import { DEFAULT_CART_SEARCH_URL } from '../lib/cart'
 import { logout } from '../lib/auth'
+import { downloadAppExport } from '../lib/export'
 import { checkSyncServer, formatSyncTime, syncNow, type SyncStatus } from '../lib/sync'
 import { PageHeader } from './PageHeader'
 import { AiSettingsSection } from './AiSettingsSection'
@@ -278,6 +279,21 @@ export function SettingsPage({
             {syncStatus === 'error' ? ' · Sync failed — check connection and sign-in' : ''}
             {syncStatus === 'not-configured' ? ' · Server storage not set up' : ''}
           </p>
+        </section>
+
+        <section className="rounded-2xl border border-app bg-bar-900/60 p-4">
+          <h2 className="mb-1 text-base font-semibold text-foreground">Export backup</h2>
+          <p className="mb-3 text-sm text-muted">
+            Download a JSON backup of your recipe edits, custom cocktails, lists, draft, cart, stock, and other
+            saved data from this device.
+          </p>
+          <button
+            type="button"
+            onClick={() => downloadAppExport()}
+            className="w-full rounded-xl border border-app bg-bar-800 py-2.5 text-sm font-medium text-foreground"
+          >
+            Export JSON
+          </button>
         </section>
 
         <section className="rounded-2xl border border-app bg-bar-900/60 p-4">

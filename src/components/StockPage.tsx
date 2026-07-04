@@ -340,8 +340,14 @@ function StockItemEditor({
     navigate('/stock')
   }
 
-  const handleSaveAndAddMore = () => {
+  const handleSaveAndAddNew = () => {
     if (!persistItem()) return
+    if (mode === 'add') {
+      setName('')
+      setOpen(false)
+      setQuantityLeft('1')
+      return
+    }
     navigate('/stock/new')
   }
 
@@ -461,18 +467,16 @@ function StockItemEditor({
           Save
         </button>
 
-        {existing && (
-          <button
-            type="button"
-            onClick={handleSaveAndAddMore}
-            disabled={!canSave}
-            className={secondaryButtonClass}
-          >
-            Save & Add More
-          </button>
-        )}
+        <button
+          type="button"
+          onClick={handleSaveAndAddNew}
+          disabled={!canSave}
+          className={secondaryButtonClass}
+        >
+          Save & Add New
+        </button>
 
-        {!existing && (
+        {mode === 'add' && (
           <button
             type="button"
             onClick={() => navigate('/stock')}
