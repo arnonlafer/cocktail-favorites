@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import { createCartItem } from '../lib/cart'
 import {
@@ -31,6 +31,12 @@ interface Props {
   onSaveStock: (items: StockItem[], lastCategory: StockCategory) => void
   onAddToCart: (items: CartItem[]) => void
 }
+
+const primaryButtonClass =
+  'w-full rounded-2xl bg-amber-accent py-3.5 text-base font-semibold text-bar-950 disabled:opacity-40'
+
+const secondaryButtonClass =
+  'w-full rounded-2xl border border-app-strong py-3.5 text-base font-semibold text-foreground'
 
 const fieldClass =
   'w-full rounded-xl border border-app bg-bar-800 px-3 py-2.5 text-foreground outline-none focus:border-amber-accent/60'
@@ -290,8 +296,6 @@ function StockItemEditor({
 }) {
   const navigate = useNavigate()
   const existing = mode === 'edit' ? items.find((item) => item.id === itemId) : undefined
-  const createdIdRef = useRef<string | null>(null)
-  const navigatedRef = useRef(false)
 
   const [name, setName] = useState(existing?.name ?? '')
   const [category, setCategory] = useState<StockCategory>(
@@ -308,36 +312,38 @@ function StockItemEditor({
     setQuantityLeft(String(existing.quantityLeft))
   }, [existing?.id])
 
-  useEffect(() => {
+  const buildStockItem = (): StockItem | null => {
     const trimmedName = name.trim()
-    if (!trimmedName) return
+    if (!trimmedName) return null
 
     const parsedQty = Number(quantityLeft)
     const qty = Number.isFinite(parsedQty) ? Math.max(0, parsedQty) : 0
-    let id = existing?.id ?? createdIdRef.current
-    if (!id) {
-      id = createStockItem().id
-      createdIdRef.current = id
-    }
 
-    const next: StockItem = {
-      id,
+    return {
+      id: existing?.id ?? createStockItem().id,
       name: trimmedName,
       category,
       open,
       quantityLeft: qty,
     }
+  }
 
-    const timer = window.setTimeout(() => {
-      onSaveStock(upsertStockItem(items, next), category)
-      if (mode === 'add' && id && !navigatedRef.current) {
-        navigatedRef.current = true
-        navigate(`/stock/${id}`, { replace: true })
-      }
-    }, 600)
+  const persistItem = (): StockItem | null => {
+    const next = buildStockItem()
+    if (!next) return null
+    onSaveStock(upsertStockItem(items, next), category)
+    return next
+  }
 
-    return () => window.clearTimeout(timer)
-  }, [name, category, open, quantityLeft, existing, items, mode, navigate, onSaveStock])
+  const handleSave = () => {
+    if (!persistItem()) return
+    navigate('/stock')
+  }
+
+  const handleSaveAndAddMore = () => {
+    if (!persistItem()) return
+    navigate('/stock/new')
+  }
 
   const handleDelete = () => {
     if (!existing) {
@@ -363,22 +369,16 @@ function StockItemEditor({
   const parsedQty = Number(quantityLeft)
   const qty = Number.isFinite(parsedQty) ? Math.max(0, parsedQty) : 0
   const empty = isStockEmpty({ quantityLeft: qty })
+  const canSave = name.trim().length > 0
 
   return (
     <div className="pb-page-end">
       <PageHeader title={mode === 'add' ? 'Add Stock' : 'Edit Stock'} backTo="/stock">
-        <div className="flex shrink-0 items-center gap-3">
-          {existing && (
-            <Link to="/stock/new" className="text-sm font-semibold text-amber-accent">
-              Add
-            </Link>
-          )}
-          {existing && (
-            <button type="button" onClick={handleDelete} className="text-sm font-semibold text-red-300">
-              Delete
-            </button>
-          )}
-        </div>
+        {existing && (
+          <button type="button" onClick={handleDelete} className="text-sm font-semibold text-red-300">
+            Delete
+          </button>
+        )}
       </PageHeader>
 
       <div className="space-y-5 px-4 pt-4">
@@ -457,11 +457,26 @@ function StockItemEditor({
           </button>
         )}
 
+        <button type="button" onClick={handleSave} disabled={!canSave} className={primaryButtonClass}>
+          Save
+        </button>
+
+        {existing && (
+          <button
+            type="button"
+            onClick={handleSaveAndAddMore}
+            disabled={!canSave}
+            className={secondaryButtonClass}
+          >
+            Save & Add More
+          </button>
+        )}
+
         {!existing && (
           <button
             type="button"
-            onClick={handleDelete}
-            className="w-full rounded-2xl border border-app-strong py-3 text-sm font-semibold text-muted"
+            onClick={() => navigate('/stock')}
+            className={secondaryButtonClass}
           >
             Cancel
           </button>
