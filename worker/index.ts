@@ -10,7 +10,10 @@ export interface Env {
 const SYNC_HEADER = 'X-Sync-Code'
 
 function json(data: unknown, status = 200) {
-  return Response.json(data, { status })
+  return Response.json(data, {
+    status,
+    headers: { 'Cache-Control': 'no-store' },
+  })
 }
 
 export default {

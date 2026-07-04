@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import { createCartItem } from '../lib/cart'
-import { saveToServer } from '../lib/serverSave'
+import { describeSaveStatus, saveToServer } from '../lib/serverSave'
 import {
   createStockItem,
   formatQuantityLeft,
@@ -308,6 +308,7 @@ function StockItemEditor({
   const [open, setOpen] = useState(existing?.open ?? false)
   const [quantityLeft, setQuantityLeft] = useState(String(existing?.quantityLeft ?? 1))
   const [saving, setSaving] = useState(false)
+  const [saveMessage, setSaveMessage] = useState<{ ok: boolean; message: string } | null>(null)
 
   useEffect(() => {
     if (!existing) return
@@ -340,24 +341,30 @@ function StockItemEditor({
     return next
   }
 
+  const uploadToServer = async (): Promise<boolean> => {
+    setSaveMessage(null)
+    setSaving(true)
+    try {
+      const status = await saveToServer()
+      const result = describeSaveStatus(status)
+      setSaveMessage(result)
+      if (result.ok) onSaved()
+      return result.ok
+    } finally {
+      setSaving(false)
+    }
+  }
+
   const handleSave = async () => {
     if (!persistItem()) return
-    setSaving(true)
-    const status = await saveToServer()
-    setSaving(false)
-    if (status === 'synced') {
-      onSaved()
-      navigate('/stock')
-    }
+    const ok = await uploadToServer()
+    if (ok) navigate('/stock')
   }
 
   const handleSaveAndAddNew = async () => {
     if (!persistItem()) return
-    setSaving(true)
-    const status = await saveToServer()
-    setSaving(false)
-    if (status !== 'synced') return
-    onSaved()
+    const ok = await uploadToServer()
+    if (!ok) return
     if (mode === 'add') {
       setName('')
       setOpen(false)
@@ -374,13 +381,8 @@ function StockItemEditor({
     }
     if (!window.confirm(`Delete "${existing.name}" from stock?`)) return
     onSaveStock(removeStockItem(items, existing.id), lastCategory)
-    setSaving(true)
-    const status = await saveToServer()
-    setSaving(false)
-    if (status === 'synced') {
-      onSaved()
-      navigate('/stock')
-    }
+    const ok = await uploadToServer()
+    if (ok) navigate('/stock')
   }
 
   if (mode === 'edit' && itemId && !existing) {
@@ -488,6 +490,18 @@ function StockItemEditor({
           >
             Mark as ran out
           </button>
+        )}
+
+        {saveMessage && (
+          <p
+            className={`rounded-xl px-3 py-2 text-sm ${
+              saveMessage.ok
+                ? 'border border-emerald-900/40 bg-emerald-950/30 text-emerald-200'
+                : 'border border-red-900/50 bg-red-950/40 text-red-200'
+            }`}
+          >
+            {saveMessage.message}
+          </p>
         )}
 
         <button type="button" onClick={() => void handleSave()} disabled={!canSave || saving} className={primaryButtonClass}>

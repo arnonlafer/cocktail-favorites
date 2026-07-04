@@ -203,6 +203,7 @@ export function applySyncPayload(payload: SyncPayload) {
 async function fetchRemotePayload(code: string): Promise<SyncPayload | null | 'not-configured' | 'error'> {
   try {
     const res = await fetch('/api/sync', {
+      cache: 'no-store',
       headers: { ...authHeaders(), [SYNC_HEADER]: code },
     })
 
@@ -220,6 +221,7 @@ async function uploadPayload(code: string, payload: SyncPayload): Promise<SyncSt
   try {
     const res = await fetch('/api/sync', {
       method: 'PUT',
+      cache: 'no-store',
       headers: {
         ...authHeaders(),
         [SYNC_HEADER]: code,
@@ -256,10 +258,15 @@ export async function pushToServer(syncCode: string): Promise<SyncStatus> {
   if (!code) return 'not-configured'
 
   const payload = buildSyncPayload()
-  payload.updatedAt = Date.now()
+  const now = Date.now()
+  payload.updatedAt = now
+  for (const profile of Object.values(payload.userProfiles ?? {})) {
+    profile.updatedAt = Math.max(profile.updatedAt ?? 0, now)
+  }
+
   const uploaded = await uploadPayload(code, payload)
   if (uploaded === 'synced') {
-    saveLocalUiPrefs({ lastSyncedAt: Date.now() })
+    saveLocalUiPrefs({ lastSyncedAt: now })
     notifySyncApplied()
   }
   return uploaded
@@ -277,6 +284,7 @@ export function formatSyncTime(timestamp: number | null | undefined): string {
 export async function checkSyncServer(): Promise<'ready' | 'not-configured' | 'error'> {
   try {
     const res = await fetch('/api/sync', {
+      cache: 'no-store',
       headers: { ...authHeaders(), [SYNC_HEADER]: 'probe' },
     })
     if (res.status === 503) return 'not-configured'
