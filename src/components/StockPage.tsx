@@ -119,6 +119,7 @@ function StockList({
 }: Pick<Props, 'items' | 'lastCategory' | 'cart' | 'onSaveStock' | 'onAddToCart'>) {
   const [query, setQuery] = useState('')
   const [expanded, setExpanded] = useState<Set<StockListGroup>>(() => new Set())
+  const hasQuery = query.trim().length > 0
   const filteredItems = useMemo(() => {
     const q = query.trim().toLowerCase()
     if (!q) return items
@@ -126,7 +127,12 @@ function StockList({
   }, [items, query])
   const grouped = useMemo(() => groupStockForList(filteredItems), [filteredItems])
   const cartNames = useMemo(() => new Set(cart.map((item) => item.name.toLowerCase())), [cart])
-  const allExpanded = grouped.length > 0 && grouped.every(({ group }) => expanded.has(group))
+  // While searching, auto-expand every matching category so results are visible.
+  const effectiveExpanded = useMemo(
+    () => (hasQuery ? new Set(grouped.map(({ group }) => group)) : expanded),
+    [hasQuery, grouped, expanded],
+  )
+  const allExpanded = grouped.length > 0 && grouped.every(({ group }) => effectiveExpanded.has(group))
 
   const toggleCategory = (group: StockListGroup) => {
     setExpanded((prev) => {
@@ -148,10 +154,12 @@ function StockList({
   const addItemToCart = (name: string) => {
     if (cartNames.has(name.toLowerCase())) return
     onAddToCart([...cart, createCartItem(name)])
+    void saveToServer()
   }
 
   const markItemEmpty = (id: string) => {
     onSaveStock(markStockItemEmpty(items, id), lastCategory)
+    void saveToServer()
   }
 
   return (
@@ -165,7 +173,7 @@ function StockList({
       <div className="space-y-4 px-4 pt-4">
         <SearchBar value={query} onChange={setQuery} placeholder="Search stock…" />
 
-        {grouped.length > 0 && (
+        {grouped.length > 0 && !hasQuery && (
           <div className="flex justify-end">
             <button
               type="button"
@@ -188,7 +196,7 @@ function StockList({
             <StockListSection
               key={section.group}
               section={section}
-              isExpanded={expanded.has(section.group)}
+              isExpanded={effectiveExpanded.has(section.group)}
               cartNames={cartNames}
               onToggle={() => toggleCategory(section.group)}
               onMarkEmpty={markItemEmpty}
