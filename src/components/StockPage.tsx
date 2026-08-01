@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react'
-import { Link, useNavigate, useParams } from 'react-router-dom'
+import { Link, useLocation, useNavigate, useParams } from 'react-router-dom'
 import { createCartItem } from '../lib/cart'
 import { describeSaveStatus, saveToServer } from '../lib/serverSave'
 import {
@@ -23,6 +23,7 @@ import {
   WHISKEY_SUBCATEGORIES,
   WHISKEY_SUBCATEGORY_LABELS,
 } from '../types'
+import { BarcodeScanButton, BarcodeScannerModal } from './BarcodeScannerModal'
 import { PageHeader } from './PageHeader'
 import { SearchBar } from './SearchBar'
 import { VoiceCommandPanel, VoiceMicButton } from './VoiceCommandPanel'
@@ -121,6 +122,7 @@ function StockList({
   onAddToCart,
   onSaved,
 }: Pick<Props, 'items' | 'lastCategory' | 'cart' | 'onSaveStock' | 'onAddToCart' | 'onSaved'>) {
+  const navigate = useNavigate()
   const [query, setQuery] = useState('')
   const [expanded, setExpanded] = useState<Set<StockListGroup>>(() => new Set())
   const [localItems, setLocalItems] = useState(items)
@@ -129,6 +131,7 @@ function StockList({
   const [voicePending, setVoicePending] = useState(false)
   const [saving, setSaving] = useState(false)
   const [saveMessage, setSaveMessage] = useState<{ ok: boolean; message: string } | null>(null)
+  const [scanning, setScanning] = useState(false)
 
   const incomingKey = JSON.stringify(items)
   if (!voicePending && incomingKey !== syncedKey) {
@@ -230,9 +233,13 @@ function StockList({
     <div className="pb-page-end">
       <PageHeader title="Stock" confirmBack={voicePending && dirty}>
         <div className="flex items-center gap-2">
+          <BarcodeScanButton
+            disabled={voice.processing || saving || scanning}
+            onClick={() => setScanning(true)}
+          />
           <VoiceMicButton
             listening={voice.listening}
-            disabled={voice.processing || saving}
+            disabled={voice.processing || saving || scanning}
             onClick={voice.toggleMic}
           />
           <Link to="/stock/new" className="text-sm font-semibold text-amber-accent">
@@ -240,6 +247,14 @@ function StockList({
           </Link>
         </div>
       </PageHeader>
+
+      <BarcodeScannerModal
+        open={scanning}
+        onClose={() => setScanning(false)}
+        onProduct={(product) => {
+          navigate('/stock/new', { state: { prefillName: product.name } })
+        }}
+      />
 
       <div className="space-y-4 px-4 pt-4">
         <VoiceCommandPanel
@@ -392,9 +407,14 @@ function StockItemEditor({
   onSaved: () => void
 }) {
   const navigate = useNavigate()
+  const location = useLocation()
   const existing = mode === 'edit' ? items.find((item) => item.id === itemId) : undefined
+  const prefillName =
+    mode === 'add'
+      ? ((location.state as { prefillName?: string } | null)?.prefillName?.trim() ?? '')
+      : ''
 
-  const [name, setName] = useState(existing?.name ?? '')
+  const [name, setName] = useState(existing?.name ?? prefillName)
   const [category, setCategory] = useState<StockCategory>(
     existing ? normalizeStockCategory(existing.category) : lastCategory,
   )

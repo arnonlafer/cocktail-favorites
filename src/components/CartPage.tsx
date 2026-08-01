@@ -4,6 +4,7 @@ import { cartItemUrl, createCartItem } from '../lib/cart'
 import { describeSaveStatus, saveToServer } from '../lib/serverSave'
 import { runCartVoiceCommand } from '../lib/voiceCommands'
 import { useVoiceCommand } from '../hooks/useVoiceCommand'
+import { BarcodeScanButton, BarcodeScannerModal } from './BarcodeScannerModal'
 import { IconClose } from './icons'
 import { PageHeader } from './PageHeader'
 import { VoiceCommandPanel, VoiceMicButton } from './VoiceCommandPanel'
@@ -26,6 +27,7 @@ export function CartPage({ items, searchUrl, onSave, onSaved }: Props) {
   const [saving, setSaving] = useState(false)
   const [saveMessage, setSaveMessage] = useState<{ ok: boolean; message: string } | null>(null)
   const [verifyMessage, setVerifyMessage] = useState<string | null>(null)
+  const [scanning, setScanning] = useState(false)
 
   const incomingKey = itemsKey(items)
   if (incomingKey !== syncedKey) {
@@ -96,6 +98,19 @@ export function CartPage({ items, searchUrl, onSave, onSaved }: Props) {
     setSaveMessage(null)
   }
 
+  const addScannedProduct = (name: string) => {
+    const trimmed = name.trim()
+    if (!trimmed) return
+    if (localItems.some((item) => item.name.toLowerCase() === trimmed.toLowerCase())) {
+      window.alert(`“${trimmed}” is already in your cart.`)
+      return
+    }
+    if (!window.confirm(`Add “${trimmed}” to the cart?`)) return
+    setLocalItems([...localItems, createCartItem(trimmed)])
+    setSaveMessage(null)
+    setVerifyMessage(null)
+  }
+
   const fieldClass =
     'min-w-0 flex-1 rounded-xl border border-app bg-bar-800 px-3 py-2.5 text-foreground outline-none focus:border-amber-accent/60'
 
@@ -103,9 +118,13 @@ export function CartPage({ items, searchUrl, onSave, onSaved }: Props) {
     <div className="pb-page-end">
       <PageHeader title="Cart" confirmBack={dirty}>
         <div className="flex items-center gap-2">
+          <BarcodeScanButton
+            disabled={voice.processing || saving || scanning}
+            onClick={() => setScanning(true)}
+          />
           <VoiceMicButton
             listening={voice.listening}
-            disabled={voice.processing || saving}
+            disabled={voice.processing || saving || scanning}
             onClick={voice.toggleMic}
           />
           <button
@@ -118,6 +137,12 @@ export function CartPage({ items, searchUrl, onSave, onSaved }: Props) {
           </button>
         </div>
       </PageHeader>
+
+      <BarcodeScannerModal
+        open={scanning}
+        onClose={() => setScanning(false)}
+        onProduct={(product) => addScannedProduct(product.name)}
+      />
 
       <div className="space-y-4 px-4 pt-4">
         <VoiceCommandPanel

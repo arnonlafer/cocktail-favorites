@@ -126,6 +126,14 @@ export function IconMic({ className, size }: IconProps) {
   )
 }
 
+export function IconBarcode({ className, size }: IconProps) {
+  return (
+    <Icon className={className} size={size}>
+      <path d="M3 5v14M6 5v14M8 5v14M11 5v14M13 5v14M17 5v14M19 5v14M21 5v14" />
+    </Icon>
+  )
+}
+
 export function IconRanOut({ className, size }: IconProps) {
   return (
     <Icon className={className} size={size}>
