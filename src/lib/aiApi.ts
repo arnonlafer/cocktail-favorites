@@ -1,6 +1,17 @@
 import type { AiMessage, AiSettings } from '../types'
 import { buildAiSystemMessage } from './aiRecipesContext'
 
+export interface SendAiMessageOptions {
+  /** When set, used instead of the bartender/recipes system prompt. */
+  systemPrompt?: string
+  recipesContext?: string
+}
+
+function resolveSystemPrompt(options?: SendAiMessageOptions): string {
+  if (options?.systemPrompt?.trim()) return options.systemPrompt.trim()
+  return buildAiSystemMessage(options?.recipesContext)
+}
+
 function parseErrorResponse(body: string, fallback: string): string {
   try {
     const parsed = JSON.parse(body) as { error?: { message?: string }; message?: string }
@@ -13,9 +24,8 @@ function parseErrorResponse(body: string, fallback: string): string {
 async function chatOpenAI(
   settings: AiSettings,
   messages: AiMessage[],
-  recipesContext?: string,
+  systemMessage: string,
 ): Promise<string> {
-  const systemMessage = buildAiSystemMessage(recipesContext)
   const apiMessages: { role: string; content: string }[] = []
   apiMessages.push({ role: 'system', content: systemMessage })
   apiMessages.push(...messages.map((message) => ({ role: message.role, content: message.content })))
@@ -45,9 +55,8 @@ async function chatOpenAI(
 async function chatAnthropic(
   settings: AiSettings,
   messages: AiMessage[],
-  recipesContext?: string,
+  systemMessage: string,
 ): Promise<string> {
-  const systemMessage = buildAiSystemMessage(recipesContext)
   const res = await fetch('https://api.anthropic.com/v1/messages', {
     method: 'POST',
     headers: {
@@ -77,9 +86,8 @@ async function chatAnthropic(
 async function chatGemini(
   settings: AiSettings,
   messages: AiMessage[],
-  recipesContext?: string,
+  systemMessage: string,
 ): Promise<string> {
-  const systemMessage = buildAiSystemMessage(recipesContext)
   const url = `https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(settings.model)}:generateContent?key=${encodeURIComponent(settings.apiKey)}`
   const res = await fetch(url, {
     method: 'POST',
@@ -105,10 +113,10 @@ async function chatGemini(
   return content
 }
 
-export async function sendAiChatMessage(
+export async function sendAiMessage(
   settings: AiSettings,
   messages: AiMessage[],
-  recipesContext?: string,
+  options?: SendAiMessageOptions,
 ): Promise<string> {
   if (!settings.apiKey.trim()) {
     throw new Error('Add your API key in Settings before chatting.')
@@ -117,14 +125,25 @@ export async function sendAiChatMessage(
     throw new Error('Choose a model in Settings before chatting.')
   }
 
+  const systemMessage = resolveSystemPrompt(options)
+
   switch (settings.vendor) {
     case 'openai':
-      return chatOpenAI(settings, messages, recipesContext)
+      return chatOpenAI(settings, messages, systemMessage)
     case 'anthropic':
-      return chatAnthropic(settings, messages, recipesContext)
+      return chatAnthropic(settings, messages, systemMessage)
     case 'gemini':
-      return chatGemini(settings, messages, recipesContext)
+      return chatGemini(settings, messages, systemMessage)
     default:
       throw new Error('Unsupported AI vendor')
   }
+}
+
+/** Chat tab helper — uses bartender/recipes system prompt. */
+export async function sendAiChatMessage(
+  settings: AiSettings,
+  messages: AiMessage[],
+  recipesContext?: string,
+): Promise<string> {
+  return sendAiMessage(settings, messages, { recipesContext })
 }

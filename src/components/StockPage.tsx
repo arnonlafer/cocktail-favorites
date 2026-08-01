@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useMemo, useState } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import { createCartItem } from '../lib/cart'
 import { describeSaveStatus, saveToServer } from '../lib/serverSave'
@@ -14,6 +14,8 @@ import {
   upsertStockItem,
   type StockListSection,
 } from '../lib/stock'
+import { runStockVoiceCommand } from '../lib/voiceCommands'
+import { useVoiceCommand } from '../hooks/useVoiceCommand'
 import type { CartItem, StockCategory, StockItem, StockListGroup } from '../types'
 import {
   STOCK_CATEGORY_LABELS,
@@ -23,6 +25,7 @@ import {
 } from '../types'
 import { PageHeader } from './PageHeader'
 import { SearchBar } from './SearchBar'
+import { VoiceCommandPanel, VoiceMicButton } from './VoiceCommandPanel'
 import { IconCart, IconRanOut } from './icons'
 
 interface Props {
@@ -116,15 +119,43 @@ function StockList({
   cart,
   onSaveStock,
   onAddToCart,
-}: Pick<Props, 'items' | 'lastCategory' | 'cart' | 'onSaveStock' | 'onAddToCart'>) {
+  onSaved,
+}: Pick<Props, 'items' | 'lastCategory' | 'cart' | 'onSaveStock' | 'onAddToCart' | 'onSaved'>) {
   const [query, setQuery] = useState('')
   const [expanded, setExpanded] = useState<Set<StockListGroup>>(() => new Set())
+  const [localItems, setLocalItems] = useState(items)
+  const [syncedKey, setSyncedKey] = useState(() => JSON.stringify(items))
+  const [verifyMessage, setVerifyMessage] = useState<string | null>(null)
+  const [voicePending, setVoicePending] = useState(false)
+  const [saving, setSaving] = useState(false)
+  const [saveMessage, setSaveMessage] = useState<{ ok: boolean; message: string } | null>(null)
+
+  const incomingKey = JSON.stringify(items)
+  if (!voicePending && incomingKey !== syncedKey) {
+    setSyncedKey(incomingKey)
+    setLocalItems(items)
+  }
+
+  const dirty = JSON.stringify(localItems) !== incomingKey
+  const displayItems = voicePending ? localItems : items
+
+  const voice = useVoiceCommand({
+    items: displayItems,
+    run: runStockVoiceCommand,
+    onApplied: (nextItems, message, changed) => {
+      setLocalItems(nextItems)
+      setVerifyMessage(message)
+      setSaveMessage(null)
+      setVoicePending(changed || JSON.stringify(nextItems) !== JSON.stringify(items))
+    },
+  })
+
   const hasQuery = query.trim().length > 0
   const filteredItems = useMemo(() => {
     const q = query.trim().toLowerCase()
-    if (!q) return items
-    return items.filter((item) => item.name.toLowerCase().includes(q))
-  }, [items, query])
+    if (!q) return displayItems
+    return displayItems.filter((item) => item.name.toLowerCase().includes(q))
+  }, [displayItems, query])
   const grouped = useMemo(() => groupStockForList(filteredItems), [filteredItems])
   const cartNames = useMemo(() => new Set(cart.map((item) => item.name.toLowerCase())), [cart])
   // While searching, auto-expand every matching category so results are visible.
@@ -158,19 +189,73 @@ function StockList({
   }
 
   const markItemEmpty = (id: string) => {
+    if (voicePending) {
+      setLocalItems(markStockItemEmpty(localItems, id))
+      setVerifyMessage(null)
+      setSaveMessage(null)
+      return
+    }
     onSaveStock(markStockItemEmpty(items, id), lastCategory)
     void saveToServer()
   }
 
+  const handleSaveVoiceChanges = async () => {
+    setSaving(true)
+    setSaveMessage(null)
+    onSaveStock(localItems, lastCategory)
+    try {
+      const status = await saveToServer()
+      const result = describeSaveStatus(status)
+      setSaveMessage(result)
+      if (result.ok) {
+        setVoicePending(false)
+        setSyncedKey(JSON.stringify(localItems))
+        setVerifyMessage(null)
+        onSaved()
+      }
+    } finally {
+      setSaving(false)
+    }
+  }
+
+  const discardVoiceChanges = () => {
+    setLocalItems(items)
+    setSyncedKey(incomingKey)
+    setVoicePending(false)
+    setVerifyMessage(null)
+    setSaveMessage(null)
+  }
+
   return (
-    <div>
-      <PageHeader title="Stock">
-        <Link to="/stock/new" className="text-sm font-semibold text-amber-accent">
-          Add
-        </Link>
+    <div className="pb-page-end">
+      <PageHeader title="Stock" confirmBack={voicePending && dirty}>
+        <div className="flex items-center gap-2">
+          <VoiceMicButton
+            listening={voice.listening}
+            disabled={voice.processing || saving}
+            onClick={voice.toggleMic}
+          />
+          <Link to="/stock/new" className="text-sm font-semibold text-amber-accent">
+            Add
+          </Link>
+        </div>
       </PageHeader>
 
       <div className="space-y-4 px-4 pt-4">
+        <VoiceCommandPanel
+          listening={voice.listening}
+          processing={voice.processing}
+          transcript={voice.transcript}
+          heard={voice.heard}
+          error={voice.error}
+          verifyMessage={verifyMessage}
+          canSave={voicePending && dirty}
+          saving={saving}
+          saveMessage={saveMessage}
+          onSave={() => void handleSaveVoiceChanges()}
+          onDiscard={voicePending ? discardVoiceChanges : undefined}
+        />
+
         <SearchBar value={query} onChange={setQuery} placeholder="Search stock…" />
 
         {grouped.length > 0 && !hasQuery && (
@@ -185,7 +270,7 @@ function StockList({
           </div>
         )}
 
-        {items.length === 0 ? (
+        {displayItems.length === 0 ? (
           <p className="text-sm text-subtle">
             No stock yet. Tap <span className="text-amber-accent">Add</span> to track bottles and ingredients.
           </p>
@@ -317,14 +402,15 @@ function StockItemEditor({
   const [quantityLeft, setQuantityLeft] = useState(String(existing?.quantityLeft ?? 1))
   const [saving, setSaving] = useState(false)
   const [saveMessage, setSaveMessage] = useState<{ ok: boolean; message: string } | null>(null)
+  const [syncedItemId, setSyncedItemId] = useState(existing?.id)
 
-  useEffect(() => {
-    if (!existing) return
+  if (existing && existing.id !== syncedItemId) {
+    setSyncedItemId(existing.id)
     setName(existing.name)
     setCategory(normalizeStockCategory(existing.category))
     setOpen(existing.open)
     setQuantityLeft(String(existing.quantityLeft))
-  }, [existing?.id])
+  }
 
   const buildStockItem = (): StockItem | null => {
     const trimmedName = name.trim()
@@ -576,6 +662,7 @@ export function StockPage({ items, lastCategory, cart, onSaveStock, onAddToCart,
       cart={cart}
       onSaveStock={onSaveStock}
       onAddToCart={onAddToCart}
+      onSaved={onSaved}
     />
   )
 }

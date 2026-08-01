@@ -1,9 +1,12 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import type { CartItem } from '../types'
 import { cartItemUrl, createCartItem } from '../lib/cart'
 import { describeSaveStatus, saveToServer } from '../lib/serverSave'
+import { runCartVoiceCommand } from '../lib/voiceCommands'
+import { useVoiceCommand } from '../hooks/useVoiceCommand'
 import { IconClose } from './icons'
 import { PageHeader } from './PageHeader'
+import { VoiceCommandPanel, VoiceMicButton } from './VoiceCommandPanel'
 
 interface Props {
   items: CartItem[]
@@ -12,15 +15,36 @@ interface Props {
   onSaved: () => void
 }
 
+function itemsKey(items: CartItem[]) {
+  return JSON.stringify(items)
+}
+
 export function CartPage({ items, searchUrl, onSave, onSaved }: Props) {
   const [draft, setDraft] = useState('')
   const [localItems, setLocalItems] = useState(items)
+  const [syncedKey, setSyncedKey] = useState(() => itemsKey(items))
   const [saving, setSaving] = useState(false)
   const [saveMessage, setSaveMessage] = useState<{ ok: boolean; message: string } | null>(null)
+  const [verifyMessage, setVerifyMessage] = useState<string | null>(null)
 
-  useEffect(() => {
+  const incomingKey = itemsKey(items)
+  if (incomingKey !== syncedKey) {
+    setSyncedKey(incomingKey)
     setLocalItems(items)
-  }, [items])
+    setVerifyMessage(null)
+  }
+
+  const dirty = itemsKey(localItems) !== incomingKey
+
+  const voice = useVoiceCommand({
+    items: localItems,
+    run: runCartVoiceCommand,
+    onApplied: (nextItems, message) => {
+      setLocalItems(nextItems)
+      setVerifyMessage(message)
+      setSaveMessage(null)
+    },
+  })
 
   const addItem = () => {
     const name = draft.trim()
@@ -32,11 +56,13 @@ export function CartPage({ items, searchUrl, onSave, onSaved }: Props) {
     setLocalItems([...localItems, createCartItem(name)])
     setDraft('')
     setSaveMessage(null)
+    setVerifyMessage(null)
   }
 
   const removeItem = (id: string) => {
     setLocalItems(localItems.filter((item) => item.id !== id))
     setSaveMessage(null)
+    setVerifyMessage(null)
   }
 
   const resetCart = () => {
@@ -44,6 +70,7 @@ export function CartPage({ items, searchUrl, onSave, onSaved }: Props) {
     if (!window.confirm('Clear all items from your cart?')) return
     setLocalItems([])
     setSaveMessage(null)
+    setVerifyMessage(null)
   }
 
   const handleSave = async () => {
@@ -54,10 +81,19 @@ export function CartPage({ items, searchUrl, onSave, onSaved }: Props) {
       const status = await saveToServer()
       const result = describeSaveStatus(status)
       setSaveMessage(result)
-      if (result.ok) onSaved()
+      if (result.ok) {
+        setVerifyMessage(null)
+        onSaved()
+      }
     } finally {
       setSaving(false)
     }
+  }
+
+  const discardVoiceChanges = () => {
+    setLocalItems(items)
+    setVerifyMessage(null)
+    setSaveMessage(null)
   }
 
   const fieldClass =
@@ -65,18 +101,39 @@ export function CartPage({ items, searchUrl, onSave, onSaved }: Props) {
 
   return (
     <div className="pb-page-end">
-      <PageHeader title="Cart" confirmBack={JSON.stringify(localItems) !== JSON.stringify(items)}>
-        <button
-          type="button"
-          disabled={localItems.length === 0}
-          onClick={resetCart}
-          className="text-sm font-semibold text-red-300 disabled:opacity-30"
-        >
-          Reset
-        </button>
+      <PageHeader title="Cart" confirmBack={dirty}>
+        <div className="flex items-center gap-2">
+          <VoiceMicButton
+            listening={voice.listening}
+            disabled={voice.processing || saving}
+            onClick={voice.toggleMic}
+          />
+          <button
+            type="button"
+            disabled={localItems.length === 0}
+            onClick={resetCart}
+            className="text-sm font-semibold text-red-300 disabled:opacity-30"
+          >
+            Reset
+          </button>
+        </div>
       </PageHeader>
 
       <div className="space-y-4 px-4 pt-4">
+        <VoiceCommandPanel
+          listening={voice.listening}
+          processing={voice.processing}
+          transcript={voice.transcript}
+          heard={voice.heard}
+          error={voice.error}
+          verifyMessage={verifyMessage}
+          canSave={dirty}
+          saving={saving}
+          saveMessage={null}
+          onSave={() => void handleSave()}
+          onDiscard={verifyMessage ? discardVoiceChanges : undefined}
+        />
+
         <form
           className="flex gap-2"
           onSubmit={(e) => {
@@ -140,7 +197,7 @@ export function CartPage({ items, searchUrl, onSave, onSaved }: Props) {
 
         <button
           type="button"
-          disabled={saving || JSON.stringify(localItems) === JSON.stringify(items)}
+          disabled={saving || !dirty}
           onClick={() => void handleSave()}
           className="w-full rounded-2xl bg-amber-accent py-3.5 text-base font-semibold text-bar-950 disabled:opacity-40"
         >
