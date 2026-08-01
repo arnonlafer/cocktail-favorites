@@ -14,6 +14,7 @@ import {
   upsertStockItem,
   type StockListSection,
 } from '../lib/stock'
+import { findSimilarStockItems } from '../lib/stockMatch'
 import { runStockVoiceCommand } from '../lib/voiceCommands'
 import { useVoiceCommand } from '../hooks/useVoiceCommand'
 import type { CartItem, StockCategory, StockItem, StockListGroup } from '../types'
@@ -26,6 +27,7 @@ import {
 import { BarcodeScanButton, BarcodeScannerModal } from './BarcodeScannerModal'
 import { PageHeader } from './PageHeader'
 import { SearchBar } from './SearchBar'
+import { StockScanMatchDialog } from './StockScanMatchDialog'
 import { VoiceCommandPanel, VoiceMicButton } from './VoiceCommandPanel'
 import { IconCart, IconRanOut } from './icons'
 
@@ -132,6 +134,10 @@ function StockList({
   const [saving, setSaving] = useState(false)
   const [saveMessage, setSaveMessage] = useState<{ ok: boolean; message: string } | null>(null)
   const [scanning, setScanning] = useState(false)
+  const [scanMatch, setScanMatch] = useState<{
+    scannedName: string
+    candidates: StockItem[]
+  } | null>(null)
 
   const incomingKey = JSON.stringify(items)
   if (!voicePending && incomingKey !== syncedKey) {
@@ -229,17 +235,44 @@ function StockList({
     setSaveMessage(null)
   }
 
+  const openAddScanned = (name: string) => {
+    navigate('/stock/new', { state: { prefillName: name } })
+  }
+
+  const handleScannedProduct = (scannedName: string) => {
+    const name = scannedName.trim()
+    if (!name) return
+
+    const candidates = findSimilarStockItems(name, displayItems, 5)
+    if (candidates.length === 0) {
+      openAddScanned(name)
+      return
+    }
+
+    if (candidates.length === 1) {
+      const existing = candidates[0]
+      const same = window.confirm(
+        `Is “${name}” the same bottle as “${existing.name}” already in your stock?\n\nOK = edit existing\nCancel = add as new`,
+      )
+      if (same) navigate(`/stock/${existing.id}`)
+      else openAddScanned(name)
+      return
+    }
+
+    setScanMatch({ scannedName: name, candidates })
+  }
+
   return (
     <div className="pb-page-end">
       <PageHeader title="Stock" confirmBack={voicePending && dirty}>
         <div className="flex items-center gap-2">
           <BarcodeScanButton
-            disabled={voice.processing || saving || scanning}
+            disabled={voice.processing || saving || scanning || Boolean(scanMatch)}
             onClick={() => setScanning(true)}
           />
           <VoiceMicButton
             listening={voice.listening}
-            disabled={voice.processing || saving || scanning}
+            disabled={voice.processing || saving || scanning || Boolean(scanMatch)}
             onClick={voice.toggleMic}
           />
           <Link to="/stock/new" className="text-sm font-semibold text-amber-accent">
@@ -252,9 +285,26 @@ function StockList({
         open={scanning}
         onClose={() => setScanning(false)}
         onProduct={(product) => {
-          navigate('/stock/new', { state: { prefillName: product.name } })
+          handleScannedProduct(product.name)
         }}
       />
+
+      {scanMatch && (
+        <StockScanMatchDialog
+          scannedName={scanMatch.scannedName}
+          candidates={scanMatch.candidates}
+          onSelectExisting={(item) => {
+            setScanMatch(null)
+            navigate(`/stock/${item.id}`)
+          }}
+          onAddNew={() => {
+            const name = scanMatch.scannedName
+            setScanMatch(null)
+            openAddScanned(name)
+          }}
+          onCancel={() => setScanMatch(null)}
+        />
+      )}
 
       <div className="space-y-4 px-4 pt-4">
         <VoiceCommandPanel
