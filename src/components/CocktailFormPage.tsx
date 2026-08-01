@@ -33,14 +33,28 @@ function slugify(name: string) {
   )
 }
 
-const INGREDIENT_UNIT_PATTERN = 'oz|ml|dash(?:es)?|pinch|tsp|tbsp|pc|cup'
+const INGREDIENT_UNIT_PATTERN =
+  'fl\\.?\\s*oz|floz|oz|ml|dash(?:es)?|pinch|tsp|tbsp|pc|cup|drops?'
 
 function parseIngredientLine(line: string): Ingredient {
   const trimmed = line.trim()
   const match = trimmed.match(
-    new RegExp(`^([\\d./\\s]+)\\s*(${INGREDIENT_UNIT_PATTERN})?\\s*(.+)$`, 'i'),
+    new RegExp(`^([\\d./]+(?:\\s+[\\d./]+)*)\\s*(${INGREDIENT_UNIT_PATTERN})\\s+(.+)$`, 'i'),
   )
-  if (!match) return { amount: null, unit: null, name: trimmed }
+  if (!match) {
+    // Amount stuck to unit: "1/2fl oz vanilla syrup" or "3orange bitters"
+    const sticky = trimmed.match(
+      new RegExp(`^([\\d./]+)\\s*(${INGREDIENT_UNIT_PATTERN})\\s*(.+)$`, 'i'),
+    )
+    if (sticky) {
+      return parseIngredientLine(`${sticky[1]} ${sticky[2]} ${sticky[3]}`)
+    }
+    const countOnly = trimmed.match(/^(\d+)\s*[xX]?\s*(.+)$/)
+    if (countOnly) {
+      return { amount: Number(countOnly[1]), unit: 'pc', name: countOnly[2].trim() }
+    }
+    return { amount: null, unit: null, name: trimmed }
+  }
   const [, amountRaw, unitRaw, name] = match
   let amount = 0
   for (const part of amountRaw.trim().split(/\s+/)) {
@@ -51,10 +65,12 @@ function parseIngredientLine(line: string): Ingredient {
   }
   if (!Number.isFinite(amount)) return { amount: null, unit: null, name: trimmed }
 
-  const unit = unitRaw?.toLowerCase() ?? null
-  let normalizedUnit =
-    unit === 'oz' || unit?.startsWith('dash') ? (unit.startsWith('dash') ? 'dash' : 'oz') : unit
-  if (!normalizedUnit) normalizedUnit = 'pc'
+  const unit = unitRaw.toLowerCase().replace(/\./g, '').replace(/\s+/g, '')
+  let normalizedUnit: string
+  if (unit === 'floz' || unit === 'oz') normalizedUnit = 'oz'
+  else if (unit.startsWith('dash')) normalizedUnit = 'dash'
+  else if (unit === 'drops' || unit === 'drop') normalizedUnit = 'dash'
+  else normalizedUnit = unitRaw.toLowerCase().includes('fl') ? 'oz' : unit
 
   return { amount, unit: normalizedUnit, name: name.trim() }
 }

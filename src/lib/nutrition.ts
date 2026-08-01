@@ -50,13 +50,28 @@ export function lookupNutrition(ingredientName: string): IngredientNutrition | n
   const lookup = buildLookup(entries)
   const normalized = normalizeName(ingredientName)
 
-  if (lookup.has(normalized)) return lookup.get(normalized)!
+  const exact = lookup.get(normalized)
+  if (exact) return exact
 
+  // Prefer the longest fuzzy key so "water" does not match "watermelon juice"
+  // and short tokens like "ice" do not match inside "juice".
+  let bestKey = ''
+  let best: IngredientNutrition | null = null
   for (const [key, entry] of lookup) {
-    if (normalized.includes(key) || key.includes(normalized)) return entry
+    if (!key) continue
+    const ingredientContainsKey = normalized.includes(key)
+    const keyContainsIngredient = key.includes(normalized) && normalized.length >= 4
+    if (!ingredientContainsKey && !keyContainsIngredient) continue
+    if (ingredientContainsKey && key.length <= 3) {
+      const asWord = new RegExp(`(?:^| )${key.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}(?:$| )`)
+      if (!asWord.test(normalized)) continue
+    }
+    if (key.length > bestKey.length) {
+      bestKey = key
+      best = entry
+    }
   }
-
-  return null
+  return best
 }
 
 function amountToOz(amount: number, unit: string): number | null {
@@ -67,6 +82,7 @@ function amountToOz(amount: number, unit: string): number | null {
   if (unit === 'dash' || unit === 'dashes') return amount * DASH_OZ
   if (unit === 'tablespoon' || unit === 'tbsp') return amount * TABLESPOON_OZ
   if (unit === 'teaspoon' || unit === 'tsp') return amount * TEASPOON_OZ
+  if (unit === 'cup' || unit === 'cups') return amount * 8
   if (unit === 'pc') return amount
   return null
 }
