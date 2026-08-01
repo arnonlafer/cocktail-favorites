@@ -225,7 +225,11 @@ const SPIRIT_RULES = [
   { category: 'Wine & Beer', re: /\b(sparkling wine|prosecco|champagne|lager|beer|sparkling water)\b/i },
 ];
 
-function detectSpirits(ingredientText) {
+function detectSpirits(ingredientText, title = '') {
+  const haystack = `${title}\n${ingredientText}`;
+  if (/\b(mocktail|virgin|non[- ]?alcoholic|alcohol[- ]?free|zero[- ]?proof)\b/i.test(haystack)) {
+    return ['Mocktails'];
+  }
   const found = SPIRIT_RULES.filter(({ re }) => re.test(ingredientText)).map(({ category }) => category);
   return found.length ? found : ['Other'];
 }
@@ -323,7 +327,7 @@ for (const { title, blockLines } of blocks) {
   const ingredientText = ingredients.map((ing) => ing.name).join(' ');
   const instructionsText = rawInstructions.join(' ');
   const meta = inferMetadata(instructionsText + ' ' + ingredientText);
-  const spirits = detectSpirits(ingredientText);
+  const spirits = detectSpirits(ingredientText, normalizedTitle);
   const instructions = simplifyInstructions(meta.method, meta.glass, meta.ice, rawInstructions);
 
   cocktails.push({

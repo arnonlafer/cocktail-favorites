@@ -274,6 +274,7 @@ export const SPIRIT_ORDER = [
   'Brandy',
   'Pisco',
   'Wine & Beer',
+  'Mocktails',
   'Other',
 ] as const
 
@@ -286,6 +287,7 @@ export const SPIRIT_COLORS: Record<string, string> = {
   Brandy: 'from-rose-900 to-rose-700',
   Pisco: 'from-yellow-900 to-yellow-600',
   'Wine & Beer': 'from-purple-900 to-purple-600',
+  Mocktails: 'from-teal-900 to-cyan-600',
   Other: 'from-stone-800 to-stone-600',
 }
 

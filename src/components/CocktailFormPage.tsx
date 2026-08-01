@@ -300,7 +300,7 @@ export function CocktailFormPage({ cocktails, onSave, onDelete, onSaved, mode }:
         </div>
 
         <div>
-          <span className="mb-2 block text-sm text-muted">Main spirits</span>
+          <span className="mb-2 block text-sm text-muted">Categories</span>
           <div className="flex flex-wrap gap-2">
             {SPIRIT_OPTIONS.map((spirit) => (
               <button

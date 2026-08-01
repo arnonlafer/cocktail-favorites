@@ -92,6 +92,8 @@ const SPIRIT_PATTERNS: Record<SpiritCategory, RegExp[]> = {
     /\bbeer\b/,
     /\blager\b/,
   ],
+  // Mocktails have no alcoholic base; keep empty so mixers sort as modifiers.
+  Mocktails: [],
   Other: [/\baquavit\b/],
 }
 
