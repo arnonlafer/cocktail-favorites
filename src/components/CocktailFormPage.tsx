@@ -71,6 +71,39 @@ function ingredientsToText(ingredients: Ingredient[]): string {
     .join('\n')
 }
 
+/** Parse instruction steps from the form textarea (no artificial step limit). */
+function parseInstructionsText(text: string): string[] {
+  const trimmed = text.trim()
+  if (!trimmed) return []
+
+  // Numbered steps: "1. …" / "2) …" — keep wrapped lines with the same step.
+  if (/^\s*\d+[.)]\s+/m.test(trimmed)) {
+    return trimmed
+      .split(/\n(?=\s*\d+[.)]\s+)/)
+      .map((part) =>
+        part
+          .replace(/^\s*\d+[.)]\s+/, '')
+          .replace(/\s*\n\s*/g, ' ')
+          .trim(),
+      )
+      .filter(Boolean)
+  }
+
+  // Blank-line separated paragraphs.
+  if (/\n\s*\n/.test(trimmed)) {
+    return trimmed
+      .split(/\n\s*\n/)
+      .map((part) => part.replace(/\s*\n\s*/g, ' ').trim())
+      .filter(Boolean)
+  }
+
+  // One step per non-empty line.
+  return trimmed
+    .split('\n')
+    .map((line) => line.trim())
+    .filter(Boolean)
+}
+
 export function CocktailFormPage({ cocktails, onSave, onDelete, onSaved, mode }: Props) {
   const { id } = useParams()
   const navigate = useNavigate()
@@ -155,11 +188,7 @@ export function CocktailFormPage({ cocktails, onSave, onDelete, onSaved, mode }:
       .filter(Boolean)
       .map(parseIngredientLine)
 
-    const instructions = instructionsText
-      .split('\n')
-      .map((l) => l.trim())
-      .filter(Boolean)
-      .slice(0, 4)
+    const instructions = parseInstructionsText(instructionsText)
 
     const origin = {
       classification: originClassification,
@@ -351,12 +380,16 @@ export function CocktailFormPage({ cocktails, onSave, onDelete, onSaved, mode }:
         </label>
 
         <label className="block space-y-1.5">
-          <span className="text-sm text-muted">Instructions (2–4 steps, one per line)</span>
+          <span className="text-sm text-muted">
+            Instructions (one step per line, or numbered steps like 1. / 2.)
+          </span>
           <textarea
-            className={`${fieldClass} min-h-28`}
+            className={`${fieldClass} min-h-40`}
             value={instructionsText}
             onChange={(e) => setInstructionsText(e.target.value)}
-            placeholder={'Combine all ingredients in a shaker with ice.\nShake until well chilled.\nStrain into a chilled coupe.'}
+            placeholder={
+              '1. Combine all ingredients in a shaker with ice.\n2. Shake until well chilled.\n3. Strain into a chilled coupe.'
+            }
           />
         </label>
 
