@@ -45,6 +45,15 @@ function mergeProfiles(
   return merged
 }
 
+function clearLegacyLocalStorage() {
+  localStorage.removeItem(CUSTOM_KEY)
+  localStorage.removeItem(EDITS_KEY)
+  localStorage.removeItem(DELETED_KEY)
+  localStorage.removeItem(NUTRITION_KEY)
+  localStorage.removeItem(USER_PROFILES_KEY)
+  localStorage.removeItem(PREFS_KEY)
+}
+
 /** Import recipe and profile data still stored in legacy localStorage keys. Returns true if anything was merged. */
 export function importLegacyLocalStorageIfPresent(): boolean {
   const custom = readJson<Cocktail[]>(CUSTOM_KEY) ?? []
@@ -81,5 +90,7 @@ export function importLegacyLocalStorageIfPresent(): boolean {
       : current.nutritionOverrides,
     userProfiles: mergeProfiles(current.userProfiles, userProfiles),
   })
+  // Clear once imported so stale cart/stock/lists are not re-merged on every refresh.
+  clearLegacyLocalStorage()
   return true
 }

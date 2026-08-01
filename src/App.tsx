@@ -55,7 +55,6 @@ export default function App() {
     if (!code) return
 
     const pull = () => {
-      importLegacyLocalStorageIfPresent()
       void pullFromServer(code).then((status) => {
         if (status === 'synced') refreshPrefs()
       })
@@ -75,7 +74,6 @@ export default function App() {
       if (document.visibilityState !== 'visible') return
       const code = loadPrefs().syncCode?.trim()
       if (!code) return
-      importLegacyLocalStorageIfPresent()
       void pullFromServer(code).then((status) => {
         if (status === 'synced') refreshPrefs()
       })

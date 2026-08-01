@@ -150,8 +150,10 @@ function mergeUserProfile(local: UserProfile, remote: UserProfile): UserProfile 
     listView: newer.listView,
     collections: mergeById(local.collections ?? [], remote.collections ?? [], preferRemote),
     recipeDraft: mergeRecipeDraft(local.recipeDraft ?? '', remote.recipeDraft ?? '', preferRemote),
-    cart: mergeById(local.cart ?? [], remote.cart ?? [], preferRemote),
-    stock: mergeById(local.stock ?? [], remote.stock ?? [], preferRemote),
+    // Cart and stock are full-list edits (add/remove/clear). Union-merge would
+    // resurrect deleted items from the older side or from legacy localStorage.
+    cart: newer.cart ?? [],
+    stock: newer.stock ?? [],
     lastStockCategory: newer.lastStockCategory ?? older.lastStockCategory,
     cartSearchUrl: newer.cartSearchUrl ?? older.cartSearchUrl,
     randomFavoritesOnly: newer.randomFavoritesOnly,

@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import type { CartItem } from '../types'
 import { cartItemUrl, createCartItem } from '../lib/cart'
-import { saveToServer } from '../lib/serverSave'
+import { describeSaveStatus, saveToServer } from '../lib/serverSave'
 import { IconClose } from './icons'
 import { PageHeader } from './PageHeader'
 
@@ -16,6 +16,7 @@ export function CartPage({ items, searchUrl, onSave, onSaved }: Props) {
   const [draft, setDraft] = useState('')
   const [localItems, setLocalItems] = useState(items)
   const [saving, setSaving] = useState(false)
+  const [saveMessage, setSaveMessage] = useState<{ ok: boolean; message: string } | null>(null)
 
   useEffect(() => {
     setLocalItems(items)
@@ -30,24 +31,33 @@ export function CartPage({ items, searchUrl, onSave, onSaved }: Props) {
     }
     setLocalItems([...localItems, createCartItem(name)])
     setDraft('')
+    setSaveMessage(null)
   }
 
   const removeItem = (id: string) => {
     setLocalItems(localItems.filter((item) => item.id !== id))
+    setSaveMessage(null)
   }
 
   const resetCart = () => {
     if (localItems.length === 0) return
     if (!window.confirm('Clear all items from your cart?')) return
     setLocalItems([])
+    setSaveMessage(null)
   }
 
   const handleSave = async () => {
+    setSaveMessage(null)
     setSaving(true)
     onSave(localItems)
-    const status = await saveToServer()
-    setSaving(false)
-    if (status === 'synced') onSaved()
+    try {
+      const status = await saveToServer()
+      const result = describeSaveStatus(status)
+      setSaveMessage(result)
+      if (result.ok) onSaved()
+    } finally {
+      setSaving(false)
+    }
   }
 
   const fieldClass =
@@ -114,6 +124,18 @@ export function CartPage({ items, searchUrl, onSave, onSaved }: Props) {
               </li>
             ))}
           </ul>
+        )}
+
+        {saveMessage && (
+          <p
+            className={`rounded-xl px-3 py-2 text-sm ${
+              saveMessage.ok
+                ? 'border border-emerald-900/40 bg-emerald-950/30 text-emerald-200'
+                : 'border border-red-900/50 bg-red-950/40 text-red-200'
+            }`}
+          >
+            {saveMessage.message}
+          </p>
         )}
 
         <button
