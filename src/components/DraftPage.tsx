@@ -15,12 +15,15 @@ export function DraftPage({ draft, onSave, onSaved }: Props) {
   const textareaRef = useRef<HTMLTextAreaElement>(null)
   const [editing, setEditing] = useState(false)
   const [text, setText] = useState(draft)
+  const [syncedDraft, setSyncedDraft] = useState(draft)
   const [selection, setSelection] = useState('')
   const [saving, setSaving] = useState(false)
+  const [pasteError, setPasteError] = useState<string | null>(null)
 
-  useEffect(() => {
-    if (!editing) setText(draft)
-  }, [draft, editing])
+  if (!editing && draft !== syncedDraft) {
+    setSyncedDraft(draft)
+    setText(draft)
+  }
 
   const readSelection = useCallback(() => {
     if (editing && textareaRef.current) {
@@ -58,11 +61,36 @@ export function DraftPage({ draft, onSave, onSaved }: Props) {
     setText(draft)
     setEditing(true)
     setSelection('')
+    setPasteError(null)
   }
 
   const convertToRecipe = () => {
     if (!selection) return
     navigate('/add', { state: { fromDraft: selection } })
+  }
+
+  const handlePaste = async () => {
+    setPasteError(null)
+    try {
+      const clip = (await navigator.clipboard.readText()).trim()
+      if (!clip) {
+        setPasteError('Clipboard is empty.')
+        return
+      }
+      setText((prev) => {
+        const body = prev.trim()
+        return body ? `${clip}\n\n${body}` : clip
+      })
+      requestAnimationFrame(() => {
+        const el = textareaRef.current
+        if (!el) return
+        el.focus()
+        el.setSelectionRange(0, 0)
+        el.scrollTop = 0
+      })
+    } catch {
+      setPasteError('Could not read clipboard. Allow paste permission and try again.')
+    }
   }
 
   const handleSave = async () => {
@@ -94,14 +122,24 @@ export function DraftPage({ draft, onSave, onSaved }: Props) {
             </button>
           )}
           {editing ? (
-            <button
-              type="button"
-              disabled={saving}
-              onClick={() => void handleSave()}
-              className="text-sm font-semibold text-amber-accent disabled:opacity-50"
-            >
-              {saving ? 'Saving…' : 'Save'}
-            </button>
+            <>
+              <button
+                type="button"
+                disabled={saving}
+                onClick={() => void handlePaste()}
+                className="text-sm font-semibold text-amber-light disabled:opacity-50"
+              >
+                Paste
+              </button>
+              <button
+                type="button"
+                disabled={saving}
+                onClick={() => void handleSave()}
+                className="text-sm font-semibold text-amber-accent disabled:opacity-50"
+              >
+                {saving ? 'Saving…' : 'Save'}
+              </button>
+            </>
           ) : (
             <button type="button" onClick={startEdit} className="text-sm font-semibold text-amber-accent">
               Edit
@@ -117,6 +155,12 @@ export function DraftPage({ draft, onSave, onSaved }: Props) {
           if (!editing) startEdit()
         }}
       >
+        {editing && pasteError && (
+          <p className="rounded-xl border border-red-900/50 bg-red-950/40 px-3 py-2 text-sm text-red-200">
+            {pasteError}
+          </p>
+        )}
+
         {editing ? (
           <textarea
             ref={textareaRef}
