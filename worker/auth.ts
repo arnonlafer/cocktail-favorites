@@ -1,4 +1,4 @@
-import type { Env } from './index'
+import type { Env } from './syncStorage'
 
 const PASSWORD_HASH = 'add3730a79bcae13e3978f7764ce1ad0f763497b61b025429917eb025fe48c8e'
 const SESSION_TTL_MS = 365 * 24 * 60 * 60 * 1000

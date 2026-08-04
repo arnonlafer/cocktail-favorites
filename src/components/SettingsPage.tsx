@@ -18,6 +18,12 @@ import { getCurrentUserKey } from '../lib/localPrefs'
 import { describeSaveStatus, loadFromServer, saveToServer } from '../lib/serverSave'
 import { getDataState } from '../lib/dataStore'
 import { checkSyncServer, formatSyncTime, type SyncStatus } from '../lib/sync'
+import {
+  backendLabel,
+  copySyncStorage,
+  fetchSyncStorageStatus,
+  type SyncStorageStatus,
+} from '../lib/syncStorageApi'
 import { confirmDiscardChanges } from '../lib/unsavedChanges'
 import { PageHeader } from './PageHeader'
 import { AiSettingsSection } from './AiSettingsSection'
@@ -57,6 +63,8 @@ export function SettingsPage({
   const [draftCartSearchUrl, setDraftCartSearchUrl] = useState(cartSearchUrl)
   const [syncStatus, setSyncStatus] = useState<SyncStatus>('idle')
   const [serverReady, setServerReady] = useState<'checking' | 'ready' | 'not-configured' | 'error'>('checking')
+  const [storageStatus, setStorageStatus] = useState<SyncStorageStatus | null>(null)
+  const [storageBusy, setStorageBusy] = useState(false)
   const [importFileName, setImportFileName] = useState<string | null>(null)
   const [importPayloadText, setImportPayloadText] = useState<string | null>(null)
   const [importSections, setImportSections] = useState<ImportSections>(DEFAULT_IMPORT_SECTIONS)
@@ -66,6 +74,10 @@ export function SettingsPage({
   useEffect(() => {
     void checkSyncServer().then(setServerReady)
   }, [])
+
+  useEffect(() => {
+    void fetchSyncStorageStatus(draftCode.trim() || syncCode).then(setStorageStatus)
+  }, [draftCode, syncCode, syncStatus])
 
   useEffect(() => {
     setDraftCode(syncCode)
@@ -193,6 +205,43 @@ export function SettingsPage({
       )
     } else {
       window.alert('No older browser storage data was found on this device.')
+    }
+  }
+
+  async function refreshStorageStatus() {
+    const status = await fetchSyncStorageStatus(draftCode.trim() || syncCode)
+    setStorageStatus(status)
+  }
+
+  async function handleCopyStorage(direction: 'kv-to-d1' | 'd1-to-kv') {
+    const code = draftCode.trim()
+    if (!code) {
+      window.alert('Enter a sync code first.')
+      return
+    }
+    const from = direction === 'kv-to-d1' ? 'Workers KV' : 'D1'
+    const to = direction === 'kv-to-d1' ? 'D1' : 'Workers KV'
+    if (
+      !window.confirm(
+        `Copy sync data for “${code}” from ${from} → ${to}?\n\nThis overwrites whatever is currently in ${to} for that sync code.`,
+      )
+    ) {
+      return
+    }
+    onSyncCodeChange(code)
+    setStorageBusy(true)
+    try {
+      const result = await copySyncStorage(direction, code)
+      await refreshStorageStatus()
+      if (result.ok) {
+        window.alert(
+          `Copied ${result.bytes.toLocaleString()} bytes from ${backendLabel(result.from)} to ${backendLabel(result.to)}.`,
+        )
+      } else {
+        window.alert(result.error)
+      }
+    } finally {
+      setStorageBusy(false)
     }
   }
 
@@ -380,6 +429,71 @@ export function SettingsPage({
             {syncStatus === 'cancelled' ? ' · Cancelled — local data kept' : ''}
             {syncStatus === 'error' ? ' · Failed — check connection and sign-in' : ''}
             {syncStatus === 'not-configured' ? ' · Server storage not set up' : ''}
+          </p>
+        </section>
+
+        <section className="rounded-2xl border border-app bg-bar-900/60 p-4">
+          <h2 className="mb-1 text-base font-semibold text-foreground">Cloud storage backend</h2>
+          <p className="mb-3 text-sm text-muted">
+            The server feature flag <code className="text-foreground">SYNC_BACKEND</code> chooses which store
+            load/save uses. You can copy the current sync-code snapshot between Workers KV and D1 as a backup.
+          </p>
+          {storageStatus ? (
+            <div className="mb-4 space-y-2 rounded-xl border border-app bg-bar-800/60 px-3 py-3 text-sm text-foreground">
+              <p>
+                Active backend:{' '}
+                <span className="font-semibold text-amber-accent">
+                  {backendLabel(storageStatus.backend)}
+                </span>
+              </p>
+              <p className="text-xs text-muted">
+                Workers KV: {storageStatus.kvConfigured ? 'configured' : 'not bound'}
+                {storageStatus.kvHasData == null
+                  ? ''
+                  : storageStatus.kvHasData
+                    ? ' · has data for this sync code'
+                    : ' · empty for this sync code'}
+              </p>
+              <p className="text-xs text-muted">
+                D1: {storageStatus.d1Configured ? 'configured' : 'not bound'}
+                {storageStatus.d1HasData == null
+                  ? ''
+                  : storageStatus.d1HasData
+                    ? ' · has data for this sync code'
+                    : ' · empty for this sync code'}
+              </p>
+            </div>
+          ) : (
+            <p className="mb-4 text-sm text-muted">Could not load storage status.</p>
+          )}
+          <button
+            type="button"
+            disabled={storageBusy || !storageStatus?.kvConfigured || !storageStatus?.d1Configured}
+            onClick={() => void handleCopyStorage('kv-to-d1')}
+            className="w-full rounded-xl border border-app bg-bar-800 py-2.5 text-sm font-medium text-foreground disabled:opacity-40"
+          >
+            {storageBusy ? 'Copying…' : 'Copy Workers KV → D1'}
+          </button>
+          <button
+            type="button"
+            disabled={storageBusy || !storageStatus?.kvConfigured || !storageStatus?.d1Configured}
+            onClick={() => void handleCopyStorage('d1-to-kv')}
+            className="mt-2 w-full rounded-xl border border-app bg-bar-800 py-2.5 text-sm font-medium text-foreground disabled:opacity-40"
+          >
+            {storageBusy ? 'Copying…' : 'Copy D1 → Workers KV'}
+          </button>
+          <button
+            type="button"
+            disabled={storageBusy}
+            onClick={() => void refreshStorageStatus()}
+            className="mt-2 w-full rounded-xl border border-app bg-bar-800 py-2.5 text-sm font-medium text-foreground disabled:opacity-40"
+          >
+            Refresh status
+          </button>
+          <p className="mt-3 text-xs text-subtle">
+            Switching the live backend requires setting <code className="text-foreground">SYNC_BACKEND</code> to{' '}
+            <code className="text-foreground">kv</code> or <code className="text-foreground">d1</code> in
+            Cloudflare (wrangler vars / dashboard) and redeploying. Copy first so both stores match.
           </p>
         </section>
 

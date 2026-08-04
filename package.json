@@ -14,7 +14,9 @@
     "lint": "eslint .",
     "preview": "npm run build && wrangler dev",
     "deploy": "npm run build && wrangler deploy",
-    "setup-kv": "bash scripts/setup-kv.sh"
+    "setup-kv": "bash scripts/setup-kv.sh",
+    "setup-d1": "bash scripts/setup-d1.sh",
+    "migrate-kv-to-d1": "bash scripts/migrate-kv-to-d1.sh"
   },
   "dependencies": {
     "@zxing/browser": "^0.2.1",
