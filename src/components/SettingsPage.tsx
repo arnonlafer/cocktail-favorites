@@ -27,6 +27,7 @@ import {
 import { confirmDiscardChanges } from '../lib/unsavedChanges'
 import { PageHeader } from './PageHeader'
 import { AiSettingsSection } from './AiSettingsSection'
+import { BarcodeSettingsSection } from './BarcodeSettingsSection'
 
 interface Props {
   theme: Theme
@@ -375,12 +376,14 @@ export function SettingsPage({
 
         <AiSettingsSection />
 
+        <BarcodeSettingsSection />
+
         <section className="rounded-2xl border border-app bg-bar-900/60 p-4">
           <h2 className="mb-1 text-base font-semibold text-foreground">Cloud data</h2>
           <p className="mb-3 text-sm text-muted">
             Recipes, favorites, lists, draft, cart, stock, and AI chats live on the server under your sync code.
-            Theme, font size, AI key, recently viewed, and view preferences stay on this device. If a load or save
-            would remove more than 20 items, you will be asked to confirm first.
+            Theme, font size, AI key, barcode keys, recently viewed, and view preferences stay on this device. If a
+            load or save would remove more than 20 items, you will be asked to confirm first.
           </p>
           {showServerWarning && (
             <p className="mb-4 rounded-xl border border-red-900/50 bg-red-950/40 px-3 py-2 text-sm text-red-200">

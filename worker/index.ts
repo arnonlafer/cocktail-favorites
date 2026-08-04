@@ -1,4 +1,5 @@
 import { handleAuthRequest, requireAuth } from './auth'
+import { lookupBarcodeFallbacks } from './barcode'
 import {
   copyBetweenBackends,
   readActivePayload,
@@ -14,6 +15,7 @@ import {
 export type { Env }
 
 const SYNC_HEADER = 'X-Sync-Code'
+const BARCODE_PATH = /^\/api\/barcode\/(\d{8,14})$/
 
 function json(data: unknown, status = 200) {
   return Response.json(data, {
@@ -36,6 +38,25 @@ export default {
 
     const authResponse = await handleAuthRequest(request, env, url.pathname)
     if (authResponse) return authResponse
+
+    const barcodeMatch = url.pathname.match(BARCODE_PATH)
+    if (barcodeMatch) {
+      const unauthorized = await requireAuth(request, env)
+      if (unauthorized) return unauthorized
+      if (request.method !== 'GET') return new Response('Method not allowed', { status: 405 })
+
+      const code = barcodeMatch[1]
+      const colaApiKey = request.headers.get('X-Cola-Api-Key')?.trim() || env.COLA_CLOUD_API_KEY
+      const upcApiKey = request.headers.get('X-Upc-Api-Key')?.trim() || env.UPC_DEV_API_KEY
+
+      try {
+        const product = await lookupBarcodeFallbacks(code, { colaApiKey, upcApiKey })
+        if (!product) return json({ error: 'No product found for barcode.' }, 404)
+        return json(product)
+      } catch {
+        return json({ error: 'Barcode lookup failed.' }, 502)
+      }
+    }
 
     if (url.pathname === '/api/sync/storage') {
       const unauthorized = await requireAuth(request, env)

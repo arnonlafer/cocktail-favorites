@@ -1,3 +1,6 @@
+import { authHeaders } from './auth'
+import { loadBarcodeSettings } from './barcodeSettings'
+
 export interface BarcodeProduct {
   barcode: string
   name: string
@@ -44,18 +47,44 @@ async function lookupOpenFacts(host: string, barcode: string, source: string): P
   }
 }
 
-/** Resolve a UPC/EAN barcode to a product name via open product databases. */
+async function lookupViaWorker(barcode: string): Promise<BarcodeProduct | null> {
+  const settings = loadBarcodeSettings()
+  const headers: Record<string, string> = {
+    Accept: 'application/json',
+    ...authHeaders(),
+  }
+  if (settings.colaApiKey.trim()) headers['X-Cola-Api-Key'] = settings.colaApiKey.trim()
+  if (settings.upcApiKey.trim()) headers['X-Upc-Api-Key'] = settings.upcApiKey.trim()
+
+  const res = await fetch(`/api/barcode/${encodeURIComponent(barcode)}`, { headers })
+  if (res.status === 404) return null
+  if (!res.ok) return null
+
+  const product = (await res.json()) as BarcodeProduct
+  if (!product?.name?.trim()) return null
+  return {
+    barcode: product.barcode || barcode,
+    name: product.name.trim(),
+    brand: product.brand?.trim() || undefined,
+    source: product.source || 'Barcode API',
+  }
+}
+
+/**
+ * Resolve a UPC/EAN barcode to a product name.
+ * Order: Open Food/Products/Beauty Facts → COLA Cloud → upc.dev (last two via worker).
+ */
 export async function lookupBarcodeProduct(barcode: string): Promise<BarcodeProduct | null> {
   const code = barcode.trim()
   if (!/^\d{8,14}$/.test(code)) return null
 
-  const sources: Array<{ host: string; label: string }> = [
+  const openFacts: Array<{ host: string; label: string }> = [
     { host: 'world.openfoodfacts.org', label: 'Open Food Facts' },
     { host: 'world.openproductsfacts.org', label: 'Open Products Facts' },
     { host: 'world.openbeautyfacts.org', label: 'Open Beauty Facts' },
   ]
 
-  for (const source of sources) {
+  for (const source of openFacts) {
     try {
       const product = await lookupOpenFacts(source.host, code, source.label)
       if (product) return product
@@ -63,5 +92,10 @@ export async function lookupBarcodeProduct(barcode: string): Promise<BarcodeProd
       // try next source
     }
   }
-  return null
+
+  try {
+    return await lookupViaWorker(code)
+  } catch {
+    return null
+  }
 }

@@ -8,6 +8,9 @@ export interface Env {
   SYNC_BACKEND?: string
   AUTH_PASSWORD?: string
   AUTH_SECRET?: string
+  /** Optional server-side keys for barcode fallbacks (client keys also accepted). */
+  COLA_CLOUD_API_KEY?: string
+  UPC_DEV_API_KEY?: string
 }
 
 export function resolveSyncBackend(env: Env): SyncBackend {
