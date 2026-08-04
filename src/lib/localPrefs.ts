@@ -19,6 +19,7 @@ export interface LocalUiPrefs {
   homeGroupView: HomeGroupView
   cocktailSort: CocktailSort
   collapsedGroups: string[] | null
+  barcodeScanSoundMuted?: boolean
 }
 
 const defaultLocalUi: LocalUiPrefs = {

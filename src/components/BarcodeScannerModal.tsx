@@ -2,7 +2,12 @@ import { useEffect, useRef, useState } from 'react'
 import { BrowserMultiFormatOneDReader } from '@zxing/browser'
 import type { IScannerControls } from '@zxing/browser'
 import { lookupBarcodeProduct, type BarcodeProduct } from '../lib/barcodeLookup'
-import { IconBarcode, IconClose } from './icons'
+import {
+  isBarcodeScanSoundMuted,
+  playBarcodeScanSound,
+  setBarcodeScanSoundMuted,
+} from '../lib/barcodeScanSound'
+import { IconBarcode, IconClose, IconVolume, IconVolumeMuted } from './icons'
 
 export function BarcodeScanButton({
   disabled,
@@ -139,6 +144,7 @@ function ScannerSession({
         const controls = await reader.decodeFromStream(stream, video, (result) => {
           if (!result || handledRef.current || cancelled) return
           handledRef.current = true
+          playBarcodeScanSound()
           controlsRef.current?.stop()
           controlsRef.current = null
           void lookupCode(result.getText().trim())
@@ -223,8 +229,16 @@ function ScannerSession({
 
 export function BarcodeScannerModal({ open, onClose, onProduct }: Props) {
   const [sessionKey, setSessionKey] = useState(0)
+  const [soundMuted, setSoundMuted] = useState(() => isBarcodeScanSoundMuted())
 
   if (!open) return null
+
+  function toggleSound() {
+    const next = !soundMuted
+    setBarcodeScanSoundMuted(next)
+    setSoundMuted(next)
+    if (!next) playBarcodeScanSound()
+  }
 
   return (
     <div className="fixed inset-0 z-50 flex flex-col bg-bar-950">
@@ -238,6 +252,16 @@ export function BarcodeScannerModal({ open, onClose, onProduct }: Props) {
           <IconClose size={20} />
         </button>
         <h2 className="min-w-0 flex-1 font-display text-xl font-bold text-foreground">Scan barcode</h2>
+        <button
+          type="button"
+          aria-label={soundMuted ? 'Unmute scan sound' : 'Mute scan sound'}
+          aria-pressed={soundMuted}
+          title={soundMuted ? 'Unmute scan sound' : 'Mute scan sound'}
+          onClick={toggleSound}
+          className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-app-strong text-muted transition hover:text-foreground"
+        >
+          {soundMuted ? <IconVolumeMuted size={18} /> : <IconVolume size={18} />}
+        </button>
       </div>
 
       <div className="relative flex min-h-0 flex-1 flex-col px-4 pt-4 pb-page-end">

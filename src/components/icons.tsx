@@ -126,6 +126,25 @@ export function IconMic({ className, size }: IconProps) {
   )
 }
 
+export function IconVolume({ className, size }: IconProps) {
+  return (
+    <Icon className={className} size={size}>
+      <path d="M4 10v4h3l4 3V7L7 10H4z" />
+      <path d="M15 9.5a3.5 3.5 0 0 1 0 5" />
+      <path d="M17.5 7a6 6 0 0 1 0 10" />
+    </Icon>
+  )
+}
+
+export function IconVolumeMuted({ className, size }: IconProps) {
+  return (
+    <Icon className={className} size={size}>
+      <path d="M4 10v4h3l4 3V7L7 10H4z" />
+      <path d="M16 10l5 5M21 10l-5 5" />
+    </Icon>
+  )
+}
+
 export function IconBarcode({ className, size }: IconProps) {
   return (
     <Icon className={className} size={size}>
