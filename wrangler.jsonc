@@ -2,6 +2,14 @@
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "cocktail-favorites",
   "main": "./worker/index.ts",
+  "workers_dev": true,
+  "preview_urls": true,
+  "routes": [
+    {
+      "pattern": "arnontails.com",
+      "custom_domain": true
+    }
+  ],
   "kv_namespaces": [
     { "binding": "SYNC_KV", "id": "daf602548f9f469380438d97ee0545e7" }
   ],
