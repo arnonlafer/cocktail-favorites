@@ -9,7 +9,7 @@
     {
       "binding": "SYNC_DB",
       "database_name": "cocktail-favorites-sync",
-      "database_id": "REPLACE_WITH_D1_DATABASE_ID",
+      "database_id": "4a843d46-b4a2-4f77-a1e1-4e965ee01cfc",
       "preview_database_id": "local-cocktail-favorites-sync",
       "migrations_dir": "migrations"
     }
