@@ -1,8 +1,13 @@
 import type { AiChat, AiMessage, AiSettings, AiVendor } from '../types'
 import { defaultModelForVendor, resolveModelForVendor } from './aiModels'
+import {
+  loadAiChatsFromStore,
+  saveAiChatsToStore,
+  touchDataUpdatedAt,
+} from './dataStore'
 
 const AI_SETTINGS_KEY = 'cocktail-favorites:ai-settings'
-const AI_CHATS_KEY = 'cocktail-favorites:ai-chats'
+const LEGACY_AI_CHATS_KEY = 'cocktail-favorites:ai-chats'
 
 const defaultSettings: AiSettings = {
   vendor: 'openai',
@@ -35,19 +40,34 @@ export function saveAiSettings(settings: AiSettings) {
   localStorage.setItem(AI_SETTINGS_KEY, JSON.stringify(settings))
 }
 
-export function loadAiChats(): AiChat[] {
+function readLegacyAiChats(): AiChat[] {
   try {
-    const raw = localStorage.getItem(AI_CHATS_KEY)
+    const raw = localStorage.getItem(LEGACY_AI_CHATS_KEY)
     if (!raw) return []
     const parsed = JSON.parse(raw) as AiChat[]
-    return parsed.sort((a, b) => b.updatedAt - a.updatedAt)
+    return Array.isArray(parsed) ? parsed : []
   } catch {
     return []
   }
 }
 
+export function loadAiChats(): AiChat[] {
+  const fromStore = loadAiChatsFromStore()
+  if (fromStore.length > 0) {
+    return [...fromStore].sort((a, b) => b.updatedAt - a.updatedAt)
+  }
+  const legacy = readLegacyAiChats()
+  if (legacy.length > 0) {
+    saveAiChats(legacy)
+    localStorage.removeItem(LEGACY_AI_CHATS_KEY)
+    return [...legacy].sort((a, b) => b.updatedAt - a.updatedAt)
+  }
+  return []
+}
+
 export function saveAiChats(chats: AiChat[]) {
-  localStorage.setItem(AI_CHATS_KEY, JSON.stringify(chats))
+  saveAiChatsToStore([...chats].sort((a, b) => b.updatedAt - a.updatedAt))
+  touchDataUpdatedAt()
 }
 
 export function getAiChat(id: string): AiChat | undefined {
@@ -59,7 +79,7 @@ export function upsertAiChat(chat: AiChat) {
   const idx = chats.findIndex((item) => item.id === chat.id)
   if (idx >= 0) chats[idx] = chat
   else chats.unshift(chat)
-  saveAiChats(chats.sort((a, b) => b.updatedAt - a.updatedAt))
+  saveAiChats(chats)
 }
 
 export function deleteAiChat(id: string) {

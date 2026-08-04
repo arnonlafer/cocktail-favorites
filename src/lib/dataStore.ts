@@ -1,4 +1,4 @@
-import type { Cocktail, IngredientNutrition, SyncPayload, UserProfile } from '../types'
+import type { AiChat, Cocktail, IngredientNutrition, SyncPayload, UserProfile } from '../types'
 
 function emptyState(): Omit<SyncPayload, 'syncCode'> {
   return {
@@ -8,6 +8,7 @@ function emptyState(): Omit<SyncPayload, 'syncCode'> {
     deletedIds: [],
     nutritionOverrides: [],
     userProfiles: {},
+    aiChats: [],
   }
 }
 
@@ -25,6 +26,7 @@ export function replaceDataFromServer(payload: Omit<SyncPayload, 'syncCode'> | S
     deletedIds: payload.deletedIds ?? [],
     nutritionOverrides: payload.nutritionOverrides ?? [],
     userProfiles: payload.userProfiles ?? {},
+    aiChats: payload.aiChats ?? [],
   }
 }
 
@@ -66,6 +68,14 @@ export function loadUserProfiles(): Record<string, UserProfile> {
 
 export function saveUserProfiles(profiles: Record<string, UserProfile>) {
   state.userProfiles = profiles
+}
+
+export function loadAiChatsFromStore(): AiChat[] {
+  return state.aiChats ?? []
+}
+
+export function saveAiChatsToStore(chats: AiChat[]) {
+  state.aiChats = chats
 }
 
 export function touchDataUpdatedAt() {

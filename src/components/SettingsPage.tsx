@@ -1,12 +1,22 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import type { FontSize, Theme } from '../types'
 import { FONT_SIZE_LABELS, THEME_LABELS, THEME_ORDER, stepFontSize } from '../lib/theme'
 import { DEFAULT_CART_SEARCH_URL } from '../lib/cart'
 import { logout } from '../lib/auth'
 import { downloadAppExport } from '../lib/export'
+import {
+  applySelectiveImport,
+  DEFAULT_IMPORT_SECTIONS,
+  IMPORT_SECTION_LABELS,
+  parseImportFile,
+  readFileAsText,
+  type ImportSections,
+} from '../lib/importBackup'
 import { importLegacyLocalStorageIfPresent } from '../lib/legacyMigration'
-import { loadFromServer, saveToServer } from '../lib/serverSave'
+import { getCurrentUserKey } from '../lib/localPrefs'
+import { describeSaveStatus, loadFromServer, saveToServer } from '../lib/serverSave'
+import { getDataState } from '../lib/dataStore'
 import { checkSyncServer, formatSyncTime, type SyncStatus } from '../lib/sync'
 import { confirmDiscardChanges } from '../lib/unsavedChanges'
 import { PageHeader } from './PageHeader'
@@ -47,6 +57,11 @@ export function SettingsPage({
   const [draftCartSearchUrl, setDraftCartSearchUrl] = useState(cartSearchUrl)
   const [syncStatus, setSyncStatus] = useState<SyncStatus>('idle')
   const [serverReady, setServerReady] = useState<'checking' | 'ready' | 'not-configured' | 'error'>('checking')
+  const [importFileName, setImportFileName] = useState<string | null>(null)
+  const [importPayloadText, setImportPayloadText] = useState<string | null>(null)
+  const [importSections, setImportSections] = useState<ImportSections>(DEFAULT_IMPORT_SECTIONS)
+  const [importBusy, setImportBusy] = useState(false)
+  const importInputRef = useRef<HTMLInputElement>(null)
 
   useEffect(() => {
     void checkSyncServer().then(setServerReady)
@@ -77,8 +92,87 @@ export function SettingsPage({
     if (status === 'synced') {
       setServerReady('ready')
       onReloaded()
+    } else if (status === 'cancelled') {
+      onReloaded()
     } else if (status === 'not-configured') {
       setServerReady('not-configured')
+    }
+  }
+
+  function clearImportSelection() {
+    setImportFileName(null)
+    setImportPayloadText(null)
+    setImportSections(DEFAULT_IMPORT_SECTIONS)
+    if (importInputRef.current) importInputRef.current.value = ''
+  }
+
+  async function handleImportFileChange(file: File | null) {
+    if (!file) {
+      clearImportSelection()
+      return
+    }
+    try {
+      const text = await readFileAsText(file)
+      parseImportFile(text)
+      setImportFileName(file.name)
+      setImportPayloadText(text)
+      setImportSections(DEFAULT_IMPORT_SECTIONS)
+    } catch (error) {
+      clearImportSelection()
+      window.alert(error instanceof Error ? error.message : 'Could not read that backup file.')
+    }
+  }
+
+  async function handleImportBackup() {
+    if (!importPayloadText) return
+    const selected = IMPORT_SECTION_LABELS.filter(({ key }) => importSections[key])
+    if (selected.length === 0) {
+      window.alert('Select at least one section to import.')
+      return
+    }
+    if (
+      !window.confirm(
+        `Import ${selected.map((s) => s.label).join(', ')} from ${importFileName ?? 'this file'}? Selected data will replace your current copy, then upload to the server.`,
+      )
+    ) {
+      return
+    }
+
+    setImportBusy(true)
+    setSyncStatus('syncing')
+    try {
+      const payload = parseImportFile(importPayloadText)
+      const applied = applySelectiveImport(payload, importSections)
+      if (!applied) {
+        setSyncStatus('cancelled')
+        onReloaded()
+        return
+      }
+      onReloaded()
+      const status = await saveToServer()
+      setSyncStatus(status)
+      if (status === 'synced') {
+        setServerReady('ready')
+        onReloaded()
+        clearImportSelection()
+        const activeKey = getCurrentUserKey()
+        const profiles = getDataState().userProfiles
+        const activeName = (activeKey && profiles[activeKey]?.userName) || activeKey || 'current user'
+        const listCount = (activeKey && profiles[activeKey]?.collections?.length) || 0
+        window.alert(
+          `Import complete and saved to the server.\n\nActive profile: ${activeName}\nLists: ${listCount}`,
+        )
+      } else {
+        const result = describeSaveStatus(status)
+        window.alert(
+          `Import applied on this device, but server update failed: ${result.message}`,
+        )
+      }
+    } catch (error) {
+      setSyncStatus('error')
+      window.alert(error instanceof Error ? error.message : 'Import failed.')
+    } finally {
+      setImportBusy(false)
     }
   }
 
@@ -87,7 +181,7 @@ export function SettingsPage({
     setSyncStatus('syncing')
     const status = await saveToServer()
     setSyncStatus(status)
-    if (status === 'synced') onReloaded()
+    if (status === 'synced' || status === 'cancelled') onReloaded()
   }
 
   function handleRecoverFromBrowser() {
@@ -235,8 +329,9 @@ export function SettingsPage({
         <section className="rounded-2xl border border-app bg-bar-900/60 p-4">
           <h2 className="mb-1 text-base font-semibold text-foreground">Cloud data</h2>
           <p className="mb-3 text-sm text-muted">
-            Your recipes, lists, draft, cart, and stock live on the server under your sync code. Use Save on each
-            page to upload changes. Refreshing the app loads the latest server data.
+            Recipes, favorites, lists, draft, cart, stock, and AI chats live on the server under your sync code.
+            Theme, font size, AI key, recently viewed, and view preferences stay on this device. If a load or save
+            would remove more than 20 items, you will be asked to confirm first.
           </p>
           {showServerWarning && (
             <p className="mb-4 rounded-xl border border-red-900/50 bg-red-950/40 px-3 py-2 text-sm text-red-200">
@@ -282,6 +377,7 @@ export function SettingsPage({
             Last loaded: {formatSyncTime(lastSyncedAt)}
             {syncStatus === 'syncing' ? ' · Working…' : ''}
             {syncStatus === 'synced' ? ' · Done' : ''}
+            {syncStatus === 'cancelled' ? ' · Cancelled — local data kept' : ''}
             {syncStatus === 'error' ? ' · Failed — check connection and sign-in' : ''}
             {syncStatus === 'not-configured' ? ' · Server storage not set up' : ''}
           </p>
@@ -300,10 +396,10 @@ export function SettingsPage({
         </section>
 
         <section className="rounded-2xl border border-app bg-bar-900/60 p-4">
-          <h2 className="mb-1 text-base font-semibold text-foreground">Export backup</h2>
+          <h2 className="mb-1 text-base font-semibold text-foreground">Backup</h2>
           <p className="mb-3 text-sm text-muted">
-            Download a JSON backup of your recipe edits, custom cocktails, lists, draft, cart, stock, and other
-            saved data from this device.
+            Download a JSON backup, or restore selected sections from a previous export. Imports upload to the
+            server when finished.
           </p>
           <button
             type="button"
@@ -312,6 +408,61 @@ export function SettingsPage({
           >
             Export JSON
           </button>
+          <input
+            ref={importInputRef}
+            type="file"
+            accept="application/json,.json"
+            className="sr-only"
+            onChange={(e) => void handleImportFileChange(e.target.files?.[0] ?? null)}
+          />
+          <button
+            type="button"
+            onClick={() => importInputRef.current?.click()}
+            className="mt-2 w-full rounded-xl border border-app bg-bar-800 py-2.5 text-sm font-medium text-foreground"
+          >
+            Choose import file…
+          </button>
+          {importFileName && (
+            <div className="mt-3 space-y-3 rounded-xl border border-app bg-bar-800/60 p-3">
+              <p className="text-sm text-foreground">
+                File: <span className="font-medium">{importFileName}</span>
+              </p>
+              <p className="text-xs text-muted">Choose what to import (all selected by default):</p>
+              <div className="space-y-2">
+                {IMPORT_SECTION_LABELS.map(({ key, label }) => (
+                  <label key={key} className="flex cursor-pointer items-center gap-3">
+                    <input
+                      type="checkbox"
+                      checked={importSections[key]}
+                      onChange={(e) =>
+                        setImportSections((prev) => ({ ...prev, [key]: e.target.checked }))
+                      }
+                      className="h-4 w-4 rounded border-app accent-amber-accent"
+                    />
+                    <span className="text-sm text-foreground">{label}</span>
+                  </label>
+                ))}
+              </div>
+              <div className="flex gap-2">
+                <button
+                  type="button"
+                  disabled={importBusy}
+                  onClick={() => void handleImportBackup()}
+                  className="flex-1 rounded-xl bg-amber-accent py-2.5 text-sm font-semibold text-bar-950 disabled:opacity-50"
+                >
+                  {importBusy ? 'Importing…' : 'Import selected'}
+                </button>
+                <button
+                  type="button"
+                  disabled={importBusy}
+                  onClick={clearImportSelection}
+                  className="rounded-xl border border-app bg-bar-800 px-4 py-2.5 text-sm font-medium text-foreground disabled:opacity-50"
+                >
+                  Cancel
+                </button>
+              </div>
+            </div>
+          )}
         </section>
 
         <section className="rounded-2xl border border-app bg-bar-900/60 p-4">

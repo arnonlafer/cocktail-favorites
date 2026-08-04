@@ -197,17 +197,12 @@ export interface AiChat {
   updatedAt: number
 }
 
-/** Per-user settings synced by username key. */
+/** Per-user settings synced by username key (server). */
 export interface UserProfile {
   userName: string
   favorites: string[]
-  recentlyViewed: Record<string, number>
   unit: UnitSystem
   multiplier: number
-  theme: Theme
-  fontSize: FontSize
-  collapsedGroups: string[] | null
-  listView: ListView
   collections: Collection[]
   /** Free-form recipe notes, one continuous draft per user. */
   recipeDraft: string
@@ -221,11 +216,21 @@ export interface UserProfile {
   cartSearchUrl?: string
   /** When true, the random recipe button only picks from favorites. */
   randomFavoritesOnly: boolean
-  /** Home screen grouping: by spirit or flat list. */
-  homeGroupView: HomeGroupView
-  /** Home screen recipe order. */
-  cocktailSort: CocktailSort
   updatedAt: number
+  /** @deprecated local-only — migrated to localPrefs on read */
+  recentlyViewed?: Record<string, number>
+  /** @deprecated local-only */
+  theme?: Theme
+  /** @deprecated local-only */
+  fontSize?: FontSize
+  /** @deprecated local-only */
+  collapsedGroups?: string[] | null
+  /** @deprecated local-only */
+  listView?: ListView
+  /** @deprecated local-only */
+  homeGroupView?: HomeGroupView
+  /** @deprecated local-only */
+  cocktailSort?: CocktailSort
 }
 
 /** View model: current user profile + shared sync settings. */
@@ -261,6 +266,8 @@ export interface SyncPayload {
   nutritionOverrides: IngredientNutrition[]
   syncCode: string
   userProfiles: Record<string, UserProfile>
+  /** AI conversations shared on the sync code. */
+  aiChats?: AiChat[]
   /** @deprecated legacy single-user prefs — migrated on read */
   prefs?: AppPreferences
 }

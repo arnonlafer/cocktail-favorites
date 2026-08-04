@@ -17,6 +17,8 @@ export function describeSaveStatus(status: SyncStatus): { ok: boolean; message: 
   switch (status) {
     case 'synced':
       return { ok: true, message: 'Saved to server.' }
+    case 'cancelled':
+      return { ok: false, message: 'Update cancelled — your local data was kept.' }
     case 'not-configured':
       return {
         ok: false,

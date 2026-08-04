@@ -1,16 +1,22 @@
 import { DEFAULT_CART_SEARCH_URL } from './cart'
+import { buildLossBaseline, confirmIfLargeLoss } from './dataGuard'
 import { getDataState, replaceDataFromServer } from './dataStore'
-import { loadLocalUiPrefs, saveLocalUiPrefs } from './localPrefs'
+import { getCurrentUserKey, loadLocalUiPrefs, saveLocalUiPrefs } from './localPrefs'
 import {
   exportSyncUserData,
+  migrateLocalPrefsFromProfile,
+  normalizeServerProfiles,
+  toServerProfile,
   userKey,
 } from './storage'
-import type { AppPreferences, Cocktail, SyncPayload, UserProfile } from '../types'
+import type { AiChat, AppPreferences, Cocktail, SyncPayload, UserProfile } from '../types'
 import { authHeaders } from './auth'
 
-export type SyncStatus = 'idle' | 'syncing' | 'synced' | 'error' | 'not-configured'
+export type SyncStatus = 'idle' | 'syncing' | 'synced' | 'error' | 'not-configured' | 'cancelled'
 
 const SYNC_HEADER = 'X-Sync-Code'
+const LEGACY_AI_CHATS_KEY = 'cocktail-favorites:ai-chats'
+const LEGACY_GUARD_KEY = 'cocktail-favorites:data-guard-snapshot'
 
 const syncAppliedListeners = new Set<() => void>()
 
@@ -29,16 +35,11 @@ function legacyPrefsToProfiles(prefs: AppPreferences): Record<string, UserProfil
   const name = prefs.userName?.trim() || 'Guest'
   const key = userKey(name)
   return {
-    [key]: {
+    [key]: toServerProfile({
       userName: name,
       favorites: prefs.favorites ?? [],
-      recentlyViewed: prefs.recentlyViewed ?? {},
       unit: prefs.unit ?? 'oz',
       multiplier: prefs.multiplier ?? 1,
-      theme: prefs.theme ?? 'dark',
-      fontSize: prefs.fontSize ?? 'md',
-      collapsedGroups: prefs.collapsedGroups ?? null,
-      listView: prefs.listView ?? 'list',
       collections: prefs.collections ?? [],
       recipeDraft: '',
       cart: [],
@@ -46,11 +47,25 @@ function legacyPrefsToProfiles(prefs: AppPreferences): Record<string, UserProfil
       lastStockCategory: 'whiskey-other',
       cartSearchUrl: DEFAULT_CART_SEARCH_URL,
       randomFavoritesOnly: true,
-      homeGroupView: 'spirits',
-      cocktailSort: 'recent',
       updatedAt: prefs.syncUpdatedAt ?? Date.now(),
-    },
+    }),
   }
+}
+
+function readLegacyAiChats(): AiChat[] {
+  try {
+    const raw = localStorage.getItem(LEGACY_AI_CHATS_KEY)
+    if (!raw) return []
+    const parsed = JSON.parse(raw) as AiChat[]
+    return Array.isArray(parsed) ? parsed : []
+  } catch {
+    return []
+  }
+}
+
+function clearLegacyLocalDataKeys() {
+  localStorage.removeItem(LEGACY_AI_CHATS_KEY)
+  localStorage.removeItem(LEGACY_GUARD_KEY)
 }
 
 export function buildSyncPayload(): SyncPayload {
@@ -64,22 +79,28 @@ export function buildSyncPayload(): SyncPayload {
     deletedIds: state.deletedIds,
     nutritionOverrides: state.nutritionOverrides ?? [],
     syncCode: localUi.syncCode,
-    userProfiles,
+    userProfiles: normalizeServerProfiles(userProfiles),
+    aiChats: state.aiChats ?? [],
   }
 }
 
-function normalizePayload(payload: SyncPayload): SyncPayload {
-  if (payload.userProfiles && Object.keys(payload.userProfiles).length > 0) {
-    return payload
+export function normalizePayload(payload: SyncPayload): SyncPayload {
+  const withProfiles =
+    payload.userProfiles && Object.keys(payload.userProfiles).length > 0
+      ? payload
+      : payload.prefs
+        ? {
+            ...payload,
+            syncCode: payload.syncCode || payload.prefs.syncCode || '',
+            userProfiles: legacyPrefsToProfiles(payload.prefs),
+          }
+        : { ...payload, userProfiles: {} }
+
+  return {
+    ...withProfiles,
+    userProfiles: normalizeServerProfiles(withProfiles.userProfiles ?? {}),
+    aiChats: withProfiles.aiChats ?? [],
   }
-  if (payload.prefs) {
-    return {
-      ...payload,
-      syncCode: payload.syncCode || payload.prefs.syncCode || '',
-      userProfiles: legacyPrefsToProfiles(payload.prefs),
-    }
-  }
-  return { ...payload, userProfiles: {} }
 }
 
 function mergeCustom(local: Cocktail[], remote: Cocktail[]): Cocktail[] {
@@ -96,17 +117,6 @@ function mergeEdits(
   remote: Record<string, Cocktail>,
 ): Record<string, Cocktail> {
   return { ...local, ...remote }
-}
-
-function mergeRecentlyViewed(
-  local: Record<string, number>,
-  remote: Record<string, number>,
-): Record<string, number> {
-  const merged = { ...local }
-  for (const [id, ts] of Object.entries(remote)) {
-    merged[id] = Math.max(merged[id] ?? 0, ts)
-  }
-  return merged
 }
 
 function mergeFavorites(local: string[], remote: string[]): string[] {
@@ -133,48 +143,48 @@ function mergeRecipeDraft(local: string, remote: string, preferRemote: boolean):
   return preferRemote ? remote : local
 }
 
+function mergeAiChats(local: AiChat[], remote: AiChat[]): AiChat[] {
+  const map = new Map<string, AiChat>()
+  for (const chat of [...local, ...remote]) {
+    const existing = map.get(chat.id)
+    if (!existing || chat.updatedAt >= existing.updatedAt) map.set(chat.id, chat)
+  }
+  return [...map.values()].sort((a, b) => b.updatedAt - a.updatedAt)
+}
+
 function mergeUserProfile(local: UserProfile, remote: UserProfile): UserProfile {
   const preferRemote = remote.updatedAt > local.updatedAt
   const newer = preferRemote ? remote : local
   const older = preferRemote ? local : remote
 
-  return {
+  return toServerProfile({
     userName: newer.userName || older.userName,
     favorites: mergeFavorites(local.favorites ?? [], remote.favorites ?? []),
-    recentlyViewed: mergeRecentlyViewed(local.recentlyViewed ?? {}, remote.recentlyViewed ?? {}),
     unit: newer.unit,
     multiplier: newer.multiplier,
-    theme: newer.theme,
-    fontSize: newer.fontSize,
-    collapsedGroups: newer.collapsedGroups,
-    listView: newer.listView,
     collections: mergeById(local.collections ?? [], remote.collections ?? [], preferRemote),
     recipeDraft: mergeRecipeDraft(local.recipeDraft ?? '', remote.recipeDraft ?? '', preferRemote),
-    // Cart and stock are full-list edits (add/remove/clear). Union-merge would
-    // resurrect deleted items from the older side or from legacy localStorage.
     cart: newer.cart ?? [],
     stock: newer.stock ?? [],
     lastStockCategory: newer.lastStockCategory ?? older.lastStockCategory,
     cartSearchUrl: newer.cartSearchUrl ?? older.cartSearchUrl,
     randomFavoritesOnly: newer.randomFavoritesOnly,
-    homeGroupView: newer.homeGroupView,
-    cocktailSort: newer.cocktailSort,
     updatedAt: Math.max(local.updatedAt, remote.updatedAt),
-  }
+  })
 }
 
 function mergeUserProfiles(
   local: Record<string, UserProfile>,
   remote: Record<string, UserProfile>,
 ): Record<string, UserProfile> {
-  const merged = { ...local }
+  const merged: Record<string, UserProfile> = {}
   for (const key of new Set([...Object.keys(local), ...Object.keys(remote)])) {
     const localProfile = local[key]
     const remoteProfile = remote[key]
     if (!localProfile && remoteProfile) {
-      merged[key] = remoteProfile
+      merged[key] = toServerProfile(remoteProfile)
     } else if (localProfile && !remoteProfile) {
-      merged[key] = localProfile
+      merged[key] = toServerProfile(localProfile)
     } else if (localProfile && remoteProfile) {
       merged[key] = mergeUserProfile(localProfile, remoteProfile)
     }
@@ -182,10 +192,11 @@ function mergeUserProfiles(
   return merged
 }
 
-export function applySyncPayload(payload: SyncPayload) {
+export function previewMergedState(payload: SyncPayload): Omit<SyncPayload, 'syncCode'> {
   const current = getDataState()
   const normalized = normalizePayload(payload)
-  replaceDataFromServer({
+  const legacyChats = readLegacyAiChats()
+  return {
     updatedAt: Math.max(current.updatedAt, normalized.updatedAt ?? 0),
     custom: mergeCustom(current.custom, normalized.custom ?? []),
     edits: mergeEdits(current.edits, normalized.edits ?? {}),
@@ -195,11 +206,27 @@ export function applySyncPayload(payload: SyncPayload) {
         ? normalized.nutritionOverrides!
         : current.nutritionOverrides,
     userProfiles: mergeUserProfiles(current.userProfiles, normalized.userProfiles ?? {}),
-  })
+    aiChats: mergeAiChats(
+      mergeAiChats(current.aiChats ?? [], legacyChats),
+      normalized.aiChats ?? [],
+    ),
+  }
+}
+
+export function applySyncPayload(payload: SyncPayload) {
+  const normalized = normalizePayload(payload)
+  const merged = previewMergedState(normalized)
+  replaceDataFromServer(merged)
   saveLocalUiPrefs({
     syncCode: normalized.syncCode || loadLocalUiPrefs().syncCode,
     lastSyncedAt: Date.now(),
   })
+
+  const currentKey = getCurrentUserKey()
+  const profile = (currentKey && merged.userProfiles[currentKey]) || Object.values(merged.userProfiles)[0]
+  if (profile) migrateLocalPrefsFromProfile(profile)
+
+  clearLegacyLocalDataKeys()
 }
 
 async function fetchRemotePayload(code: string): Promise<SyncPayload | null | 'not-configured' | 'error'> {
@@ -248,7 +275,14 @@ export async function pullFromServer(syncCode: string): Promise<SyncStatus> {
   const remote = await fetchRemotePayload(code)
   if (remote === 'not-configured') return 'not-configured'
   if (remote === 'error') return 'error'
-  if (remote) applySyncPayload(remote)
+  if (remote) {
+    const preview = previewMergedState(remote)
+    const baseline = buildLossBaseline()
+    if (!confirmIfLargeLoss(baseline, preview, 'Loading from the server')) {
+      return 'cancelled'
+    }
+    applySyncPayload(remote)
+  }
 
   notifySyncApplied()
   return 'synced'
@@ -260,6 +294,20 @@ export async function pushToServer(syncCode: string): Promise<SyncStatus> {
   if (!code) return 'not-configured'
 
   const payload = buildSyncPayload()
+  const baseline = buildLossBaseline()
+  const uploadPreview: Omit<SyncPayload, 'syncCode'> = {
+    updatedAt: payload.updatedAt,
+    edits: payload.edits,
+    custom: payload.custom,
+    deletedIds: payload.deletedIds,
+    nutritionOverrides: payload.nutritionOverrides ?? [],
+    userProfiles: payload.userProfiles ?? {},
+    aiChats: payload.aiChats ?? [],
+  }
+  if (!confirmIfLargeLoss(baseline, uploadPreview, 'Saving to the server')) {
+    return 'cancelled'
+  }
+
   const now = Date.now()
   payload.updatedAt = now
   for (const profile of Object.values(payload.userProfiles ?? {})) {
@@ -269,6 +317,7 @@ export async function pushToServer(syncCode: string): Promise<SyncStatus> {
   const uploaded = await uploadPayload(code, payload)
   if (uploaded === 'synced') {
     saveLocalUiPrefs({ lastSyncedAt: now })
+    clearLegacyLocalDataKeys()
     notifySyncApplied()
   }
   return uploaded

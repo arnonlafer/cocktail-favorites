@@ -1,4 +1,10 @@
-import type { FontSize, Theme } from '../types'
+import type {
+  CocktailSort,
+  FontSize,
+  HomeGroupView,
+  ListView,
+  Theme,
+} from '../types'
 
 const LOCAL_UI_KEY = 'cocktail-favorites:local-ui'
 const CURRENT_USER_KEY = 'cocktail-favorites:current-user'
@@ -8,6 +14,11 @@ export interface LocalUiPrefs {
   fontSize: FontSize
   syncCode: string
   lastSyncedAt: number | null
+  recentlyViewed: Record<string, number>
+  listView: ListView
+  homeGroupView: HomeGroupView
+  cocktailSort: CocktailSort
+  collapsedGroups: string[] | null
 }
 
 const defaultLocalUi: LocalUiPrefs = {
@@ -15,6 +26,11 @@ const defaultLocalUi: LocalUiPrefs = {
   fontSize: 'md',
   syncCode: '',
   lastSyncedAt: null,
+  recentlyViewed: {},
+  listView: 'list',
+  homeGroupView: 'spirits',
+  cocktailSort: 'recent',
+  collapsedGroups: null,
 }
 
 export function loadLocalUiPrefs(): LocalUiPrefs {

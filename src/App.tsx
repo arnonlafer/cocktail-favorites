@@ -56,7 +56,7 @@ export default function App() {
 
     const pull = () => {
       void pullFromServer(code).then((status) => {
-        if (status === 'synced') refreshPrefs()
+        if (status === 'synced' || status === 'cancelled') refreshPrefs()
       })
     }
 
@@ -75,7 +75,7 @@ export default function App() {
       const code = loadPrefs().syncCode?.trim()
       if (!code) return
       void pullFromServer(code).then((status) => {
-        if (status === 'synced') refreshPrefs()
+        if (status === 'synced' || status === 'cancelled') refreshPrefs()
       })
     }
 
@@ -98,7 +98,7 @@ export default function App() {
             setAuthenticated(true)
             importLegacyLocalStorageIfPresent()
             void loadFromServer().then((status) => {
-              if (status === 'synced') refreshPrefs()
+              if (status === 'synced' || status === 'cancelled') refreshPrefs()
             })
           }}
         />

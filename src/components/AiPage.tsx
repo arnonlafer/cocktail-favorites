@@ -13,6 +13,8 @@ import {
   loadAiSettings,
   upsertAiChat,
 } from '../lib/aiStorage'
+import { saveToServer } from '../lib/serverSave'
+import { subscribeSyncApplied } from '../lib/sync'
 import { PageHeader } from './PageHeader'
 import { AiMessageMarkdown } from './AiMessageMarkdown'
 import { IconClose } from './icons'
@@ -42,15 +44,19 @@ function AiChatList() {
     setChats(loadAiChats())
   }, [])
 
+  useEffect(() => subscribeSyncApplied(refresh), [refresh])
+
   const startNewChat = () => {
     const chat = createAiChat()
     upsertAiChat(chat)
+    void saveToServer()
     navigate(`/ai/${chat.id}`)
   }
 
   const removeChat = (id: string) => {
     if (!window.confirm('Delete this chat?')) return
     deleteAiChat(id)
+    void saveToServer()
     refresh()
   }
 
@@ -194,11 +200,13 @@ function AiChatView({ chatId, cocktails }: { chatId: string; cocktails: Cocktail
   const persistChat = (next: AiChat) => {
     upsertAiChat(next)
     setChat(next)
+    void saveToServer()
   }
 
   const removeChat = () => {
     if (!window.confirm('Delete this chat?')) return
     deleteAiChat(chat.id)
+    void saveToServer()
     navigate('/ai')
   }
 

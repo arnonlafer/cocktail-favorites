@@ -37,13 +37,8 @@ function defaultProfile(userName: string): UserProfile {
   return {
     userName: userName.trim(),
     favorites: [],
-    recentlyViewed: {},
     unit: 'oz',
     multiplier: 1,
-    theme: 'dark',
-    fontSize: 'md',
-    collapsedGroups: null,
-    listView: 'list',
     collections: [],
     recipeDraft: '',
     cart: [],
@@ -51,23 +46,73 @@ function defaultProfile(userName: string): UserProfile {
     lastStockCategory: 'whiskey-other',
     cartSearchUrl: DEFAULT_CART_SEARCH_URL,
     randomFavoritesOnly: true,
-    homeGroupView: 'spirits',
-    cocktailSort: 'recent',
     updatedAt: Date.now(),
   }
+}
+
+/** Strip local-only fields before writing profiles to the sync payload. */
+export function toServerProfile(profile: UserProfile): UserProfile {
+  return {
+    userName: profile.userName,
+    favorites: profile.favorites ?? [],
+    unit: profile.unit ?? 'oz',
+    multiplier: profile.multiplier ?? 1,
+    collections: profile.collections ?? [],
+    recipeDraft: profile.recipeDraft ?? '',
+    cart: profile.cart ?? [],
+    stock: profile.stock ?? [],
+    lastStockCategory: normalizeStockCategory(profile.lastStockCategory),
+    cartSearchUrl: profile.cartSearchUrl?.trim() || DEFAULT_CART_SEARCH_URL,
+    randomFavoritesOnly: profile.randomFavoritesOnly ?? true,
+    updatedAt: profile.updatedAt ?? Date.now(),
+  }
+}
+
+export function normalizeServerProfiles(
+  profiles: Record<string, UserProfile>,
+): Record<string, UserProfile> {
+  const out: Record<string, UserProfile> = {}
+  for (const [key, profile] of Object.entries(profiles)) {
+    out[key] = toServerProfile(profile)
+  }
+  return out
+}
+
+/** One-time: copy view/recent fields from a legacy synced profile into local prefs. */
+export function migrateLocalPrefsFromProfile(profile: UserProfile) {
+  const local = loadLocalUiPrefs()
+  const patch: Parameters<typeof saveLocalUiPrefs>[0] = {}
+
+  if (Object.keys(local.recentlyViewed).length === 0 && profile.recentlyViewed) {
+    patch.recentlyViewed = profile.recentlyViewed
+  }
+  if (local.collapsedGroups === null && profile.collapsedGroups != null) {
+    patch.collapsedGroups = profile.collapsedGroups
+  }
+  if (local.listView === 'list' && profile.listView && profile.listView !== 'list') {
+    patch.listView = profile.listView
+  }
+  if (local.homeGroupView === 'spirits' && profile.homeGroupView && profile.homeGroupView !== 'spirits') {
+    patch.homeGroupView = profile.homeGroupView
+  }
+  if (local.cocktailSort === 'recent' && profile.cocktailSort && profile.cocktailSort !== 'recent') {
+    patch.cocktailSort = profile.cocktailSort
+  }
+
+  if (Object.keys(patch).length > 0) saveLocalUiPrefs(patch)
 }
 
 function profileToPrefs(profile: UserProfile, localUi: ReturnType<typeof loadLocalUiPrefs>): AppPreferences {
   return {
     userName: profile.userName,
     favorites: profile.favorites,
-    recentlyViewed: profile.recentlyViewed,
+    recentlyViewed: localUi.recentlyViewed ?? {},
     unit: profile.unit,
     multiplier: profile.multiplier,
     theme: localUi.theme === 'dim' || localUi.theme === 'light' ? localUi.theme : 'dark',
     fontSize: localUi.fontSize,
-    collapsedGroups: profile.collapsedGroups,
-    listView: profile.listView,
+    collapsedGroups: localUi.collapsedGroups,
+    listView: localUi.listView ?? 'list',
     collections: profile.collections,
     recipeDraft: profile.recipeDraft ?? '',
     cart: profile.cart ?? [],
@@ -75,8 +120,8 @@ function profileToPrefs(profile: UserProfile, localUi: ReturnType<typeof loadLoc
     lastStockCategory: normalizeStockCategory(profile.lastStockCategory),
     cartSearchUrl: profile.cartSearchUrl?.trim() || DEFAULT_CART_SEARCH_URL,
     randomFavoritesOnly: profile.randomFavoritesOnly ?? true,
-    homeGroupView: profile.homeGroupView ?? 'spirits',
-    cocktailSort: profile.cocktailSort ?? 'recent',
+    homeGroupView: localUi.homeGroupView ?? 'spirits',
+    cocktailSort: localUi.cocktailSort ?? 'recent',
     syncCode: localUi.syncCode,
     syncUpdatedAt: 0,
     lastSyncedAt: localUi.lastSyncedAt,
@@ -113,17 +158,23 @@ export function savePrefs(prefs: AppPreferences) {
   const key = getCurrentUserKey() || userKey(prefs.userName || 'Guest')
   if (!getCurrentUserKey()) setCurrentUserKey(key)
 
+  saveLocalUiPrefs({
+    recentlyViewed: prefs.recentlyViewed ?? {},
+    collapsedGroups: prefs.collapsedGroups,
+    listView: prefs.listView,
+    homeGroupView: prefs.homeGroupView,
+    cocktailSort: prefs.cocktailSort,
+    ...(prefs.syncCode !== undefined ? { syncCode: prefs.syncCode } : {}),
+  })
+
   const profiles = loadUserProfiles()
   const existing = profiles[key] ?? defaultProfile(prefs.userName || 'Guest')
-  profiles[key] = {
+  const nextProfile = toServerProfile({
     ...existing,
     userName: prefs.userName,
     favorites: prefs.favorites,
-    recentlyViewed: prefs.recentlyViewed,
     unit: prefs.unit,
     multiplier: prefs.multiplier,
-    collapsedGroups: prefs.collapsedGroups,
-    listView: prefs.listView,
     collections: prefs.collections ?? [],
     recipeDraft: prefs.recipeDraft ?? '',
     cart: prefs.cart ?? [],
@@ -131,15 +182,15 @@ export function savePrefs(prefs: AppPreferences) {
     lastStockCategory: normalizeStockCategory(prefs.lastStockCategory),
     cartSearchUrl: prefs.cartSearchUrl?.trim() || DEFAULT_CART_SEARCH_URL,
     randomFavoritesOnly: prefs.randomFavoritesOnly ?? true,
-    homeGroupView: prefs.homeGroupView ?? 'spirits',
-    cocktailSort: prefs.cocktailSort ?? 'recent',
-    updatedAt: Date.now(),
-  }
-  saveUserProfiles(profiles)
-  touchDataUpdatedAt()
+    updatedAt: existing.updatedAt,
+  })
 
-  if (prefs.syncCode !== undefined) {
-    saveLocalUiPrefs({ syncCode: prefs.syncCode })
+  const { updatedAt: _a, ...existingCore } = toServerProfile(existing)
+  const { updatedAt: _b, ...nextCore } = nextProfile
+  if (JSON.stringify(existingCore) !== JSON.stringify(nextCore)) {
+    profiles[key] = { ...nextProfile, updatedAt: Date.now() }
+    saveUserProfiles(profiles)
+    touchDataUpdatedAt()
   }
 }
 
@@ -303,7 +354,7 @@ export function exportSyncUserData(): {
 } {
   return {
     syncCode: loadLocalUiPrefs().syncCode,
-    userProfiles: loadUserProfiles(),
+    userProfiles: normalizeServerProfiles(loadUserProfiles()),
   }
 }
 
@@ -313,7 +364,7 @@ export function importSyncUserData(
   preserveCurrentUserKey = true,
 ) {
   const currentKey = preserveCurrentUserKey ? getCurrentUserKey() : ''
-  saveUserProfiles(userProfiles)
+  saveUserProfiles(normalizeServerProfiles(userProfiles))
   if (currentKey) setCurrentUserKey(currentKey)
   if (syncCode) saveLocalUiPrefs({ syncCode })
 }
