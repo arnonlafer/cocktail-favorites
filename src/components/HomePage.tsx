@@ -6,6 +6,7 @@ import { saveBrowseIds } from '../lib/browse'
 import { computeCollapsedGroups } from '../lib/groups'
 import { restoreHomeScroll, saveHomeScroll } from '../lib/scroll'
 import { toggleFavorite } from '../lib/storage'
+import { saveToServer } from '../lib/serverSave'
 import { CocktailCard } from './CocktailCard'
 import { CocktailGridCard } from './CocktailGridCard'
 import { SearchBar } from './SearchBar'
@@ -181,6 +182,7 @@ export function HomePage({
         e.stopPropagation()
         toggleFavorite(cocktail.id)
         onFavoriteChange()
+        void saveToServer()
       },
     }
 

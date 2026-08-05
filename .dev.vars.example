@@ -1,0 +1,10 @@
+# Copy to .dev.vars for local `wrangler dev`. Set the real values with
+# `wrangler secret put <NAME>` for deployed environments.
+AUTH_PASSWORD=""
+AUTH_SECRET=""
+
+# Barcode lookup fallbacks. Each can also be supplied per-device from
+# Settings → Barcode lookup, which takes precedence over these.
+COLA_CLOUD_API_KEY=""
+UPC_DEV_API_KEY=""
+UPC_DATABASE_API_KEY=""

@@ -6,6 +6,7 @@ import { scrollToTop } from '../lib/scroll'
 import { calculateCocktailNutrition } from '../lib/nutrition'
 import { cocktailInitials, spiritGradient, subtitle } from '../lib/cocktailUtils'
 import { markRecentlyViewed, toggleFavorite } from '../lib/storage'
+import { saveToServer } from '../lib/serverSave'
 import { formatCocktailOrigin, getCocktailOrigin } from '../lib/origins'
 import { resolveSimilarCocktails } from '../lib/similar'
 import { CollectionPicker } from './CollectionPicker'
@@ -245,6 +246,7 @@ export function CocktailDetailPage({
               onClick={() => {
                 toggleFavorite(cocktail.id)
                 onFavoriteChange()
+                void saveToServer()
               }}
             >
               <IconHeart filled={isFavorite} size={20} className={isFavorite ? 'text-amber-accent' : undefined} />

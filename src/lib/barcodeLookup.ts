@@ -5,97 +5,176 @@ export interface BarcodeProduct {
   barcode: string
   name: string
   brand?: string
+  description?: string
+  imageUrl?: string
   source: string
 }
 
+export interface BarcodeSource {
+  id: string
+  label: string
+}
+
 const USER_AGENT = 'CocktailFavorites/1.0 (https://github.com/arnonlafer/cocktail-favorites)'
+
+/**
+ * Databases are queried in this order, one at a time, so the scanner can offer
+ * "look at the next database" when a hit looks wrong.
+ */
+export const BARCODE_SOURCES: BarcodeSource[] = [
+  { id: 'openfoodfacts', label: 'Open Food Facts' },
+  { id: 'openproductsfacts', label: 'Open Products Facts' },
+  { id: 'openbeautyfacts', label: 'Open Beauty Facts' },
+  { id: 'cola', label: 'COLA Cloud' },
+  { id: 'upcitemdb', label: 'UPCitemdb' },
+  { id: 'upcdatabase', label: 'UPC Database' },
+  { id: 'upcdev', label: 'upc.dev' },
+]
+
+const OPEN_FACTS_HOSTS: Record<string, string> = {
+  openfoodfacts: 'world.openfoodfacts.org',
+  openproductsfacts: 'world.openproductsfacts.org',
+  openbeautyfacts: 'world.openbeautyfacts.org',
+}
 
 interface OffProduct {
   product_name?: string
   product_name_en?: string
   generic_name?: string
   brands?: string
+  image_url?: string
+}
+
+/** Ignore case, punctuation, and spacing so "Coca-Cola" matches "Coca Cola Zero". */
+function comparable(value: string): string {
+  return value.toLowerCase().replace(/[^a-z0-9]+/g, '')
 }
 
 function buildName(product: OffProduct): string | null {
-  const productName = product.product_name?.trim() || product.product_name_en?.trim() || product.generic_name?.trim()
+  const productName =
+    product.product_name?.trim() || product.product_name_en?.trim() || product.generic_name?.trim()
   const brand = product.brands?.split(',')[0]?.trim()
   if (!productName && !brand) return null
   if (productName && brand) {
-    const lower = productName.toLowerCase()
-    if (lower.includes(brand.toLowerCase())) return productName
+    if (comparable(productName).includes(comparable(brand))) return productName
     return `${brand} ${productName}`
   }
   return productName || brand || null
 }
 
-async function lookupOpenFacts(host: string, barcode: string, source: string): Promise<BarcodeProduct | null> {
-  const url = `https://${host}/api/v2/product/${encodeURIComponent(barcode)}.json?fields=product_name,product_name_en,generic_name,brands,code`
+async function lookupOpenFacts(
+  host: string,
+  barcode: string,
+  label: string,
+): Promise<BarcodeProduct[]> {
+  const fields = 'product_name,product_name_en,generic_name,brands,image_url,code'
+  const url = `https://${host}/api/v2/product/${encodeURIComponent(barcode)}.json?fields=${fields}`
   const res = await fetch(url, {
     headers: { 'User-Agent': USER_AGENT, Accept: 'application/json' },
   })
-  if (!res.ok) return null
+  if (!res.ok) return []
+
   const data = (await res.json()) as { status?: number; product?: OffProduct; code?: string }
-  if (data.status !== 1 || !data.product) return null
+  if (data.status !== 1 || !data.product) return []
   const name = buildName(data.product)
-  if (!name) return null
-  return {
-    barcode: data.code || barcode,
-    name,
-    brand: data.product.brands?.split(',')[0]?.trim(),
-    source,
-  }
+  if (!name) return []
+
+  return [
+    {
+      barcode: data.code || barcode,
+      name,
+      brand: data.product.brands?.split(',')[0]?.trim() || undefined,
+      imageUrl: data.product.image_url?.trim() || undefined,
+      source: label,
+    },
+  ]
 }
 
-async function lookupViaWorker(barcode: string): Promise<BarcodeProduct | null> {
+async function lookupViaWorker(
+  sourceId: string,
+  barcode: string,
+  label: string,
+): Promise<BarcodeProduct[]> {
   const settings = loadBarcodeSettings()
-  const headers: Record<string, string> = {
-    Accept: 'application/json',
-    ...authHeaders(),
-  }
+  const headers: Record<string, string> = { Accept: 'application/json', ...authHeaders() }
   if (settings.colaApiKey.trim()) headers['X-Cola-Api-Key'] = settings.colaApiKey.trim()
   if (settings.upcApiKey.trim()) headers['X-Upc-Api-Key'] = settings.upcApiKey.trim()
+  if (settings.upcDatabaseApiKey.trim()) {
+    headers['X-Upc-Database-Api-Key'] = settings.upcDatabaseApiKey.trim()
+  }
 
-  const res = await fetch(`/api/barcode/${encodeURIComponent(barcode)}`, { headers })
-  if (res.status === 404) return null
-  if (!res.ok) return null
+  const path = `/api/barcode/${encodeURIComponent(barcode)}?source=${encodeURIComponent(sourceId)}`
+  const res = await fetch(path, { headers })
+  if (!res.ok) return []
 
-  const product = (await res.json()) as BarcodeProduct
-  if (!product?.name?.trim()) return null
+  const body = (await res.json()) as { products?: BarcodeProduct[] }
+  return (body.products ?? [])
+    .filter((product) => product?.name?.trim())
+    .map((product) => ({
+      barcode: product.barcode || barcode,
+      name: product.name.trim(),
+      brand: product.brand?.trim() || undefined,
+      description: product.description?.trim() || undefined,
+      imageUrl: product.imageUrl?.trim() || undefined,
+      source: product.source || label,
+    }))
+}
+
+/** Query one database. Returns an empty list for misses so callers can move to the next source. */
+export async function lookupBarcodeInSource(
+  source: BarcodeSource,
+  barcode: string,
+): Promise<BarcodeProduct[]> {
+  const openFactsHost = OPEN_FACTS_HOSTS[source.id]
+  if (openFactsHost) return lookupOpenFacts(openFactsHost, barcode, source.label)
+  return lookupViaWorker(source.id, barcode, source.label)
+}
+
+export interface BarcodeLookupHit {
+  source: BarcodeSource
+  products: BarcodeProduct[]
+  /** Databases queried (and missed) before this hit, newest search only. */
+  searched: BarcodeSource[]
+  hasMoreSources: boolean
+}
+
+export interface BarcodeLookupSession {
+  barcode: string
+  hasMoreSources: () => boolean
+  /**
+   * Walk the remaining databases until one returns products. Resolves to null when
+   * every remaining database came up empty.
+   */
+  next: () => Promise<BarcodeLookupHit | null>
+}
+
+export function createBarcodeLookupSession(barcode: string): BarcodeLookupSession {
+  let index = 0
+
   return {
-    barcode: product.barcode || barcode,
-    name: product.name.trim(),
-    brand: product.brand?.trim() || undefined,
-    source: product.source || 'Barcode API',
+    barcode,
+    hasMoreSources: () => index < BARCODE_SOURCES.length,
+    async next() {
+      const searched: BarcodeSource[] = []
+      while (index < BARCODE_SOURCES.length) {
+        const source = BARCODE_SOURCES[index]
+        index += 1
+        searched.push(source)
+        let products: BarcodeProduct[]
+        try {
+          products = await lookupBarcodeInSource(source, barcode)
+        } catch {
+          continue
+        }
+        if (products.length > 0) {
+          return { source, products, searched, hasMoreSources: index < BARCODE_SOURCES.length }
+        }
+      }
+      return null
+    },
   }
 }
 
-/**
- * Resolve a UPC/EAN barcode to a product name.
- * Order: Open Food/Products/Beauty Facts → COLA Cloud → upc.dev (last two via worker).
- */
-export async function lookupBarcodeProduct(barcode: string): Promise<BarcodeProduct | null> {
-  const code = barcode.trim()
-  if (!/^\d{8,14}$/.test(code)) return null
-
-  const openFacts: Array<{ host: string; label: string }> = [
-    { host: 'world.openfoodfacts.org', label: 'Open Food Facts' },
-    { host: 'world.openproductsfacts.org', label: 'Open Products Facts' },
-    { host: 'world.openbeautyfacts.org', label: 'Open Beauty Facts' },
-  ]
-
-  for (const source of openFacts) {
-    try {
-      const product = await lookupOpenFacts(source.host, code, source.label)
-      if (product) return product
-    } catch {
-      // try next source
-    }
-  }
-
-  try {
-    return await lookupViaWorker(code)
-  } catch {
-    return null
-  }
+export function isValidBarcode(barcode: string): boolean {
+  return /^\d{8,14}$/.test(barcode.trim())
 }

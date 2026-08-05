@@ -3,7 +3,7 @@ import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import { parseDraftSelection } from '../lib/draftPrefill'
 import { getCocktailOrigin, ORIGIN_CLASSIFICATION_OPTIONS } from '../lib/origins'
 import { rankSimilarCocktails } from '../lib/similar'
-import { saveToServer } from '../lib/serverSave'
+import { describeSaveStatus, saveToServer } from '../lib/serverSave'
 import { confirmDiscardChanges } from '../lib/unsavedChanges'
 import type { Cocktail, CocktailClassification, Ingredient } from '../types'
 import {
@@ -141,6 +141,8 @@ export function CocktailFormPage({ cocktails, onSave, onDelete, onSaved, mode }:
   const [originYear, setOriginYear] = useState('')
   const [originCreator, setOriginCreator] = useState('')
   const [originNote, setOriginNote] = useState('')
+  const [saving, setSaving] = useState(false)
+  const [saveMessage, setSaveMessage] = useState<string | null>(null)
 
   const suggestedSimilar = useMemo(() => {
     if (mode !== 'edit' || !existing) return []
@@ -273,9 +275,22 @@ export function CocktailFormPage({ cocktails, onSave, onDelete, onSaved, mode }:
     const cocktail = buildCocktail()
     if (!cocktail) return
 
+    setSaving(true)
+    setSaveMessage(null)
     onSave(cocktail)
-    const status = await saveToServer()
-    if (status === 'synced') onSaved?.()
+    try {
+      const status = await saveToServer()
+      if (status === 'synced') onSaved?.()
+      // Stay on the form when the upload failed so the recipe is not silently local-only.
+      const result = describeSaveStatus(status)
+      if (!result.ok) {
+        setSaveMessage(result.message)
+        return
+      }
+    } finally {
+      setSaving(false)
+    }
+
     if (mode === 'edit') {
       navigate(-1)
     } else {
@@ -487,11 +502,18 @@ export function CocktailFormPage({ cocktails, onSave, onDelete, onSaved, mode }:
           </div>
         )}
 
+        {saveMessage && (
+          <p className="rounded-xl border border-red-900/50 bg-red-950/40 px-3 py-2 text-sm text-red-200">
+            {saveMessage}
+          </p>
+        )}
+
         <button
           type="submit"
-          className="w-full rounded-2xl bg-amber-accent py-3.5 text-base font-semibold text-bar-950"
+          disabled={saving}
+          className="w-full rounded-2xl bg-amber-accent py-3.5 text-base font-semibold text-bar-950 disabled:opacity-40"
         >
-          {mode === 'edit' ? 'Save Changes' : 'Save Cocktail'}
+          {saving ? 'Saving…' : mode === 'edit' ? 'Save Changes' : 'Save Cocktail'}
         </button>
 
         {mode === 'edit' && existing && onDelete && (

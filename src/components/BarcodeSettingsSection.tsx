@@ -13,12 +13,14 @@ export function BarcodeSettingsSection() {
   const [settings, setSettings] = useState<BarcodeSettings>(() => loadBarcodeSettings())
   const [draftCola, setDraftCola] = useState(settings.colaApiKey)
   const [draftUpc, setDraftUpc] = useState(settings.upcApiKey)
+  const [draftUpcDatabase, setDraftUpcDatabase] = useState(settings.upcDatabaseApiKey)
   const [saved, setSaved] = useState(false)
 
   useEffect(() => {
     setDraftCola(settings.colaApiKey)
     setDraftUpc(settings.upcApiKey)
-  }, [settings.colaApiKey, settings.upcApiKey])
+    setDraftUpcDatabase(settings.upcDatabaseApiKey)
+  }, [settings.colaApiKey, settings.upcApiKey, settings.upcDatabaseApiKey])
 
   function persist(next: Partial<BarcodeSettings>) {
     const merged = normalizeBarcodeSettings(next)
@@ -29,15 +31,20 @@ export function BarcodeSettingsSection() {
   }
 
   function saveKeys() {
-    persist({ colaApiKey: draftCola.trim(), upcApiKey: draftUpc.trim() })
+    persist({
+      colaApiKey: draftCola.trim(),
+      upcApiKey: draftUpc.trim(),
+      upcDatabaseApiKey: draftUpcDatabase.trim(),
+    })
   }
 
   return (
     <section className="rounded-2xl border border-app bg-bar-900/60 p-4">
       <h2 className="mb-1 text-base font-semibold text-foreground">Barcode lookup</h2>
       <p className="mb-4 text-sm text-muted">
-        After Open Facts, scans try COLA Cloud (US alcohol labels), then upc.dev. Keys stay on this device
-        only. upc.dev works without a key on the free tier.
+        Scans query one database at a time — Open Food, Products, and Beauty Facts, then COLA Cloud (US
+        alcohol labels), UPCitemdb, UPC Database, and upc.dev — so you can step to the next one when a
+        match looks wrong. Keys stay on this device only. UPCitemdb and upc.dev work without a key.
       </p>
 
       <label className="mb-2 block text-sm font-medium text-foreground" htmlFor="cola-api-key">
@@ -63,6 +70,33 @@ export function BarcodeSettingsSection() {
           className="text-amber-accent underline"
         >
           colacloud.us
+        </a>
+        .
+      </p>
+
+      <label className="mb-2 block text-sm font-medium text-foreground" htmlFor="upc-database-api-key">
+        UPC Database API key
+      </label>
+      <input
+        id="upc-database-api-key"
+        type="password"
+        autoComplete="off"
+        autoCapitalize="none"
+        spellCheck={false}
+        value={draftUpcDatabase}
+        onChange={(e) => setDraftUpcDatabase(e.target.value)}
+        placeholder="Required for upcdatabase.org lookups"
+        className={`${fieldClass} mb-3`}
+      />
+      <p className="mb-4 text-xs text-subtle">
+        Get a key at{' '}
+        <a
+          href="https://upcdatabase.org/"
+          target="_blank"
+          rel="noreferrer"
+          className="text-amber-accent underline"
+        >
+          upcdatabase.org
         </a>
         .
       </p>

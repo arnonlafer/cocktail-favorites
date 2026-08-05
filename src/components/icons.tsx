@@ -153,6 +153,34 @@ export function IconBarcode({ className, size }: IconProps) {
   )
 }
 
+export function IconScan({ className, size }: IconProps) {
+  return (
+    <Icon className={className} size={size}>
+      <path d="M3 8V5a2 2 0 0 1 2-2h3M16 3h3a2 2 0 0 1 2 2v3M21 16v3a2 2 0 0 1-2 2h-3M8 21H5a2 2 0 0 1-2-2v-3" />
+      <path d="M7 9v6M10 9v6M14 9v6M17 9v6" />
+    </Icon>
+  )
+}
+
+export function IconSave({ className, size }: IconProps) {
+  return (
+    <Icon className={className} size={size}>
+      <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z" />
+      <path d="M8 3v5h7M8 14h8v7H8z" />
+    </Icon>
+  )
+}
+
+export function IconDatabase({ className, size }: IconProps) {
+  return (
+    <Icon className={className} size={size}>
+      <ellipse cx="12" cy="5.5" rx="8" ry="3" />
+      <path d="M4 5.5v6c0 1.66 3.58 3 8 3s8-1.34 8-3v-6" />
+      <path d="M4 11.5v7c0 1.66 3.58 3 8 3s8-1.34 8-3v-7" />
+    </Icon>
+  )
+}
+
 export function IconRanOut({ className, size }: IconProps) {
   return (
     <Icon className={className} size={size}>

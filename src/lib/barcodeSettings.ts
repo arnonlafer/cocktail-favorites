@@ -1,6 +1,7 @@
 export interface BarcodeSettings {
   colaApiKey: string
   upcApiKey: string
+  upcDatabaseApiKey: string
 }
 
 const BARCODE_SETTINGS_KEY = 'cocktail-favorites:barcode-settings'
@@ -8,6 +9,7 @@ const BARCODE_SETTINGS_KEY = 'cocktail-favorites:barcode-settings'
 const defaultSettings: BarcodeSettings = {
   colaApiKey: '',
   upcApiKey: '',
+  upcDatabaseApiKey: '',
 }
 
 export function loadBarcodeSettings(): BarcodeSettings {
@@ -18,6 +20,7 @@ export function loadBarcodeSettings(): BarcodeSettings {
     return {
       colaApiKey: parsed.colaApiKey ?? '',
       upcApiKey: parsed.upcApiKey ?? '',
+      upcDatabaseApiKey: parsed.upcDatabaseApiKey ?? '',
     }
   } catch {
     return { ...defaultSettings }
@@ -33,5 +36,6 @@ export function normalizeBarcodeSettings(partial: Partial<BarcodeSettings>): Bar
   return {
     colaApiKey: partial.colaApiKey ?? current.colaApiKey,
     upcApiKey: partial.upcApiKey ?? current.upcApiKey,
+    upcDatabaseApiKey: partial.upcDatabaseApiKey ?? current.upcDatabaseApiKey,
   }
 }

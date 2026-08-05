@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import type { CartItem } from '../types'
 import { cartItemUrl, createCartItem } from '../lib/cart'
 import { describeSaveStatus, saveToServer } from '../lib/serverSave'
@@ -28,6 +28,7 @@ export function CartPage({ items, searchUrl, onSave, onSaved }: Props) {
   const [saveMessage, setSaveMessage] = useState<{ ok: boolean; message: string } | null>(null)
   const [verifyMessage, setVerifyMessage] = useState<string | null>(null)
   const [scanning, setScanning] = useState(false)
+  const draftInputRef = useRef<HTMLInputElement>(null)
 
   const incomingKey = itemsKey(items)
   if (incomingKey !== syncedKey) {
@@ -142,6 +143,7 @@ export function CartPage({ items, searchUrl, onSave, onSaved }: Props) {
         open={scanning}
         onClose={() => setScanning(false)}
         onProduct={(product) => addScannedProduct(product.name)}
+        onManualAdd={() => draftInputRef.current?.focus()}
       />
 
       <div className="space-y-4 px-4 pt-4">
@@ -167,6 +169,7 @@ export function CartPage({ items, searchUrl, onSave, onSaved }: Props) {
           }}
         >
           <input
+            ref={draftInputRef}
             className={fieldClass}
             value={draft}
             onChange={(e) => setDraft(e.target.value)}

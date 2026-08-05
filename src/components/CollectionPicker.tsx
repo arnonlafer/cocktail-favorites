@@ -7,6 +7,7 @@ import {
   loadCollections,
   removeCocktailFromCollection,
 } from '../lib/storage'
+import { saveToServer } from '../lib/serverSave'
 
 interface Props {
   cocktailId: string
@@ -30,6 +31,7 @@ export function CollectionPicker({ cocktailId, collections, onClose, onChanged }
     if (contains) removeCocktailFromCollection(collectionId, cocktailId)
     else addCocktailToCollection(collectionId, cocktailId)
     refresh()
+    void saveToServer()
   }
 
   const handleCreate = () => {
@@ -39,6 +41,7 @@ export function CollectionPicker({ cocktailId, collections, onClose, onChanged }
     addCocktailToCollection(collection.id, cocktailId)
     setNewName('')
     refresh()
+    void saveToServer()
   }
 
   return createPortal(

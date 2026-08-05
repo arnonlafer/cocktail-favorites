@@ -27,10 +27,10 @@ export function StockScanMatchDialog({
         <div className="mb-3 flex items-start gap-2">
           <div className="min-w-0 flex-1">
             <h2 id="stock-scan-match-title" className="font-display text-lg font-bold text-foreground">
-              Similar bottles found
+              {candidates.length === 1 ? 'Similar bottle found' : 'Similar bottles found'}
             </h2>
             <p className="mt-1 text-sm text-muted">
-              Scanned “{scannedName}”. Pick an existing bottle, or None to add a new one.
+              Scanned “{scannedName}”. Pick the bottle you already have to edit it, or add it as new.
             </p>
           </div>
           <button

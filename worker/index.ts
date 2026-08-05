@@ -1,5 +1,5 @@
 import { handleAuthRequest, requireAuth } from './auth'
-import { lookupBarcodeFallbacks } from './barcode'
+import { isWorkerBarcodeSource, lookupBarcodeSource } from './barcode'
 import {
   copyBetweenBackends,
   readActivePayload,
@@ -46,13 +46,21 @@ export default {
       if (request.method !== 'GET') return new Response('Method not allowed', { status: 405 })
 
       const code = barcodeMatch[1]
-      const colaApiKey = request.headers.get('X-Cola-Api-Key')?.trim() || env.COLA_CLOUD_API_KEY
-      const upcApiKey = request.headers.get('X-Upc-Api-Key')?.trim() || env.UPC_DEV_API_KEY
+      const source = url.searchParams.get('source') ?? ''
+      if (!isWorkerBarcodeSource(source)) {
+        return json({ error: 'Unknown barcode source.' }, 400)
+      }
+
+      const keys = {
+        colaApiKey: request.headers.get('X-Cola-Api-Key')?.trim() || env.COLA_CLOUD_API_KEY,
+        upcApiKey: request.headers.get('X-Upc-Api-Key')?.trim() || env.UPC_DEV_API_KEY,
+        upcDatabaseApiKey:
+          request.headers.get('X-Upc-Database-Api-Key')?.trim() || env.UPC_DATABASE_API_KEY,
+      }
 
       try {
-        const product = await lookupBarcodeFallbacks(code, { colaApiKey, upcApiKey })
-        if (!product) return json({ error: 'No product found for barcode.' }, 404)
-        return json(product)
+        const products = await lookupBarcodeSource(source, code, keys)
+        return json({ products })
       } catch {
         return json({ error: 'Barcode lookup failed.' }, 502)
       }

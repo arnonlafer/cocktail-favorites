@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { Link, useLocation, useNavigate, useParams } from 'react-router-dom'
 import { createCartItem } from '../lib/cart'
 import { describeSaveStatus, saveToServer } from '../lib/serverSave'
@@ -29,7 +29,7 @@ import { PageHeader } from './PageHeader'
 import { SearchBar } from './SearchBar'
 import { StockScanMatchDialog } from './StockScanMatchDialog'
 import { VoiceCommandPanel, VoiceMicButton } from './VoiceCommandPanel'
-import { IconCart, IconRanOut } from './icons'
+import { IconCart, IconPlus, IconRanOut, IconSave, IconScan } from './icons'
 
 interface Props {
   items: StockItem[]
@@ -41,10 +41,10 @@ interface Props {
 }
 
 const primaryButtonClass =
-  'w-full rounded-2xl bg-amber-accent py-3.5 text-base font-semibold text-bar-950 disabled:opacity-40'
+  'flex w-full items-center justify-center gap-2 rounded-2xl bg-amber-accent py-3.5 text-base font-semibold text-bar-950 disabled:opacity-40'
 
 const secondaryButtonClass =
-  'w-full rounded-2xl border border-app-strong py-3.5 text-base font-semibold text-foreground'
+  'flex w-full items-center justify-center gap-2 rounded-2xl border border-app-strong py-3.5 text-base font-semibold text-foreground disabled:opacity-40'
 
 const fieldClass =
   'w-full rounded-xl border border-app bg-bar-800 px-3 py-2.5 text-foreground outline-none focus:border-amber-accent/60'
@@ -125,6 +125,7 @@ function StockList({
   onSaved,
 }: Pick<Props, 'items' | 'lastCategory' | 'cart' | 'onSaveStock' | 'onAddToCart' | 'onSaved'>) {
   const navigate = useNavigate()
+  const location = useLocation()
   const [query, setQuery] = useState('')
   const [expanded, setExpanded] = useState<Set<StockListGroup>>(() => new Set())
   const [localItems, setLocalItems] = useState(items)
@@ -133,11 +134,22 @@ function StockList({
   const [voicePending, setVoicePending] = useState(false)
   const [saving, setSaving] = useState(false)
   const [saveMessage, setSaveMessage] = useState<{ ok: boolean; message: string } | null>(null)
-  const [scanning, setScanning] = useState(false)
+  // "Save & Scan New" lands here with the scanner already armed.
+  const [scanning, setScanning] = useState(
+    () => Boolean((location.state as { openScanner?: boolean } | null)?.openScanner),
+  )
   const [scanMatch, setScanMatch] = useState<{
     scannedName: string
     candidates: StockItem[]
   } | null>(null)
+
+  // Drop the flag so returning to this page later does not reopen the camera.
+  useEffect(() => {
+    if ((location.state as { openScanner?: boolean } | null)?.openScanner) {
+      navigate('/stock', { replace: true, state: null })
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   const incomingKey = JSON.stringify(items)
   if (!voicePending && incomingKey !== syncedKey) {
@@ -249,16 +261,6 @@ function StockList({
       return
     }
 
-    if (candidates.length === 1) {
-      const existing = candidates[0]
-      const same = window.confirm(
-        `Is “${name}” the same bottle as “${existing.name}” already in your stock?\n\nOK = edit existing\nCancel = add as new`,
-      )
-      if (same) navigate(`/stock/${existing.id}`)
-      else openAddScanned(name)
-      return
-    }
-
     setScanMatch({ scannedName: name, candidates })
   }
 
@@ -287,6 +289,7 @@ function StockList({
         onProduct={(product) => {
           handleScannedProduct(product.name)
         }}
+        onManualAdd={() => navigate('/stock/new')}
       />
 
       {scanMatch && (
@@ -538,6 +541,14 @@ function StockItemEditor({
     navigate('/stock/new')
   }
 
+  // Hand off to the stock list so the scan reuses its duplicate-matching flow.
+  const handleSaveAndScanNew = async () => {
+    if (!persistItem()) return
+    const ok = await uploadToServer()
+    if (!ok) return
+    navigate('/stock', { state: { openScanner: true } })
+  }
+
   const handleDelete = async () => {
     if (!existing) {
       navigate('/stock')
@@ -669,6 +680,7 @@ function StockItemEditor({
         )}
 
         <button type="button" onClick={() => void handleSave()} disabled={!canSave || saving} className={primaryButtonClass}>
+          <IconSave size={18} />
           {saving ? 'Saving…' : 'Save'}
         </button>
 
@@ -678,7 +690,18 @@ function StockItemEditor({
           disabled={!canSave || saving}
           className={secondaryButtonClass}
         >
-          Save & Add New
+          <IconPlus size={18} />
+          Save &amp; Add New
+        </button>
+
+        <button
+          type="button"
+          onClick={() => void handleSaveAndScanNew()}
+          disabled={!canSave || saving}
+          className={secondaryButtonClass}
+        >
+          <IconScan size={18} />
+          Save &amp; Scan New
         </button>
 
         {mode === 'add' && (
