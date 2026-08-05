@@ -42,6 +42,7 @@ interface OffProduct {
   product_name_en?: string
   generic_name?: string
   brands?: string
+  categories?: string
   image_url?: string
 }
 
@@ -67,7 +68,7 @@ async function lookupOpenFacts(
   barcode: string,
   label: string,
 ): Promise<BarcodeProduct[]> {
-  const fields = 'product_name,product_name_en,generic_name,brands,image_url,code'
+  const fields = 'product_name,product_name_en,generic_name,brands,categories,image_url,code'
   const url = `https://${host}/api/v2/product/${encodeURIComponent(barcode)}.json?fields=${fields}`
   const res = await fetch(url, {
     headers: { 'User-Agent': USER_AGENT, Accept: 'application/json' },
@@ -78,12 +79,18 @@ async function lookupOpenFacts(
   if (data.status !== 1 || !data.product) return []
   const name = buildName(data.product)
   if (!name) return []
+  const description = [data.product.generic_name, data.product.categories]
+    .map((value) => value?.trim())
+    .filter((value): value is string => Boolean(value))
+    .filter((value) => comparable(value) !== comparable(name))
+    .join(' · ')
 
   return [
     {
       barcode: data.code || barcode,
       name,
       brand: data.product.brands?.split(',')[0]?.trim() || undefined,
+      description: description || undefined,
       imageUrl: data.product.image_url?.trim() || undefined,
       source: label,
     },

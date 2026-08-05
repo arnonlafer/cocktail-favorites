@@ -15,8 +15,10 @@ import {
   type StockListSection,
 } from '../lib/stock'
 import { findSimilarStockItems } from '../lib/stockMatch'
+import { inferStockCategory, normalizeStockProductName } from '../lib/stockProduct'
 import { runStockVoiceCommand } from '../lib/voiceCommands'
 import { useVoiceCommand } from '../hooks/useVoiceCommand'
+import type { BarcodeProduct } from '../lib/barcodeLookup'
 import type { CartItem, StockCategory, StockItem, StockListGroup } from '../types'
 import {
   STOCK_CATEGORY_LABELS,
@@ -140,6 +142,7 @@ function StockList({
   )
   const [scanMatch, setScanMatch] = useState<{
     scannedName: string
+    inferredCategory: StockCategory
     candidates: StockItem[]
   } | null>(null)
 
@@ -247,21 +250,22 @@ function StockList({
     setSaveMessage(null)
   }
 
-  const openAddScanned = (name: string) => {
-    navigate('/stock/new', { state: { prefillName: name } })
+  const openAddScanned = (name: string, category: StockCategory) => {
+    navigate('/stock/new', { state: { prefillName: name, prefillCategory: category } })
   }
 
-  const handleScannedProduct = (scannedName: string) => {
-    const name = scannedName.trim()
+  const handleScannedProduct = (product: BarcodeProduct) => {
+    const name = normalizeStockProductName(product)
     if (!name) return
+    const inferredCategory = inferStockCategory(product)
 
     const candidates = findSimilarStockItems(name, displayItems, 5)
     if (candidates.length === 0) {
-      openAddScanned(name)
+      openAddScanned(name, inferredCategory)
       return
     }
 
-    setScanMatch({ scannedName: name, candidates })
+    setScanMatch({ scannedName: name, inferredCategory, candidates })
   }
 
   return (
@@ -287,7 +291,7 @@ function StockList({
         open={scanning}
         onClose={() => setScanning(false)}
         onProduct={(product) => {
-          handleScannedProduct(product.name)
+          handleScannedProduct(product)
         }}
         onManualAdd={() => navigate('/stock/new')}
       />
@@ -301,9 +305,9 @@ function StockList({
             navigate(`/stock/${item.id}`)
           }}
           onAddNew={() => {
-            const name = scanMatch.scannedName
+            const { scannedName, inferredCategory } = scanMatch
             setScanMatch(null)
-            openAddScanned(name)
+            openAddScanned(scannedName, inferredCategory)
           }}
           onCancel={() => setScanMatch(null)}
         />
@@ -462,14 +466,20 @@ function StockItemEditor({
   const navigate = useNavigate()
   const location = useLocation()
   const existing = mode === 'edit' ? items.find((item) => item.id === itemId) : undefined
-  const prefillName =
+  const prefill =
     mode === 'add'
-      ? ((location.state as { prefillName?: string } | null)?.prefillName?.trim() ?? '')
-      : ''
+      ? (location.state as
+          | { prefillName?: string; prefillCategory?: StockCategory }
+          | null)
+      : null
+  const prefillName =
+    prefill?.prefillName?.trim() ?? ''
 
   const [name, setName] = useState(existing?.name ?? prefillName)
   const [category, setCategory] = useState<StockCategory>(
-    existing ? normalizeStockCategory(existing.category) : lastCategory,
+    existing
+      ? normalizeStockCategory(existing.category)
+      : (prefill?.prefillCategory ?? lastCategory),
   )
   const [open, setOpen] = useState(existing?.open ?? false)
   const [quantityLeft, setQuantityLeft] = useState(String(existing?.quantityLeft ?? 1))
