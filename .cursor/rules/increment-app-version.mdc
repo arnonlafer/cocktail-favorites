@@ -1,0 +1,13 @@
+---
+description: Increment the displayed app version before every push
+alwaysApply: true
+---
+
+# App Version
+
+Before committing changes that will be pushed:
+
+- Increment `APP_VERSION` in `src/lib/appVersion.ts`.
+- Preserve the `major.minor.patch` format with two-digit minor and three-digit patch fields.
+- Increment the patch field by one for ordinary changes (for example, `1.01.047` → `1.01.048`).
+- Include the version change in the same commit being pushed.

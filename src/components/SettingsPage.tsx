@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import type { FontSize, Theme } from '../types'
+import { APP_VERSION } from '../lib/appVersion'
 import { FONT_SIZE_LABELS, THEME_LABELS, THEME_ORDER, stepFontSize } from '../lib/theme'
 import { DEFAULT_CART_SEARCH_URL } from '../lib/cart'
 import { logout } from '../lib/auth'
@@ -253,6 +254,8 @@ export function SettingsPage({
       <PageHeader title="Settings" />
 
       <div className="space-y-4 px-4 pt-4">
+        <p className="text-center text-xs text-subtle">Version {APP_VERSION}</p>
+
         <section className="rounded-2xl border border-app bg-bar-900/60 p-4">
           <h2 className="mb-1 text-base font-semibold text-foreground">Theme</h2>
           <p className="mb-4 text-sm text-muted">Dark, dim, or light appearance.</p>
