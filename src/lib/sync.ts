@@ -158,7 +158,9 @@ function mergeUserProfile(local: UserProfile, remote: UserProfile): UserProfile 
   const older = preferRemote ? local : remote
 
   return toServerProfile({
-    userName: newer.userName || older.userName,
+    // The local profile name comes from the authenticated session. A stale
+    // synced name must not replace it while the rest of the profile merges.
+    userName: local.userName || remote.userName,
     favorites: mergeFavorites(local.favorites ?? [], remote.favorites ?? []),
     unit: newer.unit,
     multiplier: newer.multiplier,
