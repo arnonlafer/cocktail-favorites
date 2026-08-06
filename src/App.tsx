@@ -5,7 +5,7 @@ import { validateSession } from './lib/auth'
 import { importLegacyLocalStorageIfPresent } from './lib/legacyMigration'
 import { loadLocalUiPrefs } from './lib/localPrefs'
 import { loadFromServer } from './lib/serverSave'
-import { loadPrefs, saveLocalAppearance, saveSyncCode } from './lib/storage'
+import { loadPrefs, saveLocalAppearance, saveLoginProfile, saveSyncCode } from './lib/storage'
 import { normalizeStockCategory } from './lib/stock'
 import { applyAppearance } from './lib/theme'
 import { pullFromServer, subscribeSyncApplied } from './lib/sync'
@@ -37,11 +37,15 @@ export default function App() {
   } = useCocktails()
 
   useEffect(() => {
-    void validateSession().then((ok) => {
-      setAuthenticated(ok)
+    void validateSession().then((username) => {
+      if (username) {
+        saveLoginProfile(username)
+        refreshPrefs()
+      }
+      setAuthenticated(Boolean(username))
       setAuthReady(true)
     })
-  }, [])
+  }, [refreshPrefs])
 
   useEffect(() => {
     applyAppearance(prefs.theme, prefs.fontSize)

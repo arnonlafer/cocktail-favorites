@@ -33,9 +33,9 @@ export async function login(username: string, password: string): Promise<string 
   return token
 }
 
-export async function validateSession(): Promise<boolean> {
+export async function validateSession(): Promise<string | null> {
   const token = getAuthToken()
-  if (!token) return false
+  if (!token) return null
 
   try {
     const res = await fetch('/api/auth/session', {
@@ -43,10 +43,16 @@ export async function validateSession(): Promise<boolean> {
     })
     if (!res.ok) {
       clearAuthToken()
-      return false
+      return null
     }
-    return true
+    const body = (await res.json()) as { username?: string }
+    const username = body.username?.trim()
+    if (!username) {
+      clearAuthToken()
+      return null
+    }
+    return username
   } catch {
-    return false
+    return null
   }
 }

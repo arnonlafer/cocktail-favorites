@@ -24,7 +24,23 @@ function sessionSecret(env: Env): string {
   return env.AUTH_SECRET ?? 'cocktail-favorites-session-v1'
 }
 
-async function signSession(expiresAt: number, env: Env): Promise<string> {
+function encodeUsername(username: string): string {
+  const bytes = new TextEncoder().encode(username)
+  return btoa(String.fromCharCode(...bytes)).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '')
+}
+
+function decodeUsername(encoded: string): string | null {
+  try {
+    const base64 = encoded.replace(/-/g, '+').replace(/_/g, '/')
+    const padded = base64.padEnd(Math.ceil(base64.length / 4) * 4, '=')
+    const bytes = Uint8Array.from(atob(padded), (character) => character.charCodeAt(0))
+    return new TextDecoder().decode(bytes).trim() || null
+  } catch {
+    return null
+  }
+}
+
+async function signSession(expiresAt: number, encodedUsername: string, env: Env): Promise<string> {
   const key = await crypto.subtle.importKey(
     'raw',
     new TextEncoder().encode(sessionSecret(env)),
@@ -32,9 +48,10 @@ async function signSession(expiresAt: number, env: Env): Promise<string> {
     false,
     ['sign'],
   )
-  const sig = await crypto.subtle.sign('HMAC', key, new TextEncoder().encode(String(expiresAt)))
+  const payload = `${expiresAt}.${encodedUsername}`
+  const sig = await crypto.subtle.sign('HMAC', key, new TextEncoder().encode(payload))
   const sigHex = [...new Uint8Array(sig)].map((b) => b.toString(16).padStart(2, '0')).join('')
-  return `${expiresAt}.${sigHex}`
+  return `${payload}.${sigHex}`
 }
 
 export async function verifyPassword(password: string, env: Env): Promise<boolean> {
@@ -45,23 +62,23 @@ export async function verifyPassword(password: string, env: Env): Promise<boolea
   return timingSafeEqual(hash, PASSWORD_HASH)
 }
 
-export async function createSessionToken(env: Env): Promise<string> {
+export async function createSessionToken(username: string, env: Env): Promise<string> {
   const expiresAt = Date.now() + SESSION_TTL_MS
-  return signSession(expiresAt, env)
+  return signSession(expiresAt, encodeUsername(username), env)
 }
 
-export async function verifySessionToken(token: string, env: Env): Promise<boolean> {
-  const [expStr, sig] = token.split('.')
-  if (!expStr || !sig) return false
+export async function verifySessionToken(token: string, env: Env): Promise<string | null> {
+  const [expStr, encodedUsername, sig] = token.split('.')
+  if (!expStr || !encodedUsername || !sig) return null
 
   const expiresAt = Number(expStr)
-  if (!Number.isFinite(expiresAt) || expiresAt < Date.now()) return false
+  if (!Number.isFinite(expiresAt) || expiresAt < Date.now()) return null
 
-  const expected = await signSession(expiresAt, env)
-  const expectedSig = expected.split('.')[1]
-  if (!expectedSig) return false
+  const expected = await signSession(expiresAt, encodedUsername, env)
+  const expectedSig = expected.split('.')[2]
+  if (!expectedSig || !timingSafeEqual(sig, expectedSig)) return null
 
-  return timingSafeEqual(sig, expectedSig)
+  return decodeUsername(encodedUsername)
 }
 
 export function bearerToken(request: Request): string | null {
@@ -87,24 +104,26 @@ export async function handleAuthRequest(request: Request, env: Env, pathname: st
       return json({ error: 'Invalid request body.' }, 400)
     }
 
-    if (!body.password) {
-      return json({ error: 'Password is required.' }, 400)
+    const username = body.username?.trim()
+    if (!username || !body.password) {
+      return json({ error: 'Username and password are required.' }, 400)
     }
 
     if (!(await verifyPassword(body.password, env))) {
       return json({ error: 'Invalid credentials.' }, 401)
     }
 
-    const token = await createSessionToken(env)
+    const token = await createSessionToken(username, env)
     return json({ token })
   }
 
   if (pathname === '/api/auth/session' && request.method === 'GET') {
     const token = bearerToken(request)
-    if (!token || !(await verifySessionToken(token, env))) {
+    const username = token ? await verifySessionToken(token, env) : null
+    if (!username) {
       return json({ ok: false }, 401)
     }
-    return json({ ok: true })
+    return json({ ok: true, username })
   }
 
   return null
