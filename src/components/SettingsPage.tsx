@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import type { FontSize, Theme } from '../types'
-import { APP_VERSION } from '../lib/appVersion'
+import { APP_UPDATED_AT, APP_VERSION } from '../lib/appVersion'
 import { FONT_SIZE_LABELS, THEME_LABELS, THEME_ORDER, stepFontSize } from '../lib/theme'
 import { DEFAULT_CART_SEARCH_URL } from '../lib/cart'
 import { logout } from '../lib/auth'
@@ -248,13 +248,20 @@ export function SettingsPage({
   }
 
   const showServerWarning = serverReady === 'not-configured' || syncStatus === 'not-configured'
+  const localizedUpdatedAt = new Date(APP_UPDATED_AT).toLocaleString(undefined, {
+    dateStyle: 'medium',
+    timeStyle: 'short',
+  })
 
   return (
     <div>
       <PageHeader title="Settings" />
 
       <div className="space-y-4 px-4 pt-4">
-        <p className="text-center text-xs text-subtle">Version {APP_VERSION}</p>
+        <div className="text-center text-xs text-subtle">
+          <p>Version {APP_VERSION}</p>
+          <p>Last updated {localizedUpdatedAt}</p>
+        </div>
 
         <section className="rounded-2xl border border-app bg-bar-900/60 p-4">
           <h2 className="mb-1 text-base font-semibold text-foreground">Theme</h2>

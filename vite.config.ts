@@ -6,6 +6,9 @@ import { VitePWA } from 'vite-plugin-pwa'
 import { cloudflare } from "@cloudflare/vite-plugin";
 
 export default defineConfig({
+  define: {
+    'import.meta.env.APP_UPDATED_AT': JSON.stringify(new Date().toISOString()),
+  },
   plugins: [react(), tailwindcss(), VitePWA({
     registerType: 'autoUpdate',
     includeAssets: ['icon-512.png'],
