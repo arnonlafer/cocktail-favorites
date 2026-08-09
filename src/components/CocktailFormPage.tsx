@@ -33,8 +33,31 @@ function slugify(name: string) {
   )
 }
 
+// Longer forms first so "fluid ounces" / "teaspoons" win over "oz" / "tsp".
 const INGREDIENT_UNIT_PATTERN =
-  'fl\\.?\\s*oz|floz|oz|ml|dash(?:es)?|pinch|tsp|tbsp|pc|cup|drops?'
+  'fluid\\s+ounces?|fl\\.?\\s*oz|floz|ounces?|oz|ml|dash(?:es)?|pinch(?:es)?|teaspoons?|tsp|tablespoons?|tbsp|pieces?|pc|cups?|drops?'
+
+function normalizeParsedUnit(unitRaw: string): string {
+  const unit = unitRaw.toLowerCase().replace(/\./g, '').replace(/\s+/g, '')
+  if (
+    unit === 'floz' ||
+    unit === 'oz' ||
+    unit === 'ounce' ||
+    unit === 'ounces' ||
+    unit === 'fluidounce' ||
+    unit === 'fluidounces'
+  ) {
+    return 'oz'
+  }
+  if (unit.startsWith('dash')) return 'dash'
+  if (unit === 'drop' || unit === 'drops') return 'dash'
+  if (unit === 'tsp' || unit === 'teaspoon' || unit === 'teaspoons') return 'tsp'
+  if (unit === 'tbsp' || unit === 'tablespoon' || unit === 'tablespoons') return 'tbsp'
+  if (unit === 'cup' || unit === 'cups') return 'cup'
+  if (unit === 'pc' || unit === 'piece' || unit === 'pieces') return 'pc'
+  if (unit === 'pinch' || unit === 'pinches') return 'pinch'
+  return unit
+}
 
 function parseIngredientLine(line: string): Ingredient {
   const trimmed = line.trim()
@@ -49,7 +72,8 @@ function parseIngredientLine(line: string): Ingredient {
     if (sticky) {
       return parseIngredientLine(`${sticky[1]} ${sticky[2]} ${sticky[3]}`)
     }
-    const countOnly = trimmed.match(/^(\d+)\s*[xX]?\s*(.+)$/)
+    // Piece counts only — do not peel the leading "0" off decimals like "0.5 …"
+    const countOnly = trimmed.match(/^(\d+)(?!\.)\s*[xX]?\s*(.+)$/)
     if (countOnly) {
       return { amount: Number(countOnly[1]), unit: 'pc', name: countOnly[2].trim() }
     }
@@ -65,14 +89,7 @@ function parseIngredientLine(line: string): Ingredient {
   }
   if (!Number.isFinite(amount)) return { amount: null, unit: null, name: trimmed }
 
-  const unit = unitRaw.toLowerCase().replace(/\./g, '').replace(/\s+/g, '')
-  let normalizedUnit: string
-  if (unit === 'floz' || unit === 'oz') normalizedUnit = 'oz'
-  else if (unit.startsWith('dash')) normalizedUnit = 'dash'
-  else if (unit === 'drops' || unit === 'drop') normalizedUnit = 'dash'
-  else normalizedUnit = unitRaw.toLowerCase().includes('fl') ? 'oz' : unit
-
-  return { amount, unit: normalizedUnit, name: name.trim() }
+  return { amount, unit: normalizeParsedUnit(unitRaw), name: name.trim() }
 }
 
 function ingredientsToText(ingredients: Ingredient[]): string {
